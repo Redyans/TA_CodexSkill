@@ -111,6 +111,8 @@ description: 面向 Unity 技术美术的可迁移开发规则入口。按 Shade
 | 工具模式 | [ToolDevelopment/references/tool-development-patterns.md](ToolDevelopment/references/tool-development-patterns.md) | 依据工具类型选择单文件、分层窗口、扫描器、批处理、预览或受控 Hook 的最小实现。 |
 | Unity 动画预览生命周期与姿态恢复 | [ToolDevelopment/references/unity-animation-preview-lifecycle-and-pose-restoration.md](ToolDevelopment/references/unity-animation-preview-lifecycle-and-pose-restoration.md) | Selection 目标快照、AnimationMode 所有权、播放/暂停/停止/取消语义、源模型姿态复制、问题排查与验证矩阵。 |
 | 当前工程 AnimationClipPreviewer | [ToolDevelopment/Profiles/ProjectACG/animation-clip-previewer.md](ToolDevelopment/Profiles/ProjectACG/animation-clip-previewer.md) | ProjectACG 动画预览工具的路径、菜单、锁定目标、Clip 搜索、取消预览、FBX 姿态恢复和当前验证边界。 |
+| 动画批量截图与短 Clip 采样 | [ToolDevelopment/references/animation-batch-screenshot-and-clip-sampling.md](ToolDevelopment/references/animation-batch-screenshot-and-clip-sampling.md) | 多 Clip 资源展开、静态 Pose 识别、短动画代表帧、按 Clip 帧率采样、输出恢复与验证矩阵。 |
+| 当前工程 AnimationBatchScreenshotTool | [ToolDevelopment/Profiles/ProjectACG/animation-batch-screenshot-tool.md](ToolDevelopment/Profiles/ProjectACG/animation-batch-screenshot-tool.md) | ProjectACG 动画批量截图工具的路径、菜单、Pose/短动画开关、实现方式、问题根因和当前验证边界。 |
 | 当前工程 Character Prefab 模块快照与恢复 | [ToolDevelopment/Profiles/ProjectACG/character-prefab-module-snapshot-and-restore.md](ToolDevelopment/Profiles/ProjectACG/character-prefab-module-snapshot-and-restore.md) | ProjectACG CharacterPrefabBuilder 的快照 Schema、FBX 来源识别、Hierarchy Object、Animator、Magica Cloth 2、双栏恢复 UI、已解决问题与当前验证边界。 |
 | 批量烘焙工作区与安全取消 | [ToolDevelopment/references/batch-baker-workspace-and-cancellation.md](ToolDevelopment/references/batch-baker-workspace-and-cancellation.md) | 单个/批量模式 UI、执行计划、自动命名、覆盖确认、真实阶段进度、安全取消、临时文件提交与验证矩阵。 |
 | 模块化批量资源工具设计 | [ToolDevelopment/references/modular-batch-resource-tool-design.md](ToolDevelopment/references/modular-batch-resource-tool-design.md) | 模型/GameObject、材质和贴图模块切换、Selection/目录范围、材质变体安全转换、紧凑 UI 与验证矩阵。 |
@@ -119,6 +121,8 @@ description: 面向 Unity 技术美术的可迁移开发规则入口。按 Shade
 | FBX 源数据编辑器开发参考 | [ToolDevelopment/references/fbx-source-asset-editor-development.md](ToolDevelopment/references/fbx-source-asset-editor-development.md) | FBX SDK 原始资源写回、单位/Pivot/UV/顶点色/材质槽/骨架实现、回读校验、程序集边界和问题规避。 |
 | 当前工程 FBX 源资源编辑器 | [ToolDevelopment/Profiles/ProjectACG/fbx-source-asset-editor.md](ToolDevelopment/Profiles/ProjectACG/fbx-source-asset-editor.md) | ProjectACG FBXEditor 的路径、菜单、程序集、实现文件、已验证功能、已知限制和维护检查。 |
 | 当前工程工具 Profile | [ToolDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGTAToolsProfile.md](ToolDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGTAToolsProfile.md) | ProjectACG 的目录、菜单、UI、README、历史目录和构建链边界。 |
+| Mini 工程导出与交付参考 | [ToolDevelopment/references/outsource-mini-project-builder-delivery.md](ToolDevelopment/references/outsource-mini-project-builder-delivery.md) | Mini 工程最小依赖闭包、脚本/渲染配置边界、内部/强制模式、阻断修复、临时副本和验证流程。 |
+| 当前工程 Mini 工程生成 Profile | [ToolDevelopment/Profiles/ProjectACG/outsource-mini-project-builder.md](ToolDevelopment/Profiles/ProjectACG/outsource-mini-project-builder.md) | ProjectACG 工具路径、三套 Profile、字段语义、MMD MaterialEditor、Warning 修正和当前验证状态。 |
 | 当前工程 Painter 调色 LUT 工具 | [ToolDevelopment/Profiles/ProjectACG/painter-color-profile-baker.md](ToolDevelopment/Profiles/ProjectACG/painter-color-profile-baker.md) | `PainterColorProfileBaker` 的可烘焙范围、Identity、White Point、sRGB、路径和黑图排查。 |
 
 各模块自己的参考文档、报告模板和当前工程 Profile 均位于对应模块目录内，不在本入口重复维护。

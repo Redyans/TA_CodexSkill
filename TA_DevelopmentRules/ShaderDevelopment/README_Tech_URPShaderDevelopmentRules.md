@@ -255,6 +255,8 @@ PBR 不是复杂度等级。实现选择必须同时判断两个维度：
 
 当前 `ProjectACGMain` 工作区的 Unity 与 Substance Painter Shader 对齐事实已拆分到 [ProjectACG Unity 与 Substance Painter Shader 对齐 Profile](Profiles/ProjectACG/README_Tech_ProjectACGSubstancePainterShaderProfile.md)。其中的 `_MRATex`、Painter 11.0.2、Debug 数值、相机偏置半角向量、Unity 预卷积 Cubemap Atlas 布局与当前 Face/基轴契约只属于该工作区，不并入本文件 CORE。
 
+当前 ProjectACG UI Gamma/sRGB 合成的实际路径、`UICamera`、`URP-UI-Renderer.asset`、Gamma UI Shader、RendererFeature、RT 格式和验证边界见 [ProjectACG Gamma UI / sRGB 合成 Profile](Profiles/ProjectACG/gamma-ui-srgb-composite.md)；跨项目的颜色域、Alpha/Blend、UI 特效和独立 RT 实现经验见 [`references/gamma-ui-color-domain-and-renderer-feature.md`](references/gamma-ui-color-domain-and-renderer-feature.md)。
+
 ### PRJ｜当前工程共同基线
 
 #### PRJ-01｜Unity、URP 与源码边界
@@ -360,9 +362,11 @@ Chara_V2 当前存在 `#pragma target 3.0` 和 `3.5`。例如 `Chara_Cloth_V2.sh
 - **新增或重写标准 URP PBR / SimpleLit**：读取 `ARC-01`、`ARC-02`、`WRK-02`、`WRK-05`、[`references/urp-shader-patterns.md`](references/urp-shader-patterns.md)、[`references/shader-file-organization.md`](references/shader-file-organization.md) 及当前 URP 包源码。按实际需求决定材质输入、烘焙、Meta 与可选功能。
 - **Toon / Custom Lighting / 复杂材质**：读取 `WRK-04`、`WRK-05`、对应 `SCN-*` 或 `CHR-*`、目标 Binding/Common/Adapter 与所有消费者。需要扩展共享光照时先确认已有入口，不生成新的独立 Lighting 框架。
 - **屏幕资源、RendererFeature、透明/深度/阴影链路**：读取 `ARC-03`、`ARC-04`、[`references/renderer-feature-stencil-and-timing.md`](references/renderer-feature-stencil-and-timing.md)、[`references/project-integration-checklist.md`](references/project-integration-checklist.md)、相关 `ScriptableRendererFeature` / `ScriptableRenderPass` 与目标相机；使用 Frame Debugger 确认生产、绑定、消费与清理时序。
+- **UI Gamma/sRGB 颜色域、独立 UI RT 或 UI Composite**：读取 [`references/gamma-ui-color-domain-and-renderer-feature.md`](references/gamma-ui-color-domain-and-renderer-feature.md)，再读取目标工程的 UI Shader、Canvas、相机、RendererFeature、RT 格式和特效消费者；不要仅靠 Shader 内 `GammaToLinear/LinearToGamma` 推断 Blend 颜色域。
 - **材质 Inspector、Drawer、Keyword 与动画接口**：读取 `PRJ-02`、`Assets/Plugins/CustomShaderGUI/README_Tech_ShaderGUIFeatureShowcase.md`、`ShaderGUIFeatureShowcase.shader`、`Editor/SimpleShaderGUI.cs` 和对应 `PropertyDraw/*.cs`。默认以 `Scarecrow.SimpleShaderGUI` 的真实 Drawer、隐藏状态属性与 Keyword 行为为准，不引用外部 LWGUI/DDGUI 语法。
 - **生成/重写 Shader 或调整变体来源**：读取 `CTL-02`、`VAL-03` 与 [`references/shader-variant-report.md`](references/shader-variant-report.md)，并在交付中输出变体参考、功能支持状态、低配风险和实际构建验证边界。
 - **Unity 与 Substance Painter 自定义预览 Shader 对齐**：先读 [`references/unity-substance-painter-parity.md`](references/unity-substance-painter-parity.md)，按材质数据、直接光、间接光、合成和显示域分层；当前 `ProjectACGMain` 任务再读 [`Profiles/ProjectACG/README_Tech_ProjectACGSubstancePainterShaderProfile.md`](Profiles/ProjectACG/README_Tech_ProjectACGSubstancePainterShaderProfile.md)，不得把项目 MRA、Debug 数值或 Environment 校准写成通用默认值。
+- **ProjectACG Gamma UI 实现或维护**：读取 [`Profiles/ProjectACG/gamma-ui-srgb-composite.md`](Profiles/ProjectACG/gamma-ui-srgb-composite.md) 与通用 Gamma UI 参考；以当前 `UICamera`、`URP-UI-Renderer.asset`、`GammaUIDefault` 和 `GammaUICompositeFeature` 的真实序列化配置为准。
 - **加密代理 Shader 明文还原与独立化**：先读 [`references/encrypted-proxy-shader-restoration.md`](references/encrypted-proxy-shader-restoration.md)，确认授权、代理/容器/工具映射、可信反序列化、Property/Keyword/Pass 保真、材质回退和 Unity 编译/视觉验证边界；批量提取与批量材质迁移必须分阶段。
 - **新增文件、材质配置、RendererFeature 或集成风险审查**：读取 [`references/project-integration-checklist.md`](references/project-integration-checklist.md)，核对 `.mat`、Prefab、Scene、Animation、Timeline、脚本写入、AssetBundle、相机和 Renderer 配置。
 

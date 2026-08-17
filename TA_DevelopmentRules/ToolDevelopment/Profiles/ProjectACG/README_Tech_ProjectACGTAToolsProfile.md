@@ -132,6 +132,24 @@ Identity EXR、White Point、sRGB 显示编码、Volume Active/Override、Object
 
 组件字段与对象引用必须分离迁移；完整 GameObject 子树不能拆成字段级恢复；Animator 即使命中源模型组件签名也要作为明确例外捕获；Magica Cloth 2 参数恢复后必须在目标拓扑上重建 initData，PreBuild 和拓扑不兼容在保存前阻断。当前两步 UI、双栏树、组件 Inspector、映射 Sub-Asset、恢复后实际层级、已解决问题、测试和限制见 [Character Prefab 模块快照与恢复 Profile](character-prefab-module-snapshot-and-restore.md)；跨项目方法见 [Prefab 模块快照、映射与事务恢复参考](../../references/prefab-module-snapshot-and-restore.md)。
 
+### PRJ-TOOL-15｜OutsourceMiniProjectBuilder 按最小依赖闭包生成可验证 Mini 工程
+
+当前 `OutsourceMiniProjectBuilder` 位于 `Assets/Editor/TA_Tools/Common/OutsourceMiniProjectBuilder/`，菜单为 `TA_Tools/Common/外包 Mini 工程生成`，基线 Unity 为 `2022.3.62f3`。它将输入分析、计划确认、临时生成、安全扫描和安装分开；场景、Prefab、RendererData、VolumeProfile 的剔除只作用于副本，更新已有输出先备份并支持失败恢复。
+
+Runtime、Editor、RendererFeature、VolumeComponent、ShaderGUI/旧式 MaterialEditor 使用独立配置边界；ObjectField 自动通过 `AssetDatabase.GetAssetPath` 保存路径，列表不显示长绝对路径。内部明文模式和“强制生成”是独立开关，均不应掩盖必要输入或磁盘执行失败。完整字段语义、MMD DLL、Warning/Blocker 修正、默认 Profile 和验证边界见 [外包 Mini 工程生成工具 Profile](outsource-mini-project-builder.md)；可迁移流程见 [Unity Mini 工程导出与交付参考](../../references/outsource-mini-project-builder-delivery.md)。
+
+### PRJ-TOOL-16｜AnimationBatchScreenshotTool 使用显式 Pose/短动画模式
+
+当前 `AnimationBatchScreenshotTool` 位于 `Assets/Editor/TA_Tools/LYJ_Tool/Anima_type/AnimationScreenshotTool/AnimationScreenshotTool.cs`，菜单为 `TA_Tools/TA/Animation/动画批量截图`。它在兼容模式下保留全量 Clip 和手动采样帧；开启 `Pose / 短动画模式` 后，只处理静态 Pose 与不超过 `MaxShortClipFrames` 的短 Clip，静态 Pose 取第 0 帧，短 Clip 取中间帧。
+
+该工具必须按 Clip 的 `frameRate` 换算时间，不得把全局 30 FPS 当成资源契约；FBX 资源必须用 `AssetDatabase.LoadAllAssetsAtPath()` 展开多个 Clip，并排除 `__preview__` 子资产。静态 Pose 通过 Editor 曲线稳定性识别，不能只按名称或时长猜测。实现、问题根因、验证证据和未验证项见 [AnimationBatchScreenshotTool Profile](animation-batch-screenshot-tool.md)；可迁移采样与排查方法见 [动画批量截图与短 Clip 采样参考](../../references/animation-batch-screenshot-and-clip-sampling.md)。
+
+### PRJ-TOOL-17｜Booth 动画资源按 Humanoid、动作证据和资源组整理
+
+当前 `Assets/TA_Test/Anima/Booth/anim` 已按 `Motion(动态动作)` 和 `Pose(静态姿势)` 分类，并使用英文原标识加中文语义的双语命名。分类、预览、迁移、音频配对、审计清单、当前数量和未完成验证见 [动画资源编目与双语命名 Profile](animation-resource-catalog-and-bilingual-naming.md)；跨项目的实现与验证方法见 [Unity 动画资源编目、识别与安全迁移参考](../../references/animation-resource-catalog-and-safe-migration.md)。
+
+处理该资源库时先以 Unity `AnimationClip.humanMotion` 确认 Humanoid 状态，再用 Motion 的 `15%/50%/85% × 0°/45°/90°` 或 Pose 三视图完成语义复核。动画、预览图、已确认配对音频与各自 `.meta` 以资源组为单位迁移；不能只搬 `.anim`，也不能凭文件名或帧差删除疑似非 Humanoid 资源。
+
 ## 7. 项目交付检查
 
 - 新工具路径、菜单和类名符合 PRJ-TOOL-01 至 PRJ-TOOL-03，或在 Tech README 记录历史例外。
@@ -142,4 +160,7 @@ Identity EXR、White Point、sRGB 显示编码、Volume Active/Override、Object
 - 单个/批量烘焙工作区已按 PRJ-TOOL-12 验证模式切换、计划预检、覆盖、取消、失败汇总、临时文件和真实输出内容。
 - AnimationClipPreviewer 任务已按 PRJ-TOOL-13 验证目标锁定、Selection 改变、播放/暂停/停止/取消、Animation Mode 冲突、窗口关闭和 FBX 姿态恢复。
 - CharacterPrefabBuilder 快照/恢复任务已按 PRJ-TOOL-14 验证稳定路径、组件与引用、源 FBX 归属、Hierarchy Object 原子边界、Animator 例外、Magica 重建、Preview 不写盘、恢复后实际层级和旧快照重新捕获要求。
+- OutsourceMiniProjectBuilder 任务已按 PRJ-TOOL-15 检查最小依赖闭包、脚本/RendererFeature/VolumeComponent 分界、内部/强制模式边界、临时副本清理、更新备份、报告和目标工程 Batch Validation 入口；Unity EditMode 与目标工程实测未完成时必须在交付中明示。
+- AnimationBatchScreenshotTool 任务已按 PRJ-TOOL-16 检查兼容模式回退、Pose/短动画筛选、多个 FBX Clip 展开、按 Clip 帧率采样、覆盖输出和 Unity Editor 实际出图边界。
+- Booth 动画资源分类、改名或迁移任务已按 PRJ-TOOL-17 检查 Humanoid 导入结果、预览图完整性、资源组成员、GUID、内部名称、路径冲突和代表性重新导入。
 - README 已新增/更新；最终回复包含入口、验证和限制。
