@@ -1,9 +1,9 @@
 ---
 name: ta-development-rules
-description: 面向 Unity 技术美术的可迁移开发规则入口。按 Shader、工具与 Timeline 开发分模块维护，并将跨项目 CORE 与项目 PROFILE 明确隔离。
+description: 面向 Unity 与 DCC 技术美术的可迁移开发规则入口。按 Shader、工具、Timeline 与 DCC 开发分模块维护，并将跨项目 CORE 与项目 PROFILE 明确隔离。
 ---
 
-# TA 通用开发规则（Shader + 工具 + Timeline）
+# TA 通用开发规则（Shader + 工具 + Timeline + DCC）
 
 ## 0. 写作前置规则（所有 AI 必须先执行）
 
@@ -13,10 +13,10 @@ description: 面向 Unity 技术美术的可迁移开发规则入口。按 Shade
 
 | 层级 | 只允许写入 | 禁止写入 | 默认位置 |
 | --- | --- | --- | --- |
-| `CORE`（通用型） | 跨项目稳定成立、能由工程原理或充分证据支持的职责边界、兼容性、安全和验证要求。 | 项目名、固定路径、Unity/包补丁版本、具体类型/字段/枚举、菜单、资产、GUID、Shader Pass/Keyword、当前缺口或团队历史约定。 | 对应模块入口的“通用规则（CORE）”。 |
+| `CORE`（通用型） | 跨项目稳定成立、能由工程原理或充分证据支持的职责边界、兼容性、安全和验证要求。 | 项目名、固定路径、Unity/DCC/包补丁版本、具体类型/字段/枚举、菜单、资产、GUID、Shader Pass/Keyword、Controller/节点名、当前缺口或团队历史约定。 | 对应模块入口的“通用规则（CORE）”。 |
 | `REFERENCE`（通用技巧/经验） | 可迁移的实现模式、排查方法、决策表、检查清单、示例和报告模板；使用前仍需按目标项目验证。 | 与 CORE 平行的强制规则、未经说明的项目事实、只描述一次故障过程的流水账。 | 对应模块的 `references/`。 |
-| `PROFILE`（项目定制） | 项目版本、目录、类型、字段、枚举、菜单、资产、渲染时序、团队约定、当前限制、验证状态和回退边界。 | 冒充跨项目结论，或以项目习惯弱化 CORE 的安全、兼容性和验证要求。 | 对应模块的 `Profiles/<Project>/`；短小 Profile 可保留在模块入口，但不得与 CORE 混写。 |
-| 功能 README | 单个 Shader、工具、Timeline 功能或资产的使用方式、参数、维护记录和局部约束。 | 应由整个模块共享的规则，或为了集中管理而复制的实现文档。 | 继续紧邻实际源码或资产。 |
+| `PROFILE`（项目定制） | 项目版本、目录、类型、字段、枚举、菜单、资产、场景/Rig、渲染或求值时序、团队约定、当前限制、验证状态和回退边界。 | 冒充跨项目结论，或以项目习惯弱化 CORE 的安全、兼容性和验证要求。 | 对应模块的 `Profiles/<Project>/`；短小 Profile 可保留在模块入口，但不得与 CORE 混写。 |
+| 功能 README | 单个 Shader、工具、Timeline 或 DCC 功能/资产的使用方式、参数、维护记录和局部约束。 | 应由整个模块共享的规则，或为了集中管理而复制的实现文档。 | 继续紧邻实际源码或资产。 |
 
 落位判断按以下顺序执行：
 
@@ -84,15 +84,16 @@ description: 面向 Unity 技术美术的可迁移开发规则入口。按 Shade
 
 ## 1. 目的与使用边界
 
-本目录是 TA 开发规范的单一入口，覆盖三类工作：
+本目录是 TA 开发规范的单一入口，覆盖四类工作：
 
 - Shader 开发：场景、角色、URP PBR、Toon、Custom Lighting、RendererFeature、材质 Inspector 与变体。
 - 工具开发：Unity Editor 窗口、资产扫描/批处理、预览、导入辅助、资源生成与维护工具。
 - Timeline 开发：Track、Clip、Mixer、Layer、绑定、材质/渲染状态、Inspector 与 Scene Handle。
+- DCC 开发：3ds Max、Maya、Blender、Substance 3D Painter 等宿主内的脚本、场景状态、求值、模拟、Bake、导入导出与恢复工具。
 
-规则以可迁移性为优先目标。跨项目稳定的工程约束写入模块 CORE；Unity 版本、URP、目录、菜单、ShaderGUI、已有资产、第三方库和团队约定写入对应 PROJECT PROFILE。迁移到其他工程时，保留 CORE 与参考文档，删除或重建 Profile；禁止把当前工程路径、枚举、Pass、包版本或历史工具目录当成通用事实。
+规则以可迁移性为优先目标。跨项目稳定的工程约束写入模块 CORE；Unity/DCC 版本、URP、插件、目录、菜单、ShaderGUI、Controller/节点结构、已有资产、第三方库和团队约定写入对应 PROJECT PROFILE。迁移到其他工程时，保留 CORE 与参考文档，删除或重建 Profile；禁止把当前工程路径、枚举、Pass、Controller、包版本或历史工具目录当成通用事实。
 
-本目录只集中维护规范性文档、参考清单和报告模板。每个具体 Shader 或工具的 Art / Tech README 继续紧邻其资产或源码，作为该功能的用户说明和维护记录；不得为集中目录而批量移动既有资产文档。
+本目录只集中维护规范性文档、参考清单和报告模板。每个具体 Shader、Unity 工具、Timeline 或 DCC 工具的 Art / Tech README 继续紧邻其资产或源码，作为该功能的用户说明和维护记录；不得为集中目录而批量移动既有资产文档。
 
 ## 2. 模块入口
 
@@ -107,6 +108,9 @@ description: 面向 Unity 技术美术的可迁移开发规则入口。按 Shade
 | 当前工程 Painter 材质预览桥接 | [ToolDevelopment/Profiles/ProjectACG/painter-material-preview-bridge.md](ToolDevelopment/Profiles/ProjectACG/painter-material-preview-bridge.md) | ProjectACG Bridge `2.10.1` 的美术简易模式、工程指纹映射、Unity-SP 参数/贴图/灯光/相机、版本端口与验证边界。 |
 | RendererFeature 状态与时序 | [ShaderDevelopment/references/renderer-feature-stencil-and-timing.md](ShaderDevelopment/references/renderer-feature-stencil-and-timing.md) | 相机共享 Stencil、临时对象 ID、同帧/历史缓存、Pass 时序、清理策略与运动镜头验证。 |
 | 工具开发 | [ToolDevelopment/README_Tech_TAToolDevelopmentRules.md](ToolDevelopment/README_Tech_TAToolDevelopmentRules.md) | 与 Shader 模块统一采用“概览 → 工作流程 → 生成规则 → CORE → PROFILE → 资源加载与维护”结构，覆盖 Editor 工具边界、UI、批处理、资产写入、日志、文档与验证。 |
+| DCC 开发 | [DCCDevelopment/README_Tech_DCCDevelopmentRules.md](DCCDevelopment/README_Tech_DCCDevelopmentRules.md) | DCC 场景兼容、显式状态、时序求值、非破坏控制器接管、两阶段 Bake、全局偏好恢复、脚本 UI 与目标宿主验证。 |
+| 3ds Max Spring 动画编辑与可逆 Bake | [DCCDevelopment/references/3ds-max-spring-controller-edit-and-reversible-bake.md](DCCDevelopment/references/3ds-max-spring-controller-edit-and-reversible-bake.md) | Quick Edit、真正 Bypass、顺序精确预览、采样/写键分离、Controller List、MAXScript/.NET UI、错误排查与验证矩阵。 |
+| 当前工程 Spring Animation Baker | [DCCDevelopment/Profiles/ProjectACG/spring-animation-baker.md](DCCDevelopment/Profiles/ProjectACG/spring-animation-baker.md) | ProjectACG 工具/场景路径、3ds Max 版本、胸部 Rig 扫描、四态工作流、已解决错误和当前验证边界。 |
 | Timeline 开发 | [TimelineDevelopment/README_Tech_TimelineDevelopmentRules.md](TimelineDevelopment/README_Tech_TimelineDevelopmentRules.md) | Track、Clip、Mixer、Layer、绑定、材质参数混合、相机级渲染状态、Inspector、Scene Handle 与 Timeline 验证。 |
 | 当前工程 CharacterRender Timeline Profile | [TimelineDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGCharacterRenderTimelineProfile.md](TimelineDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGCharacterRenderTimelineProfile.md) | ProjectACG 的 CharacterRenderController、CharacterRender Timeline、PerObjectShadow、Shader 接口和当前验证边界。 |
 | 当前工程 Timeline Volume Profile | [TimelineDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGTimelineVolumeProfile.md](TimelineDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGTimelineVolumeProfile.md) | ProjectACG 的 URP/Timeline 版本、Global Volume Track、Clip 本地 Profile、生成式单效果、菜单和当前限制。 |
@@ -142,10 +146,10 @@ description: 面向 Unity 技术美术的可迁移开发规则入口。按 Shade
 
 开始实现前先归类，再按最小充分原则加载资料：
 
-1. 判断任务属于 Shader、工具、Timeline，或多个模块共同的资源/渲染链路。
+1. 判断任务属于 Shader、工具、Timeline、DCC，或多个模块共同的资源/渲染链路。
 2. 先读对应模块入口的 CORE，再读当前项目 Profile；只有项目事实会改变目录、API、资源接口、兼容性或验证方式时才继续读取 Profile。
-3. 新增复杂功能、跨文件实现、资产写入、导入/构建 Hook、Keyword/变体、RendererFeature 或运行时接口时，读取模块指定的 reference / checklist。
-4. 再读取目标附近的源码、README、asmdef、材质/Prefab/Scene/脚本消费者和直接依赖。已有实现足以回答的问题不得重复追问。
+3. 新增复杂功能、跨文件实现、资产/场景写入、导入/构建 Hook、Keyword/变体、RendererFeature、DCC Controller/节点接管、模拟/Bake 或运行时接口时，读取模块指定的 reference / checklist。
+4. 再读取目标附近的源码、README、asmdef、材质/Prefab/Scene、DCC 场景/控制器、导出消费者、脚本消费者和直接依赖。已有实现足以回答的问题不得重复追问。
 5. 不得把外部 AGENTS、Skill、模板或博客整段复制为规则。先按 CORE、Profile、冲突项分类；只吸收已验证且适用的要求。
 
 跨模块任务必须同时加载相关模块。例如，Timeline 驱动角色 Shader 或 RendererFeature 时，Timeline 模块负责 Clip/Mixer、混合、恢复和 Editor 生命周期；Shader 模块负责参数、Pass、渲染时序和视觉验证；项目 Profile 负责具体类型、路径与优先级事实。
@@ -155,14 +159,14 @@ description: 面向 Unity 技术美术的可迁移开发规则入口。按 Shade
 - 只改完成当前效果或流程所需的范围；不覆盖、回退或重置用户已有改动。
 - 新增或明显改造的模块使用 UTF-8，并为非显而易见的渲染、资源、编辑器流程和关键边界提供中文技术注释。
 - 用户可见文本遵从目标项目的本地化机制；内部 TA 工具的默认显示语言、术语和资源入口由 Profile 定义。
-- 完成静态检查、Unity 导入/编译和风险相称的功能验证；文本或 dotnet 检查不能代替 Unity 行为验证。
+- 完成静态检查、目标 Unity/DCC 宿主的加载/编译和风险相称的功能验证；文本、dotnet 或 SDK 反射检查不能代替真实宿主行为验证。
 - 最终交付写清修改文件、入口、验证证据、未验证项和剩余风险。
 
 ## 6. 规则演进
 
-已验证的编译错误、序列化失配、资源写入事故、视觉回归、变体异常、性能瓶颈、Unity API 差异或工具流程问题，均可形成规则候选。候选至少记录：现象、根因、修正、适用范围、兼容性影响、验证证据和回退方式。
+已验证的编译错误、序列化失配、资源/场景写入事故、视觉或动画回归、变体异常、性能瓶颈、Unity/DCC API 差异或工具流程问题，均可形成规则候选。候选至少记录：现象、根因、修正、适用范围、兼容性影响、验证证据和回退方式。
 
-候选必须按范围落位：单一资产进入其 README；同类功能进入模块规则；版本/目录/插件/资产依赖进入 Profile；只有跨项目稳定且证据充分的内容进入 CORE。自动化只能收集候选，不能静默改写已审定的规则；更新时修订原条目，不追加同义例外。
+候选必须按范围落位：单一资产、场景或功能进入其 README；同类功能进入模块规则；版本/目录/插件/资产/Rig 依赖进入 Profile；只有跨项目稳定且证据充分的内容进入 CORE。自动化只能收集候选，不能静默改写已审定的规则；更新时修订原条目，不追加同义例外。
 
 ## 7. 当前目录约束
 
