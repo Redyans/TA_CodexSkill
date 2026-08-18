@@ -1,198 +1,355 @@
 # ProjectACG Gamma UI / sRGB 合成 Profile
 
-> **Profile ID**：`projectacg-gamma-ui-srgb-composite-v1`
+> **Profile ID**：`projectacg-gamma-ui-srgb-composite-v2`
 >
 > **适用工程**：`D:\work2025U3D\Valkyria\ProjectACG\Client`
 >
-> **用途**：记录当前 ProjectACG UI Gamma 方案的实际源码、Renderer 配置、颜色契约、使用方式、兼容边界和验证状态。本文依赖工程路径、Unity/URP 版本和序列化 GUID，不得上升为跨项目 CORE。通用原理见 [`references/gamma-ui-color-domain-and-renderer-feature.md`](../../references/gamma-ui-color-domain-and-renderer-feature.md)。
+> **事实快照**：`2026-08-18`
+>
+> **用途**：记录 ProjectACG 当前已经合入工程的 Gamma UI 增量方案、实际源码和 Renderer 配置、成功使用方式、已解决问题、性能边界和未闭环项。本文是项目 `PROFILE`，不得上升为跨项目 CORE。通用原理与其他架构见 [`references/gamma-ui-color-domain-and-renderer-feature.md`](../../references/gamma-ui-color-domain-and-renderer-feature.md)。
 
 ## 1. 当前工程基线
 
 | 项目 | 当前事实 |
 | --- | --- |
 | Unity | `2022.3.62f3` |
-| URP | `14.0.12` |
-| 工程 Color Space | `Linear` |
+| Color Space | `Linear`，`ProjectSettings/ProjectSettings.asset` 为 `m_ActiveColorSpace: 1` |
+| URP Core | embedded `14.0.12` |
+| URP Universal | embedded `14.0.12` |
+| URP Universal Config | embedded `14.0.10` |
 | UI 根 Prefab | `Assets/TEngine/Settings/Prefab/UIRoot.prefab` |
-| UI Camera | `UICamera`，Overlay Camera，Layer `UI/5`，Renderer Index `2` |
+| UI Camera | `UICamera`，Overlay Camera，Layer/Culling Mask `UI/5`，Renderer Index `2` |
+| UI Camera 后处理 | `m_RenderPostProcessing: 0` |
 | UI Renderer | `Assets/AssetRaw/Settings/URP-UI-Renderer.asset` |
-| Canvas 顶点色开关 | `m_VertexColorAlwaysGammaSpace: 0` |
-| Gamma UI Shader | `Assets/Shader/UI/GammaUI/GammaUIDefault.shader` |
-| Gamma UI Shader 名称 | `Valkyria/UI/GammaDefault` |
+| Canvas | `Screen Space - Camera`，绑定 `UICamera` |
+| Canvas 顶点色 | `m_VertexColorAlwaysGammaSpace: 0` |
+| Gamma UI Shader | `Assets/Shader/UI/GammaUI/GammaUIDefault.shader` / `Valkyria/UI/GammaDefault` |
 | Gamma Composite Shader | `Assets/Shader/RenderFeature/UICorrectGamma/GammaUIComposite.shader` |
 | Gamma Feature | `Assets/Shader/RenderFeature/UICorrectGamma/GammaUICompositeFeature.cs` |
 
-当前工程仍保留旧 Linear UI 路径；Gamma UI 是按材质和专用 `LightMode` 选择的增量路径，不是把整个 URP 或所有 UI 默认材质切换到 Gamma。
+当前合入的是通用参考中的**架构 A：透明 Gamma UI RT + 专用 Gamma Shader + Composite**。它是增量迁移方案，不是“整个 UI Layer 使用内置 `UI/Default` 绘制到预填充 Gamma RT”的架构 B。
 
 ### UI Shader 定位索引
 
-以下是当前仓库扫描到的 UI/特效相关源码位置。它们表示源码归属，不等价于“所有资源当前都被场景使用”；实际使用关系仍需从材质的 `m_Shader` GUID、Prefab/Scene 组件和运行时加载链确认。
-
-| 归类 | 位置/Shader 名称 | 当前判断 |
+| 归类 | 位置/Shader 名称 | 当前用途 |
 | --- | --- | --- |
-| 工程普通 UI | `Assets/Shader/UI/Shader_UI.shader` / `Valkyria/UI/Default` | 工程自定义旧 UI Default，不能与 Unity 内置 `UI/Default` 混为一谈 |
-| Gamma UI | `Assets/Shader/UI/GammaUI/GammaUIDefault.shader` / `Valkyria/UI/GammaDefault` | 本 Profile 的 Gamma UI 普通 Alpha 路径 |
-| Gamma Composite | `Assets/Shader/RenderFeature/UICorrectGamma/GammaUIComposite.shader` | `GammaUICompositeFeature` 的隐藏全屏合成 Shader |
-| UI 资源/特效 | `Assets/AssetRaw/Shaders/S_UI_Trail.shader`、`S_UI_Error.shader`、`S_UI_CharacterPresentationComposite.shader`、`S_UIPopupBackgroundBlur.shader`、`S_AlphaUI_s.shader`、`S_TextOutline_s.shader` | UI 专用或 UI 相关 Shader，需逐材质确认颜色域和 Blend |
-| UI 粒子/特效候选 | `Assets/AssetRaw/Shaders/ES_BaseParticle.shader`、`ES_AdvancedParticle.shader`、`Dissolve AlphaBlend NoEdge Particle.shader` | 粒子/特效路径，不应直接替换为 `GammaUIDefault` |
-| 工程特效候选 | `Assets/Shader/Effect/Effect_Distortion.shader`、`Effect_Fresnel.shader`、`Assets/Shader/CustomEffect/Addtive.shader`、`Scroll2TexBend.shader` | 可被 UI 或场景复用，必须按实际消费者确认输入域 |
-| 文本/视频插件 | `Assets/TextMesh Pro/Shaders/`、`Assets/Plugins/AVProVideo/Runtime/Shaders/Resources/` | 独立 TMP/视频颜色契约，当前未迁移到 Gamma UI |
-| Unity 内置 UI | Unity/URP 内置 `UI/Default` | 不一定在 `Assets` 中；不能通过 `rg Assets` 找到源码后就假设不存在 |
+| 工程旧 UI | `Assets/Shader/UI/Shader_UI.shader` / `Valkyria/UI/Default` | 工程自定义旧 Linear UI |
+| Unity 内置 UI | Package/内置 `UI/Default` | `Material=None` 的普通旧 UI；不会进入当前 Gamma Draw |
+| Gamma 普通 UI | `Assets/Shader/UI/GammaUI/GammaUIDefault.shader` / `Valkyria/UI/GammaDefault` | 当前普通 Image/颜色 Texture2D RawImage 的 Gamma A/B 材质 |
+| Gamma Composite | `Assets/Shader/RenderFeature/UICorrectGamma/GammaUIComposite.shader` | 场景 Linear 与透明 Gamma UI RT 的全屏合成 |
+| UI 资源/特效 | `Assets/AssetRaw/Shaders/S_UI_Trail.shader`、`S_UI_Error.shader`、`S_UI_CharacterPresentationComposite.shader`、`S_UIPopupBackgroundBlur.shader`、`S_AlphaUI_s.shader`、`S_TextOutline_s.shader` | 尚未统一进入 Gamma 路径 |
+| UI 粒子候选 | `Assets/AssetRaw/Shaders/ES_BaseParticle.shader`、`ES_AdvancedParticle.shader`、`Dissolve AlphaBlend NoEdge Particle.shader` | 保留特效 Shader，不能替换成普通 Gamma Default |
+| TMP/视频 | `Assets/TextMesh Pro/Shaders/`、`Assets/Plugins/AVProVideo/Runtime/Shaders/Resources/` | 独立颜色契约，当前未迁移 |
 
-定位 UI 实际用到的 Shader 时，先从目标 `Image`/`RawImage`/TMP/粒子 Renderer 的材质拿 Shader GUID，再回到上述源码；不要只搜索 `UI` 字符串，也不要把插件模板、编辑器预览 Shader 当成运行时 UI 结论。
+定位实际消费者时，从 `Image`/`RawImage`/TMP/粒子 Renderer 的材质与 Shader GUID 反查 Prefab/Scene/运行时加载链；不能只搜索文件名中的 `UI`。
 
 ## 2. 资源和序列化配置
 
 ### PACG-UI-01｜RendererFeature 引用链
 
-`URP-UI-Renderer.asset` 当前包含一个 `GammaUICompositeFeature`：
+`URP-UI-Renderer.asset` 当前引用：
 
-| 字段 | 当前值 |
+| 对象 | 当前值 |
 | --- | --- |
+| Renderer GUID | `4691ddbe44b8abb408aa7146f956373e` |
 | Feature fileID | `7342165098732146501` |
 | Feature Script GUID | `1caa06ebad3f4a1a8352647c2d38c767` |
 | Composite Shader GUID | `c03ede2b01f0439d9433b22f5310fccb` |
+| GammaUIDefault GUID | `6e724c86902e4c32aa8e346cb6b4f7f5` |
 | Renderer Feature Map | `454f33c0419ce465` |
-| targetCameraName | `UICamera` |
-| gammaUiLayerMask | `32`（Layer 5） |
-| featureEnabled | `1` |
+| `featureEnabled` | `1` |
+| `targetCameraName` | `UICamera` |
+| `gammaUiLayerMask` | `32`，Layer 5 |
+| `m_IntermediateTextureMode` | `1` |
 
-修改文件位置或移动目录时，必须同步 `.meta` 和 GUID 引用；不要只依赖 Shader 名称或文件名判断 Feature 是否已接入。
+`URP-Battle-Low/Mid/High/Ultra` 和 `URP-Lobby-Low/Mid/HighFidelity/Ultra` 的 Renderer Data List 第 3 项都引用该 UI Renderer，对应 `UICamera.m_RendererIndex = 2`。
 
-### PACG-UI-02｜Feature 的生效条件
+移动 Shader、Feature 或 Renderer 资产时要同步 `.meta` 和序列化 GUID，不得只按 Shader 名称判断是否接入。
 
-`GammaUICompositeFeature.ShouldRender` 只有在以下条件同时满足时才运行：
+### PACG-UI-02｜当前 Renderer 仍保留 UI Layer
 
-- Feature 开关和 `featureEnabled` 都开启；
-- `QualitySettings.activeColorSpace == ColorSpace.Linear`；
-- 相机存在、类型为 `Game`；
-- 相机为 `Overlay`；
-- `targetCameraName` 为空或等于当前相机名（当前为 `UICamera`）。
+`URP-UI-Renderer.asset` 当前为：
 
-因此它不是全局管线模式开关，也不会影响所有相机；但只要配置在 `URP-UI-Renderer` 并对 `UICamera` 生效，就会在该相机每帧增加 Gamma UI Draw/Composite 的资源和执行成本。
-
-## 3. 当前执行时序和资源
-
-### PACG-UI-03｜两个 Pass 的时序
-
-`Create` 中的 Pass 时序为：
-
-```text
-Gamma UI Draw       AfterRenderingTransparents
-Gamma UI Composite  AfterRenderingTransparents + 1
+```yaml
+m_OpaqueLayerMask.m_Bits: 32
+m_TransparentLayerMask.m_Bits: 32
+gammaUiLayerMask.m_Bits: 32
 ```
 
-Draw Pass 使用 `ShaderTagId("GammaUI")` 和 `RenderQueueRange.transparent`，只绘制目标 Layer 的 GammaUI Pass。旧 `UI/Default` 或旧特效 Shader 不会因为该 Pass 被重新绘制。
+这是架构 A 的配置：默认 Renderer 继续绘制 `UI/Default`、TMP 和旧特效；Gamma Feature 额外只抓取 `LightMode = GammaUI`。
 
-Composite Pass 紧随 Draw Pass：先复制当前相机颜色到 `_GammaUISceneColorCopy`，再读取 Gamma UI RT 与场景副本进行全屏合成，写回相机颜色目标。
+不要把架构 B 的“Renderer Opaque/Transparent Mask 排除 UI”配置直接套到当前实现。当前 Feature 没有接管 `UI/Default` 的完整 ShaderTag 集合，先把默认 Mask 改为 `0` 会让旧 UI/TMP/特效消失。
 
-### PACG-UI-04｜临时 RT 契约
+### PACG-UI-03｜Feature 生效条件
+
+`GammaUICompositeFeature.ShouldRender` 同时要求：
+
+- `featureEnabled = true`；
+- `QualitySettings.activeColorSpace == ColorSpace.Linear`；
+- `CameraType.Game`；
+- Camera Render Type 为 `Overlay`；
+- `targetCameraName` 为空或等于相机名，当前为 `UICamera`；
+- Composite Shader、相机 Color Target 和临时 RT 格式均可用。
+
+因此 Feature 不会自动作用于 SceneView、Preview Camera、Base Camera 或其他名字的 Overlay Camera。
+
+## 3. 当前执行时序和 RT
+
+### PACG-UI-04｜四个 Pass 的真实职责
+
+当前 Pass 顺序为：
+
+```text
+Gamma UI Forward Guard
+    BeforeRenderingTransparents - 1
+    全局 _GammaUIFeatureActive = 1
+
+URP 默认 Draw Transparents
+    旧 UI/TMP/特效正常绘制
+    GammaUIDefault 的 UniversalForward fallback 被 clip 丢弃
+
+Gamma UI Draw
+    AfterRenderingTransparents
+    只匹配 ShaderTag "GammaUI"
+    RenderQueueRange.transparent
+    SortingCriteria.CommonTransparent
+
+Gamma UI Composite
+    AfterRenderingTransparents + 1
+    Camera Color → Scene Color Copy
+    Scene Linear + Gamma RT → Camera Color Linear
+
+Gamma UI Forward Guard Cleanup
+    AfterRenderingTransparents + 2
+    全局 _GammaUIFeatureActive = 0
+```
+
+Guard 解决的是 GameView 重复绘制：`GammaUIDefault` 为 SceneView 保留了 `UniversalForward` fallback，默认透明 Pass 会提交该 Pass；Guard 让其 Fragment 全部 `clip`，随后专用 Gamma Draw 再真正绘制。
+
+这不是零成本排除。Gamma 材质仍可能在默认透明 Pass 产生一次被丢弃的 Draw/顶点/光栅提交，随后在 Gamma Draw 再提交一次。性能分析不能只数最终可见 Draw。
+
+### PACG-UI-05｜临时 RT 契约
 
 | RT | 当前配置 | 用途 |
 | --- | --- | --- |
-| `_GammaUIColor` | `R8G8B8A8_UNorm`、非 sRGB 数值存储、1x MSAA | 保存已经编码为 sRGB/Gamma 数值的预乘 UI 颜色 |
-| `_GammaUIDepth` | `DefaultFormat.DepthStencil`、独立 Depth/Stencil、1x MSAA | 隔离 Gamma UI 的 Mask/Stencil 和深度状态 |
-| `_GammaUISceneColorCopy` | 相机颜色目标描述符的非深度副本 | 保存 Composite 前的场景 Linear 颜色 |
+| `_GammaUIColor` | `R8G8B8A8_UNorm`、非 sRGB 数值存储、1x MSAA | 保存预乘的 Gamma/sRGB 编码 UI RGB 与正确覆盖率 |
+| `_GammaUIDepth` | `DefaultFormat.DepthStencil`、独立 Depth/Stencil、1x MSAA | 让 Gamma Mask 与子节点在同一 Stencil 中完成 |
+| `_GammaUISceneColorCopy` | 继承 Camera Color GraphicsFormat、无 Depth、1x MSAA | Composite 前保存场景 Linear 颜色 |
 
-Feature 会检查颜色和 Depth/Stencil 格式支持；不支持时打印一次警告并跳过本帧。`SetupRenderPasses` 在不同相机复用同一 Feature 时会先 `Reset` Pass 引用，避免把旧相机 RTHandle 带入当前帧。
+Gamma Draw 对 Color/Depth 执行透明清除。Composite 数学为：
 
-## 4. Shader 颜色和材质契约
+```hlsl
+sceneGamma = LinearToSRGB(max(sceneLinear.rgb, 0));
+outputGamma = uiGammaPremultiplied.rgb
+            + sceneGamma * (1 - uiAlpha);
+outputLinear = SRGBToLinear(max(outputGamma, 0));
+```
 
-### PACG-UI-05｜`GammaUIDefault` 的兼容范围
+输出 Alpha 为：
 
-`Assets/Shader/UI/GammaUI/GammaUIDefault.shader` 的目标是普通 UGUI Default 的兼容版，保留：
+```hlsl
+uiAlpha + sceneLinear.a * (1 - uiAlpha)
+```
+
+最终写回 Linear Camera Color，后续 URP 输出链继续按原工程完成最终显示编码。
+
+`R8G8B8A8_UNorm` 会把 Gamma UI 颜色限制在 SDR `0..1`，当前方案不承诺 Gamma UI HDR/超白发光。
+
+## 4. Shader、纹理和 Canvas 契约
+
+### PACG-UI-06｜`GammaUIDefault` 对齐内置 Default 的基础接口
+
+当前 Shader 保留：
 
 - `_MainTex`、`_Color`、`_TextureSampleAdd`；
-- Stencil 比较/引用/操作/读写掩码；
+- Stencil Comp/Ref/Op/ReadMask/WriteMask；
 - `_ColorMask`、`UNITY_UI_ALPHACLIP`；
-- Sprite Atlas、RectMask2D、Cull/ZWrite/ZTest 的 Default 约定；
-- 不绑定项目自定义 ShaderGUI，因此 Inspector 属性与内置 Default 兼容。
+- SpriteAtlas、RectMask2D Softness；
+- `Cull Off`、`ZWrite Off`、`ZTest [unity_GUIZTestMode]`。
 
-它没有把工程自定义 `Valkyria/UI/Default` 的 `_MainColorIntensity`、`_MainOpaIntensity`、任意 Blend、Additive 或 Cull/ZWrite 扩展混入兼容版。ShaderGUI 一致不代表颜色路径一致；颜色路径由 Pass、RT 和 Composite 决定。
-
-### PACG-UI-06｜Gamma Shader 的核心差异
-
-Shader 使用：
+Gamma Pass 使用：
 
 ```shaderlab
-Name "GammaUI"
 Tags { "LightMode" = "GammaUI" }
 Blend One OneMinusSrcAlpha
 ```
 
-在 `vertexColorAlwaysGammaSpace = false` 的当前 Canvas 约定下，贴图 RGB、顶点色 RGB 和材质色 RGB 先按输入是 Linear 处理，再分别 `LinearToSRGB`，在 Gamma 数值域相乘。Alpha 只使用原始覆盖率，不转换；最后输出：
+Fragment 分别把贴图 RGB、Canvas 顶点色 RGB、材质色 RGB 从 Linear 恢复为 sRGB 编码数值，在 Gamma 域相乘，Alpha 保持覆盖率，并输出预乘颜色。
 
-```hlsl
-return half4(gammaRgb * alpha, alpha);
+第二个 `UniversalForward` Pass 是 SceneView/未接入 Feature 相机的 Linear fallback。它只提供可见性近似，不保证与 GameView 的 Gamma 像素一致。
+
+`GammaUIDefault` 不包含工程 `Valkyria/UI/Default` 的 `_MainColorIntensity`、`_MainOpaIntensity`、任意 Blend、Additive、Cull/ZWrite 扩展；Inspector 基础属性对齐不代表自定义功能完全对齐。
+
+### PACG-UI-07｜当前颜色纹理必须保持 sRGB 开启
+
+当前架构 A 的 Shader 明确假设普通颜色 Texture2D：
+
+```text
+sRGB (Color Texture) = On
+采样得到 Linear RGB
+GammaUIDefault 再 LinearToSRGB
+写入非 sRGB Gamma RT
 ```
 
-颜色贴图保持 `sRGB (Color Texture)` 开启；Alpha、Mask、SDF、Noise 和其他数据纹理不能按颜色贴图处理。
+因此当前工程**不能把所有 UI 颜色图片统一关闭 sRGB**。`2026-08-18` 静态扫描结果：
 
-### PACG-UI-07｜Composite 的数学
+```text
+Assets/AssetRaw/UIRaw:
+TextureImporter meta sRGB On  = 2897
+TextureImporter meta sRGB Off = 2
+其他 meta/非纹理 meta         = 89
 
-`GammaUIComposite.shader` 假设：
-
-- `_BlitTexture` 是场景 Linear 颜色；
-- `_GammaUITexture` 是非 sRGB RT 中的预乘 Gamma UI 颜色。
-
-核心流程为：
-
-```hlsl
-sceneGamma = LinearToSRGB(sceneLinear.rgb);
-outputGamma = uiGammaPremultiplied.rgb + sceneGamma * (1 - uiAlpha);
-outputLinear = SRGBToLinear(outputGamma);
+Assets/AssetArt/Atlas:
+SpriteAtlas sRGB On  = 50
+SpriteAtlas sRGB Off = 0
 ```
 
-最终写回 Linear 相机目标，由工程原有输出链路完成一次最终 sRGB 显示编码。不要在 Gamma RT 上启用 sRGB 自动写入，也不要再给 Composite 结果额外执行一次显示编码。
+这与当前 Gamma Shader 契约一致。两个 sRGB Off 资源需要按其实际数据用途判断，不能反向推导成全目录规则。Mask、Noise、SDF、Distortion 等数据纹理仍按数据处理。
 
-## 5. 使用、迁移与兼容边界
+如果未来切换到架构 B，用内置 `UI/Default` 直通 Gamma RT，才需要重新设计并批量迁移颜色纹理/Atlas 的 sRGB 契约；不能把两个架构的导入规则混用。
 
-### PACG-UI-08｜当前使用方法
+### PACG-UI-08｜当前 Canvas 必须进入 UICamera Renderer
 
-1. 保持工程 Color Space 为 Linear。
-2. 确认 `URP-UI-Renderer.asset` 的 Feature 已启用，目标相机为 `UICamera`。
-3. 新建材质，Shader 选择 `Valkyria/UI/GammaDefault`。
-4. 把材质显式赋给测试 `Image`，不要先依赖自动默认材质替换。
-5. 用黑底白 Sprite 测试 Alpha `0.3 / 0.5 / 0.8`，再测试不透明 `128/255` 灰色。
-6. 通过 SDR sRGB 截图读取中心像素，目标约为 `77 / 128 / 204` 和 `128/255`。
+`UIRoot.prefab` 当前根 Canvas：
 
-### PACG-UI-09｜旧 UI 与新 Gamma UI 混用
+```text
+Render Mode   = Screen Space - Camera
+Render Camera = UICamera
+Layer         = UI/5
+vertexColorAlwaysGammaSpace = false
+```
 
-- 旧 UI 不会被 GammaUI Draw Pass 重绘，因此已有 `UI/Default` 材质不会自动改变为 Gamma 视觉。
-- Feature 即使没有 Gamma 材质，也可能分配/清除 RT、复制场景并执行 Linear→sRGB→Linear 往返，存在额外 GPU、带宽和量化成本。
-- Gamma UI 在旧透明 UI 之后统一合成，跨两条路径的 Canvas 排序不保证。需要精确交错层级时，应统一迁移颜色路径或拆分 Canvas。
-- Mask Graphic 和被遮罩的 Gamma UI 子树应统一走 GammaUI；不能依赖旧 Linear Pass 预先写入的 Stencil。
-- 开关关闭后 GammaUI 材质没有匹配的 Draw Pass，通常不会显示；回退应恢复旧材质或关闭该材质使用，而不是删除 GUID/RT 配置。
+测试 Canvas 若改成 `Screen Space - Overlay`，Frame Debugger 会看到 Feature 的 Guard/Draw/Composite，但实际 UI 随后出现在：
 
-### PACG-UI-10｜RawImage、粒子和后续 Shader
+```text
+UGUI.Rendering.RenderOverlays
+Canvas.RenderOverlays
+```
 
-- 普通 `RawImage + Texture2D` 可以使用 Gamma UI Default，但必须确认纹理是颜色纹理。
-- Camera RenderTexture、视频、HDR RT 和动态数据纹理不能直接套用，需要明确输入域和输出范围。
-- UI 粒子继续使用粒子/特效 Shader，不应改成普通 `GammaUIDefault`。当前工程尚未提供 Gamma Particle Pass；后续应建立 `GammaUI/Particle` 或共享 Include，并单独验证 Vertex Streams、Flipbook、粒子 Alpha、Additive/Multiply、Bloom 和 HDR。
-- TMP、Spine、Blur、Distortion、Additive 和 Multiply 当前均不属于已验证范围。它们应分别建立颜色域和 Blend 契约，不能只复制普通 UI 的 `Blend One OneMinusSrcAlpha`。
+此时 UI 绕过 Gamma Draw，颜色修正不会生效。修复是恢复 `Screen Space - Camera` 并绑定 `UICamera`，不是继续调整 Shader 的 `pow`。
 
-## 6. 验证状态
+`vertexColorAlwaysGammaSpace = false` 是当前 Shader 的输入契约；不要只勾选该开关。若未来改为 `true`，必须同步删除/分支处理 Shader 对顶点色的再次 `LinearToSRGB`，并覆盖所有嵌套与运行时新建 Canvas。
 
-### 已有证据
+## 5. 正确使用和迁移边界
 
-- `0.3 / 0.5 / 0.8` 的 Gamma 数值目标分别为约 `77 / 128 / 204`；不透明 `128/255` 灰色应保持约 `128/255`。
-- 旧版 GammaUIDefault 曾在 Unity ShaderCompiler 日志中成功编译 Vertex/Fragment D3D11。
-- `GammaUICompositeFeature.cs` 曾通过独立 C# Harness 编译，记录为 `0 warning / 0 error`。
-- 当前源码已做 UTF-8、括号、属性契约、Pass/LightMode 和 `git diff --check` 静态检查。
+### PACG-UI-09｜普通 Image 的当前使用方法
 
-### 当前未闭环
+1. 保持工程 Color Space 为 `Linear`。
+2. 确认目标 Canvas 为 `Screen Space - Camera`，绑定 `UICamera`，对象 Layer 为 `UI`。
+3. 保持颜色 Texture2D 和 SpriteAtlas 的 sRGB 开启。
+4. 新建材质，Shader 选择 `Valkyria/UI/GammaDefault`。
+5. 把该材质显式赋给需要验证或迁移的 `Image`。
+6. 黑底白图测试 Alpha `0.3 / 0.5 / 0.8`，目标 SDR sRGB 像素约 `77 / 128 / 204`。
+7. 再测不透明 `128/255` 灰色，以及两层 50% 白图约 `191/255`。
+8. 用 Frame Debugger 确认对象出现在 `Gamma UI Draw`，并且 fallback Draw 被 Guard 丢弃。
 
-- 当前最后一版 Gamma Shader/Composite/Feature 的 Unity 重新导入与完整 Console 日志尚未在本 Profile 更新时重新执行。
-- 尚未完成 Frame Debugger/RenderDoc 的实际 Draw 顺序、RT sRGB 标志和 Stencil 读写确认。
-- 新建 Image/RawImage 自动默认 Gamma 材质的 Editor Hook 尚未实现，也没有运行时动态创建覆盖。
-- UI 粒子、TMP、Spine、Additive/Multiply、HDR/Bloom、RenderTexture/视频、相机堆叠、MSAA 和真机平台尚未验收。
+`Material=None` 仍使用 Unity 内置 `UI/Default`，走旧 Linear UI。当前工程没有“新建 Image/RawImage 自动使用 Gamma Shader”的 Editor Hook，也没有全局默认材质替换。
 
-交付或继续扩展前，必须把上述未验证项按风险补入项目验证矩阵；不能把静态检查或单张截图当作完整管线证明。
+普通颜色 Texture2D 的 `RawImage` 可以显式使用 Gamma 材质，但必须先确认其纹理输入域。RenderTexture、视频、Camera RT 和 HDR RT 不属于无条件兼容范围。
 
-## 7. 维护规则
+### PACG-UI-10｜旧 UI 和 Gamma UI 混用时的真实影响
 
-1. 移动 Shader、Feature、Composite 或材质目录时，同步 `.meta`、GUID、Renderer 资产和文档链接。
-2. 修改 `LightMode`、RenderPassEvent、RT 格式、Blend、Stencil 或目标相机时，必须重新做时序和兼容回归。
-3. 新增 Gamma UI Shader 时先确认它属于普通 Alpha、粒子、TMP、模糊、Additive、Multiply 还是 HDR 功能族，再决定是否复用 Include；不要把普通 Default 当通用特效基类。
-4. 只在新建且没有显式材质的 Image/RawImage 上做自动默认赋材质，并限定 UICamera/UI Layer；已有资源不批量覆盖。
-5. 每次交付记录实际 Unity 导入、截图像素、Frame Debugger、性能和未验证平台；项目事实只能留在本 Profile，不能复制进 CORE。
+- 旧 `UI/Default`、工程旧 UI Shader、TMP 和旧特效仍在线性相机目标中先绘制。
+- Gamma UI 整组在其后 Composite；同一 Canvas 内新旧两条路径不能按 Sibling 精确交错。
+- Feature 即使本帧没有可见 Gamma UI，也仍可能保留 RT 并执行 Scene Copy 和 Composite；旧 UI 理论颜色只经历一次标准 sRGB 往返，但仍有半精度误差、带宽和全屏成本。
+- Mask Graphic 与被遮罩 Gamma 子树必须统一使用 Gamma 路径，否则独立 `_GammaUIDepth` 中没有旧路径写入的 Stencil。
+- 同一 Canvas/子树需要严格层级时，整组迁移到 Gamma Shader；无法迁移 TMP/粒子/特效时，拆 Canvas 并显式设置 Canvas Sorting，不能依赖单个对象 Sibling 修复跨路径排序。
+
+后续“全部 UI 替换为新 Shader”只有在普通 Image 范围内成立。TMP、Spine、Blur、Distortion、Additive/Multiply 和粒子必须保留自己的功能 Shader，并增加等价 Gamma Pass/颜色契约，不能替换成 `GammaUIDefault`。
+
+### PACG-UI-11｜SceneView 是 Linear fallback，不是最终 Gamma 预览
+
+当前 Feature 只运行 `CameraType.Game + Overlay + UICamera`，SceneView 不进入 Gamma Composite。`GammaUIDefault` 的 `UniversalForward` fallback 解决了“SceneView 完全不显示”，但 SceneView 仍是 Linear Blend 近似。
+
+因此当前保证是：
+
+```text
+GameView/UICamera：目标 Gamma 合成
+SceneView：对象可见、便于编辑，但不保证像素一致
+```
+
+若项目必须让 SceneView 与 GameView 像素一致，需要为 SceneView 建立等价 Gamma 路径，或接受 URP Renderer/源码级更大改造；不能把现有 fallback 结果当成已解决的一致性证明。
+
+## 6. TMP、粒子、视频与 RenderTexture
+
+### PACG-UI-12｜TMP 和 UI 特效当前仍是未迁移功能族
+
+项目 `Assets/TextMesh Pro/Shaders/TMPro_Mobile.cginc` 存在：
+
+```hlsl
+#if (FORCE_LINEAR && !UNITY_COLORSPACE_GAMMA)
+    color = SRGBToLinear(input.color);
+#endif
+```
+
+当前 `.mat` 静态扫描未找到 `FORCE_LINEAR` 文本，但这不证明运行时材质、Keyword 变体或第三方 TMP Shader 均未开启。普通白字可能可用，彩色字、FaceColor、Outline、Underlay、Glow、Gradient、Emoji、SoftMask 和多材质 SubMesh 尚未作为 Gamma 路径验收。
+
+UI 粒子继续使用粒子/特效 Shader。要进入当前架构 A，至少需要专用 `LightMode = GammaUI`、正确输入域、对应 Blend、Vertex Streams、Flipbook、Stencil/SoftMask 和 HDR/Bloom 证明。
+
+### PACG-UI-13｜`LoginPersistentMediaRT` 没有 TextureImporter sRGB 开关
+
+`Assets/GameScripts/AOT/Common/LoginSharedVideoSurface.cs` 当前创建：
+
+```csharp
+new RenderTexture(width, height, 0, RenderTextureFormat.Default)
+```
+
+名称为 `LoginPersistentMediaRT`，生产者是：
+
+```text
+VideoPlayer
+VideoRenderMode.RenderTexture
+```
+
+RenderTexture 的颜色域由实际 GraphicsFormat、`RenderTexture.sRGB`、Active Color Space、VideoPlayer 写入行为和采样 Shader 共同决定，没有 TextureImporter 的 `sRGB (Color Texture)` 面板项。
+
+当前尚未为该视频 RT 提供专用 Gamma RawImage Shader，也未验证直接套 `GammaUIDefault` 的结果。完成前不得把普通 Texture2D 的导入规则套到视频 RT。
+
+## 7. 性能、验证状态和回退
+
+### PACG-UI-14｜当前性能成本
+
+以 `1920×1080` 为例：
+
+```text
+_GammaUIColor R8G8B8A8      ≈ 7.9 MiB
+_GammaUIDepth                ≈ 7.9～15.8 MiB
+_GammaUISceneColorCopy       ≈ 7.9～15.8 MiB（取决于 Camera Color 格式）
+临时 RT 合计                ≈ 23.7～39.6 MiB
+```
+
+每帧主要新增：
+
+- 1 次 Gamma UI RT Color/Depth Clear；
+- 1 次 Camera Color → Scene Copy 全屏 Blit；
+- 1 次 Gamma Composite 全屏 Blit；
+- Gamma UI 专用 Draw；
+- Gamma 材质 fallback 在默认透明 Pass 的被丢弃提交；
+- 2 次场景 RGB 的标准 Linear/sRGB 转换。
+
+RTHandle 会复用资源，不等于没有显存/带宽成本。移动端真机应记录 Render Scale、HDR、MSAA、Tile Load/Store、GPU Frame Time 和内存峰值；当前没有真机性能结论。
+
+### PACG-UI-15｜本轮已确认和未确认
+
+已确认：
+
+- 当前 Feature、Shader、Renderer 与 UIRoot 等目标实现已被 Git 跟踪；本次规则更新只做静态核对，没有修改 Unity 工程文件。
+- Unity/URP 版本、Feature 条件、Pass 时序、ShaderTag、RT 格式、Renderer Layer Mask、Canvas 模式和纹理/Atlas sRGB 状态已从当前磁盘文件静态核对。
+- 用户在本轮交互中确认：测试 Canvas 进入 UICamera 路径后，50% Gamma UI 视觉测试结果正确。
+- 当前实现已经增加 SceneView Linear fallback，并用 Forward Guard 避免 GameView 可见的 fallback 重复叠加。
+
+未确认：
+
+- 本次规则更新没有重新启动 Unity 做 Shader 导入、Console、Frame Debugger 或原始像素抓取；用户确认属于交互验收，不等价于自动化像素证据。
+- 彩色 Image Tint、两层透明、完整 SpriteAtlas、Mask/RectMask2D/SoftMask 尚未形成系统截图矩阵。
+- TMP 全功能、Spine、UI 粒子、Additive/Multiply、Blur/Distortion、Video/Camera RT、HDR/Bloom、SceneView 像素一致和移动端性能尚未闭环。
+
+### PACG-UI-16｜当前架构的安全回退
+
+1. 先把已迁移 `Image`/子树的材质恢复为原 `UI/Default` 或工程旧 UI 材质。
+2. 确认场景、Prefab 和运行时不再引用 `Valkyria/UI/GammaDefault`。
+3. 再禁用 `GammaUICompositeFeature`。
+4. 保留 Shader/Feature `.meta` 与 Renderer 引用，直到资源引用和回归确认完成；不要先删 GUID。
+5. 不修改当前 UI 颜色纹理/Atlas 的 sRGB 导入设置，因为当前架构没有要求批量关闭。
+
+若未来改成架构 B，回退顺序必须另行更新为“先恢复 Renderer UI Layer Mask，再禁用 Feature，再恢复纹理/Canvas 输入契约”，不能沿用当前顺序。
