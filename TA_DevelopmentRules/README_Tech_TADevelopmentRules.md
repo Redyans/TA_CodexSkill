@@ -99,6 +99,8 @@ description: 面向 Unity 技术美术的可迁移开发规则入口。按 Shade
 | 模块 | 入口 | 适用内容 |
 | --- | --- | --- |
 | Shader 开发 | [ShaderDevelopment/README_Tech_URPShaderDevelopmentRules.md](ShaderDevelopment/README_Tech_URPShaderDevelopmentRules.md) | Shader 分类、URP 复用、Pass、变体、ShaderGUI、角色/场景 Profile、行为保真重构。 |
+| 2D 条带式 3D 颜色 LUT 参考 | [ShaderDevelopment/references/packed-3d-color-lut-sampling-and-debugging.md](ShaderDevelopment/references/packed-3d-color-lut-sampling-and-debugging.md) | `N³ → N²×N` 布局、颜色域、半 texel、第三轴插值、黑白圈层 Debug、Importer、生成器与暗部职责划分。 |
+| 当前工程肤色颜色 LUT Profile | [ShaderDevelopment/Profiles/ProjectACG/skin-color-lut.md](ShaderDevelopment/Profiles/ProjectACG/skin-color-lut.md) | ProjectACG Skin/Face 的 LUT 路径、暗部合成、生成器、代表性色块、历史 G 半 texel 偏移、A/B 与回退边界。 |
 | Unity 与 Painter Shader 对齐参考 | [ShaderDevelopment/references/unity-substance-painter-parity.md](ShaderDevelopment/references/unity-substance-painter-parity.md) | 从材质通道、直接光、IBL、颜色空间、Debug 和最小 Harness 分层定位 Unity/Painter 差异。 |
 | 当前工程 Painter Shader Profile | [ShaderDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGSubstancePainterShaderProfile.md](ShaderDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGSubstancePainterShaderProfile.md) | ProjectACG `Chara_Cloth_V2` 的 MRA、Ramp、相机偏置高光、Unity 预卷积 Cubemap Atlas、间接高光与当前验证边界。 |
 | Unity 与 DCC 本地预览链路参考 | [ToolDevelopment/references/local-dcc-preview-link.md](ToolDevelopment/references/local-dcc-preview-link.md) | 美术简易状态流、一键准备、显式目标、多材质独立实例、工程映射缓存、临时会话、颜色/Dirty/GPU 与运行时版本排查。 |

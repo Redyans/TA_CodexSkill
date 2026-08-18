@@ -257,6 +257,8 @@ PBR 不是复杂度等级。实现选择必须同时判断两个维度：
 
 当前 ProjectACG UI Gamma/sRGB 合成的实际路径、`UICamera`、`URP-UI-Renderer.asset`、Gamma UI Shader、RendererFeature、RT 格式和验证边界见 [ProjectACG Gamma UI / sRGB 合成 Profile](Profiles/ProjectACG/gamma-ui-srgb-composite.md)；跨项目的颜色域、Alpha/Blend、UI 特效和独立 RT 实现经验见 [`references/gamma-ui-color-domain-and-renderer-feature.md`](references/gamma-ui-color-domain-and-renderer-feature.md)。
 
+当前 ProjectACG Skin/Face 肤色 LUT 的 `1024 × 32` 布局、暗部 Albedo、`_ShadowColor`/Ramp 职责、生成器、代表性色块、历史 G 半 texel 偏移和验证边界见 [ProjectACG 肤色颜色 LUT Profile](Profiles/ProjectACG/skin-color-lut.md)；跨项目的条带式 3D LUT 生成、颜色域、采样、插值连续性和圈层 Debug 见 [`references/packed-3d-color-lut-sampling-and-debugging.md`](references/packed-3d-color-lut-sampling-and-debugging.md)。
+
 ### PRJ｜当前工程共同基线
 
 #### PRJ-01｜Unity、URP 与源码边界
@@ -363,10 +365,12 @@ Chara_V2 当前存在 `#pragma target 3.0` 和 `3.5`。例如 `Chara_Cloth_V2.sh
 - **Toon / Custom Lighting / 复杂材质**：读取 `WRK-04`、`WRK-05`、对应 `SCN-*` 或 `CHR-*`、目标 Binding/Common/Adapter 与所有消费者。需要扩展共享光照时先确认已有入口，不生成新的独立 Lighting 框架。
 - **屏幕资源、RendererFeature、透明/深度/阴影链路**：读取 `ARC-03`、`ARC-04`、[`references/renderer-feature-stencil-and-timing.md`](references/renderer-feature-stencil-and-timing.md)、[`references/project-integration-checklist.md`](references/project-integration-checklist.md)、相关 `ScriptableRendererFeature` / `ScriptableRenderPass` 与目标相机；使用 Frame Debugger 确认生产、绑定、消费与清理时序。
 - **UI Gamma/sRGB 颜色域、独立 UI RT 或 UI Composite**：读取 [`references/gamma-ui-color-domain-and-renderer-feature.md`](references/gamma-ui-color-domain-and-renderer-feature.md)，再读取目标工程的 UI Shader、Canvas、相机、RendererFeature、RT 格式和特效消费者；不要仅靠 Shader 内 `GammaToLinear/LinearToGamma` 推断 Blend 颜色域。
+- **2D 条带式 3D 颜色 LUT、调色与切片圈层排查**：读取 [`references/packed-3d-color-lut-sampling-and-debugging.md`](references/packed-3d-color-lut-sampling-and-debugging.md)，冻结色立方体轴顺序、输入/存储/采样颜色域、半 texel、Importer 和最终合成职责；先用 Identity 分层输出，不用 Shadow Tint 或曝光掩盖坐标问题。
 - **材质 Inspector、Drawer、Keyword 与动画接口**：读取 `PRJ-02`、`Assets/Plugins/CustomShaderGUI/README_Tech_ShaderGUIFeatureShowcase.md`、`ShaderGUIFeatureShowcase.shader`、`Editor/SimpleShaderGUI.cs` 和对应 `PropertyDraw/*.cs`。默认以 `Scarecrow.SimpleShaderGUI` 的真实 Drawer、隐藏状态属性与 Keyword 行为为准，不引用外部 LWGUI/DDGUI 语法。
 - **生成/重写 Shader 或调整变体来源**：读取 `CTL-02`、`VAL-03` 与 [`references/shader-variant-report.md`](references/shader-variant-report.md)，并在交付中输出变体参考、功能支持状态、低配风险和实际构建验证边界。
 - **Unity 与 Substance Painter 自定义预览 Shader 对齐**：先读 [`references/unity-substance-painter-parity.md`](references/unity-substance-painter-parity.md)，按材质数据、直接光、间接光、合成和显示域分层；当前 `ProjectACGMain` 任务再读 [`Profiles/ProjectACG/README_Tech_ProjectACGSubstancePainterShaderProfile.md`](Profiles/ProjectACG/README_Tech_ProjectACGSubstancePainterShaderProfile.md)，不得把项目 MRA、Debug 数值或 Environment 校准写成通用默认值。
 - **ProjectACG Gamma UI 实现或维护**：读取 [`Profiles/ProjectACG/gamma-ui-srgb-composite.md`](Profiles/ProjectACG/gamma-ui-srgb-composite.md) 与通用 Gamma UI 参考；以当前 `UICamera`、`URP-UI-Renderer.asset`、`GammaUIDefault` 和 `GammaUICompositeFeature` 的真实序列化配置为准。
+- **ProjectACG Skin/Face 肤色 LUT 实现或维护**：读取 [`Profiles/ProjectACG/skin-color-lut.md`](Profiles/ProjectACG/skin-color-lut.md) 与通用 3D LUT 参考；以当前 Skin/Face Shader、`SkinColorLutGenerator`、功能旁 README 和最终 TextureImporter 回读为准，历史半 texel 修正必须同步覆盖脸身和存量 LUT A/B。
 - **加密代理 Shader 明文还原与独立化**：先读 [`references/encrypted-proxy-shader-restoration.md`](references/encrypted-proxy-shader-restoration.md)，确认授权、代理/容器/工具映射、可信反序列化、Property/Keyword/Pass 保真、材质回退和 Unity 编译/视觉验证边界；批量提取与批量材质迁移必须分阶段。
 - **新增文件、材质配置、RendererFeature 或集成风险审查**：读取 [`references/project-integration-checklist.md`](references/project-integration-checklist.md)，核对 `.mat`、Prefab、Scene、Animation、Timeline、脚本写入、AssetBundle、相机和 Renderer 配置。
 
@@ -377,6 +381,7 @@ Chara_V2 当前存在 `#pragma target 3.0` 和 `3.5`。例如 `Chara_Cloth_V2.sh
 | 任意 Shader 改动 | `DOC-03`、`PRJ-01`、版本文件、包文件、目标与附近 Shader/Include/材质 | 确认 API、接口、既有风格与编译入口。 |
 | 场景复杂 PBR / POS | `SCN-02`、`SCN-03`、BaseLit、PerObjectShadowV2、目标相机 | 保持枚举、阴影合并和时序。 |
 | 角色复杂 Toon / 多 Pass | `CHR-02` 至 `CHR-05`、Binding、Common、Prefab、动画 | 保持 Kernel、部位层级、动画和 Pass 契约。 |
+| 2D 条带式 3D LUT / 肤色 LUT | [`references/packed-3d-color-lut-sampling-and-debugging.md`](references/packed-3d-color-lut-sampling-and-debugging.md)、目标 Shader/生成器/Importer、当前项目 Profile | 冻结颜色域和布局，验证插值连续性，区分 LUT、阴影色和 Ramp。 |
 | 分支 / Keyword / GUI | `CTL-*`、`PRJ-02`、材质、脚本、动画、构建证据 | 评估变体、序列化和运行时写入。 |
 | 生成/重写 Shader 或变体变化 | `WRK-02`、`VAL-03`、[`references/shader-variant-report.md`](references/shader-variant-report.md) | 输出变体参考、功能支持、低配风险与实际验证边界。 |
 | Unity / Painter Shader 对齐 | [`references/unity-substance-painter-parity.md`](references/unity-substance-painter-parity.md)、目标 Unity/Painter Shader、材质、贴图导入、当前项目 Profile | 分层验证通道、Direct、Environment 和显示域，隔离项目校准。 |
