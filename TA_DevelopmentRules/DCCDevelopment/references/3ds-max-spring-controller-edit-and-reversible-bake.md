@@ -1,345 +1,339 @@
 # 3ds Max Spring Controller 动画编辑与可逆 Bake 参考
 
-> 类型：REFERENCE；适用范围：3ds Max 中由 Spring/Jiggle 等有历史依赖的 Controller 驱动 Helper 或骨骼、动画师需要流畅 K 帧并在完成后得到可导出逐帧动画的工具；使用前提：必须以目标 3ds Max 版本、Spring 插件、Rig 控制器结构、动画范围和导出消费者重新验证。本文实现 `DCC-STA-01`、`DCC-EVL-01`、`DCC-BKE-*`、`DCC-REV-*`，不替代 [DCC CORE](../README_Tech_DCCDevelopmentRules.md)。
+> 类型：REFERENCE；适用范围：3ds Max 中由 Spring/Jiggle 等历史相关 Controller 驱动 Helper 或骨骼，动画师需要流畅 K 帧并在完成后得到可播放、可回退、可导出的逐帧动画；使用前提：必须以目标 3ds Max 版本、插件、Rig、动画范围和最终消费者重新验证。本文落实 `DCC-STA-01`、`DCC-EVL-01`、`DCC-BKE-*`、`DCC-REV-*`，不替代 [DCC CORE](../README_Tech_DCCDevelopmentRules.md)。
 
 ## 1. 适用场景
 
-Spring Controller 会在时间或上游骨骼变化时重新计算次级运动。动画师拖动主骨、调整关键帧或跳转时间轴时，实时求值会和交互操作争用主线程，表现为移动骨骼、Scrub 和 K 帧卡顿。
+Spring Controller 会随时间和上游骨骼变化重新计算。动画师移动骨骼、修改历史关键帧或 Scrub 时，模拟求值会与交互争用主线程。完整工具不应只有“开/关 Spring”，而应明确以下状态：
 
-这类需求不宜只做一个“开/关 Spring”按钮。完整工作流通常需要四种结果：
-
-| 状态 | 用途 | Spring 求值 | 结果精度 | 是否保留 Bake |
+| 状态 | 用途 | Spring 求值 | 结果精度 | Bake 数据 |
 | --- | --- | --- | --- | --- |
-| 快速编辑 | 日常 K 帧，保留近似次级运动反馈 | 仍求值，但只回退有限帧 | 近似 | 保留 |
-| 无模拟编辑 | 最流畅的骨骼编辑 | 从直接 Position 链断开 | 不显示实时次级运动 | 保留 |
-| 精确预览 | 审核当前帧的真实模拟 | 从起始帧顺序完整求值 | 精确 | 保留 |
-| Baked | 播放、交付和导出 | 停止参与最终输出 | 逐帧采样结果 | 使用 |
+| 快速编辑 | 日常 K 帧，保留近似反馈 | 仍求值，只回退有限帧 | 近似 | 保留 |
+| 无模拟编辑 | 最流畅地编辑原动画 | 从直接 Position 链断开 | 不显示实时次级运动 | 保留 |
+| 精确预览 | 审核真实 Spring 结果 | 从起始/Warm-up 帧顺序求值 | 精确 | 保留 |
+| Baked | 播放、交付和导出 | 最终输出不再依赖 Spring | 采样结果 | 使用 |
 
-Live/Baked 切换与 Unbake 含义不同：Live/Baked 只切换当前输出，仍保存 Bake 数据；Unbake 才移除工具创建的外层 Controller List 并恢复原始 Position/Rotation Controller。
+Live/Baked 切换只改变当前输出，不删除 Bake；Unbake 才移除工具生成的数据并恢复原 Controller。以下情况不能直接套用单一实现：
 
-以下情况需要先扩展方案，不能直接套用本文：
-
-- Spring 嵌套在 Position List、Constraint、Biped/CAT 锁定轨道或第三方复合控制器内部；
-- 需要 Bake Scale、非均匀缩放、Shear、负缩放或动态父级；
-- 模拟依赖碰撞、脚本回调、缓存文件或不能仅靠时间推进触发的外部状态；
-- 最终消费者需要世界空间、Root Motion、不同轴向/单位或专用导出骨架。
+- Spring 嵌套在 List、Constraint、Biped/CAT 锁定轨道或第三方复合 Controller 内；
+- 存在动态 Scale、非均匀/负缩放、Shear、镜像骨轴或动态父级；
+- 模拟依赖碰撞、回调、缓存文件或专用 Reset/Update API；
+- 最终消费者要求世界空间、Root Motion、特殊轴向/单位或独立导出骨架。
 
 ## 2. 前提与依赖
 
-### 2.1 先确认控制图，不要只看“弹簧”参数
+### 2.1 先确认控制图和最终消费者
 
-可靠的静态/运行时检查至少包括：
+至少检查：
 
-1. Spring 是否直接挂在节点 `position.controller`；
-2. Spring Helper 和最终蒙皮/导出骨骼是否是不同节点；
-3. 最终骨骼是否同时有 Position、Rotation、Constraint、父级或 Scale 动画；
-4. 动画范围、起始帧和必要 Warm-up 是否已设置；
-5. Spring 插件和 Controller 类是否在目标 3ds Max 中可实例化和恢复；
-6. 最终 FBX/引擎消费哪些节点和变换通道。
+1. Spring 是否直接挂在 `node.position.controller`；
+2. Spring Helper 与最终蒙皮/导出骨是否为不同节点；
+3. 最终骨骼的 Position、Rotation、Scale、Constraint、Parent 和 List 结构；
+4. 动画起止帧、采样步长和必要 Warm-up；
+5. 插件/Controller 是否能在目标 Max 中恢复；
+6. FBX/引擎实际消费哪些节点和通道。
 
-类名可以用 `classOf controller as string` 和 `getPropNames controller` 诊断。`PositionSpring`、`Point3Spring` 或显示名包含 Spring/Jiggle 只能作为候选；真正接管前仍要检查它位于预期轨道，并对未知/嵌套结构阻断。
+`classOf`、`getPropNames`、显示名或 Mass/Drag/Tension 等属性只能形成候选。接管前仍要验证 Controller 位于预期轨道；未知结构应阻断并报告。
 
-### 2.2 Quick Edit 是交互优化，不是关闭模拟
+### 2.2 Quick Edit 是近似优化，不是关闭模拟
 
-3ds Max `Autodesk.Max.IInterface8` 提供：
-
-- `SpringQuickEditMode`
-- `SpringRollingStart`
-
-官方 SDK 说明 Quick Edit 在 Spring 失效时只回退一定帧数重新计算，而不是从起点完整重算，因此可显著提高交互性。它仍会执行 Spring 求值，且结果是编辑近似，不适合作为最终精确 Bake。
-
-MAXScript 可通过 `Autodesk.Max.dll` 访问：
+`Autodesk.Max.IInterface8` 提供 `SpringQuickEditMode` 与 `SpringRollingStart`。Quick Edit 只缩短失效后的回算窗口，仍会执行 Spring，不能作为最终 Bake 精度来源。修改前应保存旧值，退出、取消、失败和 Bake 完成后按状态恢复。
 
 ```maxscript
 dotNet.loadAssembly ((getDir #maxRoot) + "\\Autodesk.Max.dll")
 local gi = (dotNetClass "Autodesk.Max.GlobalInterface").Instance
 local core8 = gi.COREInterface8
-
 local oldQuick = core8.SpringQuickEditMode
 local oldRolling = core8.SpringRollingStart
+
 core8.SpringRollingStart = 10
 core8.SpringQuickEditMode = true
 ```
 
-修改前保存旧值，窗口关闭、失败和 Bake 完成后按状态恢复。若 `COREInterface8` 或属性不可用，应停止依赖 Quick Edit 的操作并报告版本边界。
+若 API 不可用，工具应禁用依赖它的操作，而不是静默退化成未知结果。
 
-### 2.3 直接运行脚本与安装包是两种交付模式
+### 2.3 MAXScript 时间必须使用 `Time`，不能把 ticks Integer 再传回时间 API
 
-单个团队工具、尚在快速迭代且用户希望“拖入即用”时，单一 `.ms` 通常更可靠：
+这是动画脚本中容易被日志掩盖的高风险问题。Autodesk 的 [Time Values](https://help.autodesk.com/cloudhelp/2024/ENU/MAXScript-Help/files/MAXScript-Language-Reference/Values/Time-Data-Values/GUID-51429B01-2FC6-4746-9E88-5EB5D93056CC.html) 明确规定：
 
-- 顶层定义全局版本、Custom Attribute、核心 `struct`、Rollout 和 `createDialog`；
-- 再次拖入时先 `destroyDialog` 旧 Rollout，避免同时存在两个窗口；
-- 场景持久状态写入 Custom Attribute，不依赖安装目录；
-- 不创建 `.mcr`、启动脚本或用户目录副本。
+- 普通 Integer/Float 在时间上下文中始终解释为“帧数”；
+- `timeValue as integer` 返回 ticks；
+- `ticksPerFrame` 是 ticks 与帧之间的换算量，不是构造帧时间的必要乘数。
 
-只有需要菜单注册、统一部署、自动更新或跨团队版本管理时，才增加安装层；安装层不能成为核心求值和恢复逻辑的前置依赖。
+错误写法：
 
-## 3. 实现或排查步骤
-
-### 3.1 先写状态表，再写按钮
-
-推荐把每个状态的副作用冻结为一张表：
-
-| 状态 | Spring Controller | 原始骨骼轨道 | Baked 轨道 | Quick Edit | 用户动作 |
-| --- | --- | --- | --- | --- | --- |
-| 快速编辑 | 已恢复 | 100% | 0% | 开 | 继续 K 帧 |
-| 无模拟编辑 | 替换为静态 Bypass | 100% | 0% | 可保持开，但无直接 Spring 可算 | 最流畅编辑 |
-| 精确预览 | 已恢复 | 100% | 0% | 关 | 从起始帧算到当前帧 |
-| Baked | 替换为静态 Bypass | 0% | 100% | 恢复用户原偏好 | 播放/导出 |
-
-每次转换先验证所有 Spring 节点和 Bake 节点，再统一修改。不要在某个节点失败后继续切换剩余节点。
-
-### 3.2 Quick Edit：保留反馈的首选编辑模式
-
-进入快速编辑的顺序：
-
-1. 验证目标集合；
-2. 若当前为 Bypass，恢复原 Spring Controller；
-3. 将最终骨骼切到 Original 轨道；
-4. 设置 `SpringRollingStart`；
-5. 开启 `SpringQuickEditMode`；
-6. 刷新当前时间和视口。
-
-回退帧数越小越流畅，但与完整结果偏差可能越大。它应作为美术可调的性能/反馈折中值，而不是精确度保证。
-
-### 3.3 无模拟编辑：真正从 Position 求值链断开 Spring
-
-只把 Mass、Tension、Effect、Iterations 等参数设为 0，或把下游权重设为 0，都不一定阻止依赖图访问 Spring。稳定的“无模拟”方案是临时替换直接 Position Controller：
-
-1. 在 Rest/起始帧读取 Helper 的 Parent Local Position；
-2. 为节点创建静态 `Position_XYZ`；
-3. 使用 Custom Attribute 的 `#maxObject` 字段保存原 Spring Controller 和 Bypass Controller 引用；
-4. 先写入引用，再把 `node.position.controller` 替换成 Bypass；
-5. 标记 `isSpringBypassed`。
-
-场景级状态建议拆为：
-
-```text
-Root scene data
-  Spring node table
-  Bake node table
-  Frame range / sample step
-  Current mode
-
-Per-node data
-  Original Spring Position
-  Bypass Position
-  Is bypassed
-  Original Position / Rotation
-  Baked Position / Rotation Lists
-  Baked child controllers
-  Has bake / range / step
+```maxscript
+local evaluationTime = frame * ticksPerFrame -- Integer，例如第 1 帧得到 160
+sliderTime = evaluationTime                 -- 又被解释为第 160 帧
+addNewKey controller evaluationTime         -- Key 也落到错误时间
 ```
 
-恢复前检查：
+正确写法：
 
-- 原 Spring 引用仍存在；
-- 当前 Position Controller 仍等于工具保存的 Bypass；
-- 当前节点没有被删除或替换；
-- 整个目标集合都可恢复。
+```maxscript
+local evaluationTime = 1f * frame -- 结果是 Time，例如 1f
+sliderTime = evaluationTime
+addNewKey controller evaluationTime
+```
 
-任一节点被外部修改时停止恢复，避免把动画师的新控制器覆盖成旧引用。
+如果输入本来就是 ticks，必须显式构造 ticks 时间值或转换为帧后再生成 `Time`；不要依赖隐式转换。诊断报告应打印：
 
-### 3.4 精确预览：从起始帧按时间顺序强制求值
+```text
+采样时间范围：0f -> 50f | Time
+```
 
-有历史依赖的 Spring 不能只把 `sliderTime` 直接跳到目标帧。精确预览流程：
+同时检查连续帧是否异常地完全相同。若第 1、2、3 帧的复杂动态矩阵完全一致，应优先排查时间类型、范围外钳制和 Key 时间，而不是先归因于 Spring 或插值。
 
-1. 保存当前时间；
-2. 恢复全部 Spring；
-3. 将最终骨骼切回 Original；
-4. 关闭 Quick Edit；
-5. 从起始帧逐帧推进到当前帧；
-6. 每帧读取最终骨骼或 Spring 节点的 `transform`，强制依赖图求值；
-7. 在取消、异常和完成路径关闭进度 UI。
+官方参考：
 
-伪代码：
+- [MAXScript Time Values](https://help.autodesk.com/cloudhelp/2024/ENU/MAXScript-Help/files/MAXScript-Language-Reference/Values/Time-Data-Values/GUID-51429B01-2FC6-4746-9E88-5EB5D93056CC.html)
+- [Controller Key Functions](https://help.autodesk.com/cloudhelp/2024/ENU/MAXScript-Help/files/3ds-Max-Objects-and-Interfaces/Animation-Controllers/Controller-Common-Properties/GUID-B1700B1D-B1EA-4A6C-B4A3-A29DB26C8C02.html)
+
+### 2.4 单 `.ms` 与安装包是两种交付模式
+
+单团队工具、快速迭代且用户要求拖入即用时，优先单一 `.ms`：重复拖入先关闭旧 Rollout；持久状态写入场景 Custom Attribute；不创建 `.mcr`、启动脚本或用户目录副本。只有菜单注册、统一部署、自动更新或长期服务确有价值时才增加安装层。
+
+## 3. 实现方式
+
+### 3.1 先写 State/Transition，再写按钮
+
+| 状态 | Spring | 原 Controller | Baked Controller | Quick Edit | 用户动作 |
+| --- | --- | --- | --- | --- | --- |
+| 快速编辑 | 恢复 | 使用 | 保留但不输出 | 开 | 继续 K 帧 |
+| 无模拟编辑 | 静态 Bypass | 使用 | 保留但不输出 | 无直接 Spring 可算 | 编辑原动画 |
+| 精确预览 | 恢复 | 使用 | 保留但不输出 | 关 | 从起点完整求解 |
+| Baked | 静态 Bypass | 保存引用 | 使用 | 恢复用户偏好 | 播放/导出 |
+
+每次转换先对完整目标集合预检，再统一修改。按钮应显示“正在处理”和最终当前状态，不能只靠底部状态栏让用户猜测是否点击成功。
+
+### 3.2 无模拟编辑必须真正断开求值链
+
+将 Mass、Tension、Effect 或 Iterations 设为 0，或把下游权重设为 0，都不能证明 Spring 不再被依赖图访问。直接 Position Spring 的稳定 Bypass 流程：
+
+1. 在明确的 Rest/起始帧读取 Helper 的 Parent Local Position；
+2. 创建静态 `Position_XYZ`；
+3. 用节点 Custom Attribute 的 `#maxObject` 保存原 Spring 与 Bypass 引用；
+4. 全量预检通过后替换 `node.position.controller`；
+5. 恢复前确认当前 Controller 仍等于工具保存的 Bypass。
+
+若其他工具或动画师已替换当前 Controller，停止自动恢复，不能覆盖外部修改。
+
+### 3.3 精确预览从同一起始状态逐帧求值
 
 ```maxscript
 for frame = startFrame to targetFrame do
 (
-    sliderTime = frame * ticksPerFrame
+    sliderTime = 1f * frame
     for node in evaluationNodes do local evaluatedTM = node.transform
 )
 ```
 
-若 Rig 需要起始帧前的稳定时间，应把 Warm-up 明确加入范围，而不是假设第 0 帧已处于平衡状态。
+正式预览/Bake 必须关闭 Quick Edit，并从起始帧或 Warm-up 帧按顺序推进。即使输出 `sampleStep > 1`，历史相关模拟也应逐帧求值，只减少缓存/写 Key 的频率。
 
-### 3.5 两阶段 Bake：采样与写键完全分离
+### 3.4 Bake 分成采样、健康检查、写入和验证
 
-#### 阶段 A：顺序求解并缓存
+#### 阶段 A：实时顺序采样
 
-1. 恢复 Spring 和 Original 轨道；
+1. 恢复 Spring 和原 Controller；
 2. 关闭 Quick Edit；
-3. 从起始帧按 `sampleStep` 顺序推进，确保结束帧总被采样；
-4. 对每根最终骨骼计算 Parent Local TM：
+3. 从起始帧逐帧求值；
+4. 缓存最终骨骼 World TM、实时 Parent World TM 和显式 `Time`；
+5. 计算目标 Parent Local TM；
+6. 缓存可写入目标 Controller 的 Position/Rotation/Scale 语义值；
+7. 此阶段不修改任何 Bake Controller。
 
-```maxscript
-local localTM = if node.parent != undefined then \
-    node.transform * (inverse node.parent.transform) \
-else \
-    node.transform
-```
+优先缓存 World TM，因为它是用户真正看到的最终结果；Parent Local 数据用于写入，但最终正确性仍由 World A/B 判断。
 
-5. 只把 `translationpart`、`rotationpart` 和采样时间存入内存；
-6. 取消时直接丢弃缓存，此时场景控制器尚未被修改。
+#### 阶段 B：采样健康检查
 
-#### 阶段 B：临时写键并提交
+检查每个节点/帧：
 
-1. 为每根骨骼创建临时 `Linear_Position` 和 `TCB_Rotation`；
-2. 在 `with animate on` 下写入全部缓存键；
-3. 所有节点写键成功后，再把临时 Controller 替换进正式 Baked Slot；
-4. 若最终替换中途失败，恢复此前旧 Baked Controller；
-5. 只有本次新创建的 Controller List 才在失败时移除。
+- 采样数量是否完整；
+- Position/Rotation/Scale 是否有限值；
+- 矩阵是否零轴、不可逆或包含 NaN/无穷大；
+- 是否镜像、非均匀缩放或含 Shear；
+- Scale 是否随动画变化；
+- 时间数组是否为 `Time`，范围与帧数是否正确。
 
-这种顺序避免两个常见问题：
+阻断项不得进入写轨道阶段。风险项可以警告，但必须依靠最终逐帧验证确认。
 
-- 边采样边写键会改变后续 Spring 输入，导致同一次 Bake 自我污染；
-- 重新 Bake 直接清空旧轨道，会让一次中途失败破坏上次可用结果。
+#### 阶段 C：事务写入
 
-### 3.6 可逆 Controller List 结构
+1. 保存原 Position/Rotation/Scale Controller 引用；
+2. 创建新的直接 Bake Controller 或项目明确采用的 List 层；
+3. 为所有采样时间显式 `addNewKey`；
+4. 在对应 `at time` 上写 Controller 语义值；
+5. 所有节点写完后才提交状态；
+6. 失败时恢复原引用或上一次有效 Bake。
 
-3ds Max 自带 MassFX Bake 脚本也使用 Position/Rotation List、Boolean Float 权重和活动轨道切换。可复用的结构是：
+`addNewKey` 创建的新 Key 初值是该时刻的插值值。不能只假设第一次 `.value` 赋值一定创建了起始 Key。
+
+#### 阶段 D：结果验证与往返验证
+
+切到 Baked 后逐帧比较缓存 Live 与实际 Baked：
+
+- 世界位置误差；
+- 世界矩阵三条 Basis 行误差；
+- 旋转参考误差；
+- Parent Local Scale 误差；
+- Baked → Live → Baked 往返后的同一结果。
+
+任何阻断误差都应回滚本次无效轨道。失败报告至少包含节点、帧、Parent、Expected/Actual World TM、Local TM、Controller 类型、最大误差及报告路径。
+
+### 3.5 Position、Rotation、Scale 不能共用一个“通用 value 写法”
+
+3ds Max 中以下三层语义不应混为一谈：
+
+1. `node.rotation` / `node.scale`；
+2. `node.rotation.controller.value` / `node.scale.controller.value`；
+3. `MAXKey.value`。
+
+在镜像骨骼和 PRS Controller 上，它们可能对应不同的矩阵方向、四元数逆、ScaleValue 轴向或有效值换算。已观察到的典型信号包括：
+
+- Expected Local TM 与 Actual Local TM 基本互为转置；
+- 写入的 Rotation 与 Controller 读取值看似相同，但节点 World TM 不一致；
+- Rotation Key `.value` 写入后 Controller 读回得到逆四元数；
+- Scale 期望值与读回值不同，但位置仍正确。
+
+更稳妥的实现是给 Position、Rotation、Scale 分别建立适配器：
+
+- 用一个未挂父级的隐藏普通 PRS Point 分解目标 Local TM；
+- Position 读取能与目标 Position Controller 对齐的值；
+- Rotation 优先读取 Solver 的 `rotation.controller.value`，并用目标 `Linear_Rotation.value` 写入/读回验证；
+- Scale 同时保留 `scalepart` 与 `scale.controller.value`，用目标 `Bezier_Scale.value` 写入/读回验证；
+- 只有 A/B 证明 Key 语义一致时才直接写 `MAXKey.value`。
+
+不要仅靠“数值看起来接近”接受结果，必须比较最终 World Basis。
+
+### 3.6 动态 Scale、镜像和 Shear 决定 Bake 边界
+
+非均匀 Scale 本身不是一律禁止，但必须区分：
+
+- 静态非均匀 Scale；
+- 随 Spring/父级 K 动画变化的 Scale；
+- 旋转与非均匀 Scale 组合形成的轴向耦合/Shear；
+- 负缩放/镜像导致的 handedness 变化。
+
+如果原 `Scale_Expression` 的实时输出会变化，保留原 Scale Controller 会丢失 Live 结果；必须逐帧 Bake Scale。标准 PRS 无法表达动态 Shear 时，应由最终 Basis 验证阻断，而不是放宽容差掩盖。
+
+`matrix3.rotationpart` 在镜像/非均匀 Scale 下不一定能唯一恢复期望骨轴；隐藏 PRS Solver 和最终 World 验证比直接 `rotationpart/scalepart` 更可靠。
+
+### 3.7 直接 Controller 切换与 List Controller 的选择
+
+两种存储方式都必须可逆：
+
+| 方式 | 优点 | 主要风险 | 适用条件 |
+| --- | --- | --- | --- |
+| Position/Rotation/Scale List | 在 Track View 中直观看到 Original/Baked Slot | List 权重、活动层和复合变换可能改变镜像/Scale 组合语义 | 简单 PR、已通过真实 Rig A/B |
+| 直接 Original/Baked Controller 引用切换 | 避开 List 混合；三通道语义清晰 | 必须持久化六个引用并严查部分外部替换 | 镜像、动态 Scale 或 List 已产生偏差的 Rig |
+
+直接切换结构：
 
 ```text
-Position List
- ├─ Linear Position（Baked）
- └─ Original Position
-
-Rotation List
- ├─ TCB Rotation（Baked）
- └─ Original Rotation
+Per-node persistent data
+  Original Position / Rotation / Scale
+  Baked Position / Rotation / Scale
+  Has Bake / range / step
 ```
 
-每个 List 的两个权重都使用 `Boolean_Float`：
+切到 Live 恢复 Original 三条引用；切到 Baked 使用 Baked 三条引用并复用已经验证过的静态 Spring Bypass。Unbake 才清除 Bake 引用。旧 List 数据可保留只读识别与安全 Unbake，但升级到直接模式前应先 Unbake，避免混合两套存储语义。
 
-```text
-Baked：Baked 100 / Original 0 / active 1
-Live： Baked   0 / Original 100 / active 2
-```
+### 3.8 兼容 Bake 与严格 Bake
 
-设置权重前检查当前节点 Controller 仍等于工具保存的 List。切到 Baked 后还应 Bypass Spring Helper；仅把 Original 权重设为 0 不能证明上游 Spring 不再被其他依赖访问。
+可提供两种验证策略，但不能把“兼容”理解为跳过关键安全检查：
 
-Unbake 的语义是：
+- **兼容 Bake**：写完整 Position/Rotation/Scale，世界 Position 与完整 Basis 参与阻断；镜像矩阵的 `rotationpart` 可仅作参考。
+- **严格 Bake**：在兼容验证基础上，Rotation 与 Parent Local Scale 也参与阻断。
 
-1. 恢复 Spring；
-2. 全量预检所有 Bake List；
-3. 把节点 Position/Rotation Controller 恢复为保存的 Original 引用；
-4. 清除工具保存的 Bake 引用和状态；
-5. 不修改 Scale Controller。
+两种模式都应执行预检、逐帧写入、世界 A/B、失败回滚和 Live/Baked 往返。严格模式失败不代表资源必然不可用，但必须由报告判断是表示差异、Rig 风险还是实际形变差异。
 
-### 3.7 扫描 Spring Helper 与 Bake 骨骼必须分开
+### 3.9 自动预检与错误分级
 
-自动扫描建议分成两套规则：
+点击 Bake 后先运行预检：
 
-- Spring Helper：运行时检查 `position.controller` 是否是直接 Spring/Jiggle 候选，或是否处于工具保存的 Bypass 状态；
-- Bake 骨骼：使用项目 Profile 的明确命名/集合/层级规则，结果仍允许人工覆盖；
-- 交集：Spring Helper 和 Bake 目标不能是同一节点；
-- 空结果：说明匹配规则，并提供手动选择入口；
-- 结果：列表显示节点名，诊断显示 handle、当前/原控制器类型和 Bake 状态。
+- **通过**：配置、范围、API、Controller 引用满足前提；
+- **警告**：非均匀缩放、镜像、Shear 候选、层级关系或 Warm-up 风险，可继续但必须最终验证；
+- **阻断**：目标为空、范围非法、引用损坏、外部部分替换、矩阵无效、零轴或不可逆。
 
-自动命名匹配只能是项目适配器。通用实现不应硬编码某个角色的 `Breast_*`、`Point*` 或其他节点名。
+错误信息应说明“失败阶段 + 节点/帧 + 原因 + 回滚结果”，不能只显示 Runtime Error。诊断报告不能被后续一次普通预检覆盖；应保留最近一次详细验证。
 
-### 3.8 失败恢复和全局状态
+### 3.10 MAXScript 与 UI 实现经验
 
-长操作需要集中保存并恢复：
+- 顶层不能声明不允许的 `local`；单脚本尽量把局部变量放入函数/Struct/Rollout。
+- `catch` 内重抛使用 `throw()`；业务错误在非 catch 路径抛出。
+- Struct 成员调用可能受声明顺序影响；被调用成员放在调用方之前。
+- Spinner 长标题用独立 Label；需要字号的按钮局部使用 WinForms。
+- `dotNetControl` Rollout 事件按目标 Max 示例使用单事件参数。
+- 长操作用 `busy`、Progress、取消和 `try/catch` 集中恢复。
+- 点击后按钮先显示橙色“正在…”，成功状态保持蓝色“✓ 当前”。
 
-- `sliderTime`；
-- `SpringQuickEditMode` 和 `SpringRollingStart`；
-- `maxOps.autoKeyDefaultKeyOn`；
-- 当前 Live/Baked 权重和活动轨道；
-- Spring Bypass 状态；
-- 进度条；
-- 本次新创建或已提交的 Controller 数量。
-
-操作应使用 `busy` 防止重复点击。错误弹窗加入操作上下文，例如“自动扫描胸部 Bake 骨骼失败”，不要只显示 `getCurrentException()` 的泛化类型错误。
-
-### 3.9 MAXScript UI 的中文与 DPI 处理
-
-原生 Rollout Spinner 的标题可能从输入框位置向左布局，长中文/中英混排会越过 GroupBox。可使用：
-
-- Spinner 标题置空；
-- 独立 `.NET Label` 放置中文标题；
-- 适当扩大窗口、列宽和按钮高度；
-- 需要调字号的按钮改为 `System.Windows.Forms.Button`；
-- 使用 `System.Drawing.Font` 设置团队可用中文字体；
-- 用结果导向的两段式文字代替 `Quick Edit`、`Detach Spring`、`Full Solve` 等内部术语。
-
-MAXScript 的 `dotNetControl` 事件处理器使用一个事件参数，例如：
-
-```maxscript
-on btnBake Click eventArgs do
-(
-    -- execute bake
-)
-```
-
-应从目标 3ds Max 随附脚本中核对事件签名，不能直接照搬普通 C# 的 `(sender, eventArgs)`。
-
-## 4. 风险与不适用边界
-
-### 4.1 已遇到的错误与解决方式
+## 4. 常见问题、根因与解决方式
 
 | 现象/错误 | 根因 | 解决方式 | 预防检查 |
 | --- | --- | --- | --- |
-| `Compile error: no local declarations at top level` | 安装脚本在 MAXScript 顶层声明 `local` | 去掉不必要安装器，改为单 `.ms`；或把局部变量放入函数/结构作用域 | 搜索顶层 `local`，在目标 Max 实际加载 |
-| `only throws without arguments are permitted in catch expressions` | 在 `catch` 中使用 `throw (getCurrentException())` | `catch` 内重抛只用 `throw()`；自定义 `throw "..."` 放在非 catch 路径 | 搜索所有 `catch` 与 `throw` |
-| `Call needs function or class, got: undefined` | `struct` 成员调用的定义顺序导致被调用符号解析为 `undefined`，或函数/类在当前版本未加载 | 把被调用成员放到调用方之前；逐步日志定位；加载/检查宿主程序集与类 | 按声明顺序审计内部调用，错误弹窗带操作上下文 |
-| 自动扫描报错但弹窗没有步骤 | 最外层只显示原始异常 | 为每个按钮包装具体操作名，并把详细诊断写入 Listener | 每个公共入口模拟失败一次 |
-| `dotNetControl` 按钮事件编译失败 | 使用普通 C# 两参数事件签名 | 使用 Max Rollout 支持的单事件参数处理器 | 对照目标版本自带脚本示例 |
-| Spinner 标题向左越界 | 原生 Spinner 的长标题布局空间不足 | Spinner 使用空标题，旁边放独立 Label；扩大窗口/列宽 | 在中文界面和实际 DPI 截图检查 |
-| 字体太小且原生按钮无法调字号 | Rollout 原生控件不提供所需字体属性 | 只把需要强调的 Label/Button 换成 `.NET` 控件并设置字体 | 检查主题、点击、禁用态和高 DPI |
-| Quick Edit 仍有卡顿 | Quick Edit 只是缩短回算窗口，仍执行 Spring | 增加真正的 Controller Bypass 无模拟模式 | 比较普通、Quick、Bypass 拖骨延迟 |
-| Bake 后仍在后台算 Spring | 只切换 Baked 权重，没有断开上游求值链 | 切到 Baked 后 Bypass Spring Helper | 诊断当前 Position Controller，播放时测性能 |
-| Bake 结果与 Live 漂移 | 随机跳帧、Quick Edit 未关闭、边采样边写键或起始状态不同 | 从同一起始帧顺序求值；采样/写键分离；正式 Bake 强制关闭 Quick Edit | 重复 Bake、逐帧 A/B |
-| Unbake 覆盖了用户后续修改 | 恢复时只相信旧缓存，没有检查当前控制器 | 保存工具临时对象引用；恢复前检查当前引用仍匹配 | 外部替换一个控制器后测试阻断 |
-| Bake 到 Helper 后引擎无动画 | Helper 不是最终蒙皮/导出消费者 | 分开配置 Spring Helper 与最终 Bake 骨骼 | 导出后在最终引擎检查蒙皮 |
+| `no local declarations at top level` | 顶层使用非法 `local` | 改为单 `.ms` 或移入函数/Struct | 静态搜索顶层声明，真实 Max 加载 |
+| `only throws without arguments...` | `catch` 内带参数 `throw` | 重抛统一 `throw()` | 审计全部 catch |
+| `Call needs function or class, got: undefined` | Struct 成员顺序或宿主类未加载 | 调整声明顺序并增加入口上下文 | 按成员依赖顺序审计 |
+| Quick Edit 仍卡 | 它仍执行 Spring | 增加真正 Controller Bypass | 普通/Quick/Bypass 同动作计时 |
+| Baked 后仍算 Spring | 只切权重，未断上游链 | Baked 状态复用静态 Bypass | 检查 Helper 当前 Controller |
+| Bake 到 Helper 后引擎没动画 | Helper 不是最终消费者 | Bake 最终蒙皮/导出骨 | FBX → 引擎验证 |
+| Live/Baked 往返后画面丢失 | 重新采样覆盖静态 Bypass 基准 | 复用 Bake 成功时同一套 Bypass 引用 | 自动 Baked → Live → Baked 验证 |
+| 无 K 动画正常，K 后失败 | 父级动画暴露矩阵、Scale、时间或求值顺序问题 | 逐帧报告 Parent/Local/World，检查时间类型和动态 Scale | 必测父级 K 动画用例 |
+| 第 1、2、3 帧结果完全相同 | ticks Integer 被时间 API 再当帧解释，或范围外钳制 | 全部时间使用 `1f * frame` | 报告 Time 类型与首尾范围 |
+| Expected/Actual Local TM 互为转置 | 节点 Rotation 与 Controller Rotation 语义混用 | 采样/写入同一 Controller 语义 | 报告 Written/Actual Controller Rotation |
+| Rotation Key 写入后变成逆 | `MAXKey.value` 与 Controller 有效值语义不同 | 为 Rotation 使用验证过的 Controller 写入适配器 | 写后立即读回并做 World A/B |
+| 第 0 帧被后一帧值覆盖 | 空 Controller 未显式建立起始 Key | 每个采样时间先 `addNewKey` | 检查 Key 数与 Key 时间 |
+| Scale Expression 断链后回到静态值 | 实时 Scale 会随 Spring/父级动画变化 | 采样并逐帧 Bake Scale | 报告首帧与最大 Scale 变化 |
+| `bone_004` 位置误差放大 | 父 `bone_003` Basis/Scale 有小误差 | 先修父节点表示，再看子级 | 按父到子定位首个超限节点 |
+| 非均匀 Scale 警告很多 | 风险提示与实际失败混在一起 | 警告可继续，但由 Basis/Scale 验证决定 | 不因警告直接判死，也不忽略验证 |
+| Bake 失败后仍能点 Baked | UI 未区分失败状态或残留引用 | 回滚新轨道并将 `HasBake=false` | 诊断 Storage/Key 数/HasBake |
 
-### 4.2 仍需按 Rig 验证的技术边界
+## 5. 风险与不适用边界
 
-- `Position_XYZ` Bypass 只覆盖直接 Position Spring，不能透明处理嵌套 List、Constraint 或锁定控制器。
-- `Linear_Position + TCB_Rotation` 是一种可用轨道组合，不保证适合所有旋转插值、Euler Filter 或游戏导出设置。
-- Parent Local Position/Rotation 不包含 Scale/Shear 的完整矩阵信息。
-- 逐帧 Step `1` 最稳定但会增加键数；Step 大于 `1` 需要验证插值不会丢失高频次级运动。
-- 读取 `node.transform` 能在当前实现中触发求值，但第三方模拟可能要求专用 Reset、Cache 或 Update API。
-- Spring 起始帧、场景动画范围和 Warm-up 必须由 Rig/动作事实决定，不能长期依赖默认 `0-100`。
-- Baked 状态的流畅不等于导出正确；FBX 轴向、单位、骨骼过滤和 Unity Importer 仍是独立验证层。
+- 直接 `Position_XYZ` Bypass 不能透明处理嵌套 List、Constraint 或锁定 Controller。
+- 读取 `node.transform` 通常会触发依赖求值，但第三方模拟可能要求专用 API。
+- Step `1` 最可靠但 Key 多；Step 大于 `1` 必须验证高频运动插值。
+- Spring 起点和 Warm-up 必须由动作事实决定，不能长期依赖默认范围。
+- 标准 PRS 无法精确表达所有动态 Shear；验证失败时不要盲目增大容差。
+- DCC 内 Baked 流畅不等于 FBX/Unity 正确；轴向、单位、骨骼过滤和 Importer 是独立层。
+- 未在目标 Max、真实 Rig 和最终引擎验证前，只能声明静态检查通过。
 
-## 5. 验证与回退
+## 6. 验证与回退
 
-### 5.1 最小验证矩阵
+### 6.1 最小验证矩阵
 
 | 层级 | 用例 | 通过条件 |
 | --- | --- | --- |
-| 脚本加载 | 首次拖入、重复拖入、关闭窗口后再拖入 | 无编译错误；旧窗口被替换；版本正确 |
-| API | Quick Edit 开/关、不同初始 Rolling Start | 属性可读写；退出恢复原值 |
-| 扫描 | 直接 Spring、非 Spring、已 Bypass、特殊命名骨骼 | 结果准确；空结果可行动；Helper/Bake 无交集 |
-| 快速编辑 | 主骨频繁移动、修改历史关键帧、时间轴 Scrub | 延迟低于完整 Spring；明确为近似结果 |
-| 无模拟 | 进入、保存重开、退出、外部替换 Controller | Spring 不再直接求值；可恢复；外部修改被阻断 |
-| 精确预览 | 起始帧到当前帧、当前帧早于起始帧、取消 | 顺序求值；非法范围阻断；进度正确清理 |
-| Bake | Step 1、结束帧非整除、取消采样、取消写键 | 结束帧有键；采样取消不改控制器；写键失败可回滚 |
-| 重复 Bake | 同一输入连续两次 Bake | 逐帧结果一致；旧结果仅在新结果完整后替换 |
-| Live/Baked | 往返切换多次 | 权重、Active Slot、Spring Bypass 和画面一致 |
-| Unbake | 正常、缺失引用、外部修改 | 正常恢复原轨道；损坏状态阻断且不覆盖 |
-| 持久化 | Bypass/Baked 后保存、关闭、重开 | 状态与引用仍可识别并恢复 |
-| 变换 | 父级运动、旋转、高频振动、非均匀缩放候选 | Position/Rotation A/B；不支持项明确阻断或记录风险 |
-| 性能 | 普通 Spring、Quick Edit、Bypass、Baked | 记录相同动作和帧范围下的交互/播放耗时 |
-| 导出 | FBX 导出并进入最终引擎 | 最终蒙皮骨动画、轴向、单位和帧范围一致 |
+| 脚本加载 | 首次/重复拖入、关闭后重开 | 无编译错误，版本正确，旧窗口被替换 |
+| 时间 | `0..N`、非零起点、Step 1/2、结束帧非整除 | 报告 `Time`；Key 落在真实帧；结束帧存在 |
+| 扫描 | 直接 Spring、非 Spring、Bypass、特殊命名 | Helper/Bake 无交集，空结果可行动 |
+| 快速/无模拟 | 拖骨、改历史 Key、Scrub | Quick 更快；Bypass 不再直接求值 Spring |
+| 精确预览 | 起点到当前帧、Warm-up、取消 | 顺序求值，状态恢复完整 |
+| Bake | Position/Rotation/Scale、父级 K 动画 | Key 数/时间正确，World Position/Basis 通过 |
+| 镜像/Scale | 负轴、非均匀、动态 Scale、Shear 候选 | 可表达项通过；不可表达项明确阻断 |
+| 往返 | Baked → Live → Baked、多次切换 | Bypass、Controller 引用和画面一致 |
+| 重复 Bake | 同输入连续两次 | 逐帧一致；失败不破坏旧结果 |
+| Unbake | 正常、引用缺失、外部替换 | 正常恢复；损坏状态阻断不覆盖 |
+| 持久化 | 保存、关闭、重开 | 状态和引用仍可识别与恢复 |
+| 导出 | FBX → 最终引擎 | 最终蒙皮骨、帧范围、轴向和单位一致 |
 
-### 5.2 分层验证顺序
+### 6.2 诊断报告最小字段
 
-1. 做 UTF-8、括号/字符串、函数声明顺序、事件签名和关键 API Token 检查。
-2. 在目标 3ds Max 版本拖入脚本，确认 Rollout、字体、DPI、按钮和 Listener。
-3. 用最小测试场景验证单个直接 Spring 的 Quick/Bypass/Restore。
-4. 在真实 Rig 核对 Spring Helper、最终 Bake 骨骼、动画范围和父级结构。
-5. 运行精确预览和完整 Bake，执行逐帧 Live/Baked A/B 与重复 Bake。
-6. 保存重开，验证 Bypass/Baked/Unbake。
-7. 导出 FBX，在最终引擎验证蒙皮、变换和帧范围。
+- 工具/场景/Max 版本；
+- 当前模式、Bake 模式、Quick Edit API；
+- Spring/Bake 节点 handle、Parent、Controller、Storage、Key 数；
+- 预检通过/警告/阻断；
+- 采样时间首尾、类型、帧数；
+- 最大 Position/Rotation/Basis/Local Scale 误差；
+- 首批超限节点的 Expected/Actual World/Local TM；
+- Written/Actual Controller PRS；
+- 失败阶段、回滚结果和报告路径。
 
-### 5.3 回退策略
+### 6.3 回退策略
 
-- 操作前另存场景副本；工具恢复能力不能代替源文件备份和版本控制。
-- Quick Edit 或 UI 改造失败时，可回退到原 Spring，不应影响已保存的场景结构。
-- Bypass 失败时只恢复本次已替换节点，并恢复时间滑块。
-- Bake 采样失败时不创建新轨道；写键或提交失败时保留旧 Bake/Original。
-- 检测到外部控制器修改时停止自动恢复，由 TA 在备份场景中人工比对，不强制覆盖。
-- 未完成真实 Max、真实场景或最终引擎验证时，交付只能标记对应层级为待验。
+- 操作前另存场景副本；工具可逆性不能替代备份。
+- 采样失败不创建轨道；写入/验证失败恢复 Live 和原 Controller。
+- 重复 Bake 只在新结果完整通过后替换旧结果。
+- 检测到外部 Controller 修改时停止自动恢复。
+- 关闭窗口、取消和异常都恢复时间、选择、Quick Edit、Auto Key、Progress 和临时节点。
+- 无真实 Max/真实 Rig/引擎验证时，交付明确标记待验层级。

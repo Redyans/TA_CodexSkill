@@ -1,6 +1,6 @@
 ---
 name: projectacg-3ds-max-spring-animation-baker-profile
-description: ProjectACG 3ds Max Spring Animation Baker 的路径、版本、Rig 扫描、四态求值、可逆 Bake、已解决问题和当前验证边界。
+description: ProjectACG 3ds Max Spring Animation Baker 的路径、版本、胸部 Rig、四态编辑、直接 PRS 可逆 Bake、诊断证据和当前验证边界。
 ---
 
 # ProjectACG 3ds Max Spring Animation Baker Profile
@@ -11,267 +11,238 @@ description: ProjectACG 3ds Max Spring Animation Baker 的路径、版本、Rig 
 
 | 项目项 | 当前事实 |
 | --- | --- |
-| 工具版本 | `1.2.2`。 |
-| 主脚本 | `D:\work2025U3D\Valkyria\ProjectACG\Client\Tools\3dsMax\SpringAnimationBaker\SpringAnimationBaker.ms`。 |
-| 功能 README | `D:\work2025U3D\Valkyria\ProjectACG\Client\Tools\3dsMax\SpringAnimationBaker\README.md`。 |
-| 运行方式 | 不安装；将单个 `.ms` 拖入 3ds Max 视口，或使用 `Scripting > Run Script`。 |
-| 目标 DCC | 本机 3ds Max 2024.2；通过 `Autodesk.Max.IInterface8` 访问 Spring Quick Edit。 |
-| 目标场景 | `G:\mesh_100601_QHigh胸加弹簧骨骼.max`，当前文件存在，大小约 13.18 MiB。 |
-| 参考资料 | 工程根目录的 `骨骼绑定.docx`、`视频.mp4`，与动画文档共享目录中的同名文件一致。 |
-| Spring 插件证据 | 场景/插件静态信息出现 `spring.dlc`；本机插件二进制字符串出现 `PositionSpring`、`Point3Spring`。运行时仍以节点实际 Controller 为准。 |
-| 最终消费者 | ProjectACG 角色胸部蒙皮骨骼；正式验收还需要 FBX → Unity 动画结果。 |
+| 当前工具版本 | `2.1.0`；已完成静态修改，尚未获得目标 Max 的本版 Bake 结果。 |
+| 主脚本 | `D:\work2025U3D\Tool\3dsMax\SpringAnimationBaker\SpringAnimationBaker.ms`。 |
+| 功能 README | `D:\work2025U3D\Tool\3dsMax\SpringAnimationBaker\README.md`。 |
+| 独立诊断脚本 | `D:\work2025U3D\Tool\3dsMax\SpringAnimationBaker\SpringRigDiagnostic.ms`，版本标记 `2.1-time-safe`。 |
+| 运行方式 | 不安装；拖入单个 `.ms`，或使用 `Scripting > Run Script`。 |
+| 目标 DCC | 3ds Max 2024.2；报告的 `MaxVersion` 为 `#(26000, 64, 0, 26, 2, 0, 22013, 2024, ".2 Update")`。 |
+| 当前测试场景 | `G:\Connect\ConnectDocs\Doc\WorkDoc\Repor\Work_word\Valkyria\周内容\2026年8月21日\mesh_100601_QHigh胸加弹簧骨骼.max`。 |
+| 最新报告 | 同目录的 `SpringAnimationBaker_Diagnostic_Report.txt`。 |
+| 最终消费者 | ProjectACG 角色胸部蒙皮骨；最终仍需 FBX → Unity 验证。 |
 
-工具目录只保留 `SpringAnimationBaker.ms` 和紧邻 `README.md`。用户已明确不需要安装器或 `.mcr`，后续维护不得默认重新引入安装流程。
+不要修改用户保留的备份目录：
 
-## 2. 当前 Rig 与扫描契约
+```text
+D:\work2025U3D\Tool\3dsMax\SpringAnimationBaker - 副本
+```
+
+用户明确要求不启动 3ds Max 代跑；代码代理只修改脚本和做静态检查，真实 Max 测试由用户执行。
+
+## 2. 当前 Rig 契约
 
 ### 2.1 Spring Helper
 
-自动扫描遍历场景节点，只接受 `position.controller` 上的直接 Spring/Jiggle 候选；节点处于本工具保存的 Bypass 状态时也可被识别。类名匹配和 Mass/Drag/Tension 等属性只用于兼容性候选，设置目标时还会再次验证直接 Controller 结构。
-
-一次已观察的工具扫描结果包含：
+当前报告确认 4 个 Position 上直接 Spring：
 
 ```text
 Point003
-Point007
 Point014
 Point015
+Point007
 ```
 
-该列表是当前场景的一次运行记录，不是应硬编码的固定事实。目标 `.max` 的静态字符串还包含其他 `Point*` 节点，因此每次正式 Bake 前仍需在 UI 列表核对实际 Helper。
+它们分别挂在胸部骨骼/Point 层级中。该列表来自当前场景报告，不得硬编码成跨 Rig 事实；每次 Bake 前仍要自动扫描并在 UI 核对。
 
 ### 2.2 最终 Bake 骨骼
 
-当前自动规则为：
+当前项目适配器匹配：
 
 ```maxscript
 matchPattern node.name pattern:"Breast_*_bone_*" ignoreCase:true
 ```
 
-并排除已配置 Spring Helper。目标 `.max` 的静态内容已确认存在 12 个名称：
+当前报告确认左右各 6 根，共 12 根：
 
 ```text
-Breast_L_bone_000 ~ Breast_L_bone_005
 Breast_R_bone_000 ~ Breast_R_bone_005
+Breast_L_bone_000 ~ Breast_L_bone_005
 ```
 
-特殊命名 Rig 使用“选中骨骼设为目标”，但 Spring Helper 与 Bake 骨骼不能重合。正式导出 Bake 最终蒙皮骨，而不是只 Bake `Point*` Helper。
+Spring Point 与 Bake 骨骼必须分开配置；正式 Bake 最终蒙皮骨，而不是只 Bake Helper。
 
-### 2.3 动画范围
+### 2.3 变换结构
 
-场景静态元数据曾显示动画范围可能为 `0-0`。工具会从当前 `animationRange` 初始化起止帧，但美术在执行精确预览或 Bake 前必须核对：
+当前关键风险节点：
 
-- 动作真实起始帧；
-- 动作真实结束帧；
-- Spring 是否需要起始帧前 Warm-up；
-- `sampleStep`，正式输出默认使用 `1`。
+- `Breast_R_bone_003`、`Breast_L_bone_003` 使用 `Scale_Expression`；
+- `bone_003`/`bone_004` 当前世界矩阵存在非均匀缩放；
+- `bone_004` 的父级也存在非均匀缩放；
+- Rig 包含镜像/负轴语义，`rotationpart` 不是唯一稳定表示；
+- 部分骨骼使用 Position/Rotation List，`bone_005` 的 Parent 使用 Link Constraint。
 
-不能依赖工具默认 `0-100` 代替当前动作范围。
+旧报告已经证明 `Scale_Expression` 不是固定 `1.04`。错误时间轴下曾观测到右侧 `1.34075`、左侧 `1.41156`；这些具体动态数值受旧时间 Bug 影响，不能继续作为正确帧值引用，但足以证明 Scale 输出会随求值变化，不能保留静态原 Scale 代替 Bake。
 
-## 3. 当前实现结构
+## 3. 当前状态与实现
 
-### 3.1 场景级和节点级持久状态
-
-脚本使用两个 Custom Attribute 定义，`version:1` 且 `attribID` 固定：
-
-```text
-ACGSB_SceneData
-  toolVersion
-  springNodes / bakeNodes
-  rollingFrames
-  bakeStartFrame / bakeEndFrame / sampleStep
-  currentMode
-
-ACGSB_NodeData
-  originalSpringPosition / bypassPosition / isSpringBypassed
-  originalPosition / originalRotation
-  bakedPositionList / bakedRotationList
-  bakedPosition / bakedRotation / hasBake
-  bakedStartFrame / bakedEndFrame / bakedSampleStep
-```
-
-Scene Data 挂在 `rootNode`，Node Data 挂在受管理节点。`#maxObject` 保存真实 Controller 引用，因此 Bypass/Bake 状态可随 `.max` 保存并在重开后恢复。
-
-维护时区分工具显示版本和 CA Schema 版本：仅改 UI/逻辑可更新 `ACGSB_VERSION`；新增/改变持久字段或迁移语义时需要单独设计 Custom Attribute 兼容与迁移，不能只改字符串版本。
-
-### 3.2 四态工作流
+### 3.1 四态工作流
 
 | UI 状态 | 当前实现 |
 | --- | --- |
-| 快速编辑 / 只重算最近帧 | 恢复 Spring；Original 权重 100%；通过 `SpringQuickEditMode=true` 和 `SpringRollingStart` 做近似回算。 |
-| 无模拟编辑 / 完全停止弹簧运算 | 在起始帧读取 Helper 局部位置，用静态 `Position_XYZ` 替换直接 Spring；原 Controller 持久化保存。 |
-| 精确预览 / 从起始帧完整求解 | 恢复 Spring、Original 轨道，关闭 Quick Edit，从起始帧逐帧推进到当前帧并读取 Transform。 |
-| Baked | 顺序采样最终骨骼，写入可逆 List Controller，切 Baked 权重，再 Bypass Spring。 |
+| 快速编辑 | 恢复实时 Spring 和 Original PRS，开启 `SpringQuickEditMode`，只回退指定帧。 |
+| 无模拟编辑 | 用静态 Position Bypass 替换直接 Spring，编辑原动画，不显示 Baked 次级运动。 |
+| 精确预览 | 恢复 Spring，关闭 Quick Edit，从起始帧用显式 `Time` 逐帧求值到当前帧。 |
+| Baked | 使用直接 Baked Position/Rotation/Scale，复用 Bake 时验证过的静态 Spring Bypass。 |
 
-Bake 后两个结果切换按钮使用结果导向文案：
+UI 切换按钮使用结果导向文案，并提供橙色“正在…”与蓝色“✓ 当前”反馈。
 
-- `切回实时弹簧（继续调整）`
-- `切回烘焙动画（播放/导出）`
+### 3.2 持久状态
 
-“切回实时弹簧”不会删除 Bake 数据；“移除烘焙 / 恢复原控制器”才执行 Unbake。
-
-### 3.3 Bypass 与外部修改保护
-
-工具只处理节点 Position 上直接挂载的 Spring：
-
-1. 在 Rest/起始帧缓存 Parent Local Position；
-2. 创建 `Position_XYZ`，`animate off` 写静态值；
-3. 保存原 Spring 和 Bypass 引用；
-4. 替换 Position Controller；
-5. 失败时只恢复本次已经替换的节点。
-
-恢复前会检查当前 `node.position.controller == data.bypassPosition`。若动画师或其他工具在无模拟状态下替换过 Controller，自动恢复会停止并提示，不覆盖外部修改。
-
-### 3.4 精确求值和两阶段 Bake
-
-精确预览与 Bake 都会关闭 Quick Edit，并从配置起始帧按时间顺序推进。每帧读取最终骨骼 Transform 触发求值。
-
-Bake 分两阶段：
-
-1. **采样**：缓存每根最终骨骼的 Parent Local `translationpart`、`rotationpart` 和时间；不修改目标 Controller。
-2. **写入**：为所有节点创建临时 `Linear_Position` / `TCB_Rotation`，写完全部 Key 后才提交到正式 Baked Slot。
-
-重新 Bake 时保留旧 Baked Controller，只有新控制器全部写完才替换；提交中途失败会按已提交数量恢复旧结果。本次新建的 List 才会在失败时移除。
-
-### 3.5 可逆 Controller List
-
-最终骨骼结构：
+`ACGSB_SceneData` 保存节点集合、范围、Step 和当前模式；`ACGSB_NodeData version:2` 保存：
 
 ```text
-Position List
- ├─ ACG Spring Baked Position：Linear Position
- └─ Original Position
-
-Rotation List
- ├─ ACG Spring Baked Rotation：TCB Rotation
- └─ Original Rotation
+Original Spring Position / Bypass Position / Is Bypassed
+Original Position / Rotation / Scale
+Baked Position / Rotation / Scale
+Legacy Position/Rotation/Scale List references
+Has Bake / start / end / step
 ```
 
-两个 Slot 权重控制器使用 `Boolean_Float`：
+2.x 新 Bake 使用直接 PRS Controller 引用切换；旧 1.x List 只保留识别和安全 Unbake。检测到旧 List 时，执行新 Bake 前要求先 Unbake。
+
+### 3.3 两种 Bake 模式
+
+- **兼容 Bake（推荐）**：直接写 Position/Rotation/Scale；World Position 和完整 Basis 参与阻断；镜像矩阵 Rotation 只作参考。
+- **严格 Bake**：相同写入，再让 Rotation 与 Parent Local Scale 参与阻断。
+
+两种模式都执行：自动预检 → 顺序采样 → 健康检查 → Spring Bypass → 直接 PRS 写 Key → World 验证 → Baked/Live/Baked 往返 → 成功提交或失败回滚。
+
+### 3.4 当前写入语义
+
+实时 World/Parent World 采样后，通过隐藏普通 PRS Point 求解目标 Local PRS：
+
+- Position：Solver Position；
+- Rotation：`solver.rotation.controller.value`；
+- Scale：`solver.scale.controller.value`，同时保存 Local `scalepart` 供验证。
+
+每个采样时间显式 `addNewKey`，再在对应 `at time` 中写入直接 `Linear_Position`、`Linear_Rotation`、`Bezier_Scale` 的 Controller `.value`。
+
+## 4. 已确认问题、证据和解决方式
+
+### 4.1 UI、加载和扫描
+
+- 删除安装依赖，保持单 `.ms` 拖入运行；空安装脚本不作为入口。
+- 修正顶层 `local`、catch 重抛、Struct 成员声明顺序和 `.NET` 单参数事件。
+- 窗口当前为 `620 × 920`；Spinner 使用独立 Label，关键按钮使用较大中文字体。
+- Spring/Bake 自动扫描分开，Bake 名称扫描排除 Spring Point。
+
+### 4.2 Live/Baked 往返
+
+早期 Bake Key 已存在，但 Live → Baked 后视觉结果丢失。根因是切回 Baked 时重新采样并覆盖静态 Spring Bypass 基准。当前方案保存并复用 Bake 成功时同一套 Bypass，并在声明成功前执行 Baked → Live → Baked 往返验证。
+
+### 4.3 List 与动态 Scale
+
+旧 List Bake 在镜像骨骼和 `Scale_Expression` 下改变复合变换语义，而且只保留原 Scale 会丢失动态结果。2.x 改为直接 Original/Baked PRS 引用切换，并逐帧写 Position/Rotation/Scale。
+
+### 4.4 Rotation 属性、Controller 与 Key 的语义差异
+
+`2.0.0` 报告中 Expected Local TM 与 Actual Local TM 基本互为转置。报告还显示当时“采样 Rotation = 写入 Controller Rotation”，但 World Basis 错误，证明隐藏 Solver 的 `node.rotation` 不能直接写入 `Linear_Rotation.value`。
+
+`2.0.1` 改为采样 `solver.rotation.controller.value`，第 0 帧大范围转置错误消失。
+
+`2.0.2` 尝试直接写 `RotationKey.value` 后，第 0 帧再次出现约 `164°` 和 Basis `1.979` 的错误；报告显示 Key 写入值与 Controller 读回值在四元数向量部分取反。当前已撤销 Key 直写，恢复 Controller `.value` 语义。
+
+### 4.5 MAXScript Time/ticks 共同根因
+
+旧代码使用：
+
+```maxscript
+local evaluationTime = evaluationFrame * ticksPerFrame
+sliderTime = evaluationTime
+```
+
+`evaluationTime` 是 Integer。MAXScript 在时间上下文中把普通数字解释为帧，因此第 1 帧产生的 `160` 被当成第 160 帧，而不是 160 ticks。该错误同时影响：
+
+- Spring Bypass 的 Rest 时间；
+- 精确预览；
+- 顺序采样；
+- `addNewKey`；
+- Baked 验证；
+- 独立诊断脚本。
+
+证据是 `2.0.1` 报告的第 1、2、3 帧复杂矩阵完全相同，错误位置统一打印为 `160`。`2.1.0` 统一改为：
+
+```maxscript
+local evaluationTime = 1f * evaluationFrame
+```
+
+并在验证报告增加：
 
 ```text
-Baked：Slot 1 = 100，Slot 2 = 0，Active = 1
-Live： Slot 1 = 0，Slot 2 = 100，Active = 2
+采样时间范围：0f -> 50f | Time
 ```
 
-该用法已对照本机 3ds Max 2024.2 自带 MassFX `px_bake.ms`。当前工具只 Bake Position 和 Rotation，Scale 保持原控制器。
+该根因由 Autodesk 2024 MAXScript Time Values 官方文档确认；`2.1.0` 尚待用户在真实 Max 复测。
 
-### 3.6 全局偏好与异常恢复
+### 4.6 预检、验证与回滚
 
-脚本捕获并恢复：
+自动预检分通过、警告、阻断。镜像/非均匀 Scale 为警告，最终由 World Basis 判断；无效数值、零轴、不可逆矩阵、引用损坏和外部部分替换直接阻断。
 
-- `SpringQuickEditMode`；
-- `SpringRollingStart`；
-- Bake 写键期间的 `maxOps.autoKeyDefaultKeyOn`；
-- `sliderTime`；
-- Progress UI；
-- Live/Baked 权重和 Spring Bypass 状态。
+失败后：
 
-`busy` 阻止重复操作。Bake 失败时优先恢复 Live Spring、Original 权重、原 Quick Edit 偏好和时间滑块，再显示错误。
+- 恢复实时 Spring；
+- 回滚本次无效直接 PRS；
+- 原 Controller 不清除；
+- `HasBake=false`；
+- 自动写入详细 TXT。
 
-## 4. 已确认问题、根因和解决方式
+## 5. 版本诊断结论
 
-### 4.1 安装脚本顶层 `local` 导致编译失败
+| 版本 | 报告结论 | 当前处理 |
+| --- | --- | --- |
+| `1.2.4/1.2.5` | 用户确认曾成功生成 Bake；后续主要问题是 Live/Baked 往返 | 保留其“世界采样、静态 Bypass 复用、往返验证”原则 |
+| `1.2.8~1.9.0` | 增加预检、Scale、详细报告；仍受镜像/动态 Scale 表示影响 | 诊断和回滚继续保留 |
+| `2.0.0` | 直接 PRS；Rotation Local TM 转置，第 0 帧大误差 | Rotation 改采 Controller 值 |
+| `2.0.1` | 第 0 帧转置修复；第 1~3 帧相同，错误打印 `160` | 定位为时间类型错误 |
+| `2.0.2` | Key 直写使 Rotation 第 0 帧回退 | 撤销 Key 直写 |
+| `2.1.0` | 显式 `Time`，恢复 Controller 写入，诊断增加时间类型 | 静态检查通过；真实 Max 待验 |
 
-**现象**：
+## 6. 当前验证状态
 
-```text
-Compile error: no local declarations at top level: sourceDir
-```
+### 6.1 已完成
 
-**根因**：旧安装脚本在 MAXScript 顶层使用 `local`，且安装流程不符合用户“拖 `.ms` 直接运行”的交付要求。
+- `2.0.0~2.0.2` 用户侧真实 Max 报告已用于定位矩阵、Controller 和时间问题。
+- 最新失败均正确回滚，报告显示 12 根骨骼 `HasBake=false`、`Storage=None`。
+- `2.1.0` 主脚本完成括号/字符串、版本、显式 Time、三类 Key 写入和旧 ticks 时间用法静态检查。
+- `SpringRigDiagnostic.ms` 同步为显式 Time。
+- Autodesk 2024 官方文档确认普通数字按帧解释、Time 转 Integer 才返回 ticks。
+- 用户备份目录未修改，Codex 未启动 3ds Max。
 
-**修正**：删除 `Install_SpringAnimationBaker.ms` 和 `.mcr`，核心工具保持单文件直接运行。
+### 6.2 尚未完成
 
-### 4.2 `catch` 内带参数重抛导致编译失败
+- `2.1.0` 尚未在目标场景完成兼容 Bake。
+- 尚未确认新报告显示 `采样时间范围：0f -> 50f | Time`。
+- 尚未确认 51 个 Position/Rotation/Scale Key 落在 `0f..50f`。
+- 尚未获得兼容 Bake 的 Position/Basis 通过结果。
+- 严格 Bake、重复 Bake、Live/Baked 往返、保存重开、Unbake 尚待本版验证。
+- 尚未量化 Baked/Bypass 性能，也未完成 FBX → Unity 验收。
 
-**现象**：
+## 7. 下一轮验收顺序
 
-```text
-only throws without arguments are permitted in catch expressions
-```
+1. 另存场景备份，确认动画范围 `0..50`、Step `1`。
+2. 拖入主脚本，确认标题 `2.1.0`。
+3. 自动扫描并核对 4 个 Spring、12 根 Bake 骨骼。
+4. 先执行兼容 Bake。
+5. 若成功，检查每条直接 PRS 为 51 Key，并执行 Live/Baked 多次往返。
+6. 若失败，先看报告的 `采样时间范围`；必须是 `0f -> 50f | Time`。
+7. 再按首个超限父节点分析 Rotation/Scale，不从子级放大误差倒推。
+8. 兼容 Bake 通过后再测严格 Bake。
+9. 保存重开，验证状态和 Unbake。
+10. 导出 FBX，在 Unity 核对胸部蒙皮骨动画、轴向、单位和帧范围。
 
-**根因**：使用 `throw (getCurrentException())` 重新抛出。
+## 8. 维护检查单
 
-**修正**：所有 `catch` 内重抛统一为 `throw()`；业务校验仍可在非 catch 路径使用 `throw "错误文本"`。
-
-### 4.3 自动扫描 Bake 骨骼调用 `undefined`
-
-**现象**：
-
-```text
-Type error: Call needs function or class, got: undefined
-```
-
-**根因**：`scanBreastBakeNodes` 在 `struct` 中调用了声明在它之后的 `configuredSpringNodes`，当前 MAXScript 解析路径将未解析成员当作 `undefined`。
-
-**修正**：把配置访问器移动到扫描函数之前；扫描按钮错误信息增加“自动扫描胸部 Bake 骨骼失败”上下文。
-
-**验证边界**：声明顺序静态检查已通过；仍需在目标场景再次确认自动扫描实际返回 12 根骨骼。
-
-### 4.4 UI 标题越界和字体过小
-
-**现象**：原生 Spinner 的 `Quick Edit 回退帧` 标题向左越过 GroupBox；模式和 Bake 按钮字体偏小，英文内部术语对美术不直观。
-
-**修正**：
-
-- 窗口扩大到 `620 × 870`；
-- Spinner 使用空标题，独立 `.NET Label` 显示中文；
-- 模式按钮使用 `System.Windows.Forms.Button` 和微软雅黑；
-- 参数标签 `10pt`，模式按钮 `10.5pt`，Bake 操作按钮 `11.5pt`；
-- `.NET` Click 事件使用 MAXScript 的单参数签名；
-- 按钮改为“只重算最近帧”“完全停止弹簧运算”“从起始帧完整求解”“继续调整”“播放/导出”等结果导向文本。
-
-用户截图已确认 `.NET` Bake 按钮能显示和点击区域正常；最终 `1.2.2` 只在 `1.2.1` 基础上更新两个切换按钮文案。
-
-## 5. 当前验证状态
-
-### 5.1 已完成
-
-- 本机 `Autodesk.Max.xml` 已确认 `IInterface8.SpringQuickEditMode` 与 `SpringRollingStart` 的语义。
-- 3ds Max 自带 MassFX `px_bake.ms` 已确认 `Position_List`、`Rotation_List`、`Boolean_Float`、权重和 Active Slot 用法。
-- Spring 插件静态信息已确认 `PositionSpring`、`Point3Spring` 类名候选。
-- 目标 `.max` 静态字符串已确认 12 根 `Breast_*_bone_*` 名称和多个 `Point*` 节点。
-- 用户已在 3ds Max 中成功打开工具窗口；早期 Spring 自动扫描和无模拟状态有 UI 运行记录。
-- `1.2.2` 源码已完成括号/字符串、关键 Token、成员声明顺序、`.NET` 单参数事件签名和 UI 文案静态检查。
-- 功能 README 已记录运行方式、四态工作流、安全边界、诊断和验收建议。
-
-### 5.2 尚未完成
-
-- 尚未获得修正成员声明顺序后“自动扫描胸部 Bake 骨骼 = 12 根”的最终截图/Listener 记录。
-- 尚未在目标场景完成“精确预览到当前帧”的逐帧结果验收。
-- 尚未完成首次完整 Bake、连续两次 Bake 一致性、Live/Baked 逐帧 A/B。
-- 尚未验证 Baked 状态确实消除 Spring 播放/编辑卡顿的量化数据。
-- 尚未验证保存重开后 Bypass/Baked 状态和 Unbake 恢复。
-- 尚未验证非均匀缩放、Shear、约束或特殊父级对 Parent Local Position/Rotation 的影响。
-- 尚未导出 FBX 并在 Unity 中确认最终蒙皮骨骼动画、轴向、单位和帧范围。
-- 自动运行 `3dsmaxbatch.exe` 加载当前脚本曾被代理执行环境拒绝，因此不能用该结果替代用户侧真实 Max 测试。
-
-## 6. 推荐验收顺序
-
-1. 备份目标 `.max`，把动画范围设置为真实动作范围。
-2. 拖入 `SpringAnimationBaker.ms`，确认标题版本 `1.2.2` 和 UI 无越界。
-3. 自动扫描直接 Spring，核对 Helper 列表和当前 Controller 类型。
-4. 自动扫描胸部 Bake 骨骼，确认左右各 6 根、共 12 根，且没有 `Point*`。
-5. 分别在普通 Spring、快速编辑、无模拟编辑下拖动相同主骨，记录延迟。
-6. 从起始帧执行精确预览到代表帧，检查 Spring 运动连续。
-7. 以 `sampleStep=1` 完整 Bake；逐帧切换 Live/Baked 做 A/B。
-8. 在同一输入上再 Bake 一次，确认结果一致。
-9. 切 Baked 后 Scrub/K 帧，确认 Spring Helper 不再参与实时求值。
-10. 保存、关闭、重开，验证 Live/Baked 和 Unbake。
-11. 导出 FBX，在 Unity 中核对胸部蒙皮骨骼动画、帧范围、轴向和单位。
-
-## 7. 维护检查单
-
-- [ ] 保持单 `.ms` 拖入运行；除非用户明确改变部署方式，不新增安装器或 `.mcr`。
-- [ ] 只接管直接 Position Spring；未知/嵌套 Controller 阻断并报告。
-- [ ] Spring Helper 与最终 Bake 骨骼分开配置，禁止交集。
-- [ ] Quick Edit 只用于近似编辑；精确预览和 Bake 强制关闭。
-- [ ] 有历史依赖的 Spring 从动作起始/Warm-up 按时间顺序求值。
-- [ ] 采样阶段不写关键帧；全部临时轨道成功后才提交。
-- [ ] Live/Baked 切换保留 Bake；Unbake 才恢复原控制器并清理包装。
-- [ ] 恢复前检查当前 Controller 仍是工具创建对象，外部修改时停止。
-- [ ] 所有失败路径恢复时间、Quick Edit、Auto Key、进度和已修改节点。
-- [ ] UI 改动在真实 3ds Max 中文界面和团队 DPI 下检查，`.NET` 事件使用单参数签名。
-- [ ] 修改 Custom Attribute 字段时单独设计 Schema 迁移，不只更新工具版本字符串。
-- [ ] 静态检查后仍需完成真实 Max、真实场景和 Unity 消费者验证。
+- [ ] 保持单 `.ms` 拖入运行，不默认引入安装器。
+- [ ] 不修改 `SpringAnimationBaker - 副本`。
+- [ ] Spring Helper 与最终 Bake 骨骼分开配置。
+- [ ] Quick Edit 只作近似；精确预览/Bake 强制关闭。
+- [ ] 所有时间 API 输入必须是 `Time`，禁止把 ticks Integer 直接传入。
+- [ ] 诊断必须打印采样时间首尾和类型。
+- [ ] 采样阶段不写 Key；健康检查通过后才写。
+- [ ] Position/Rotation/Scale 使用各自验证过的 Controller 语义。
+- [ ] 动态 Scale 必须逐帧 Bake；Shear 由 Basis 验证决定是否支持。
+- [ ] 兼容与严格 Bake 都执行 World A/B、往返和失败回滚。
+- [ ] Live/Baked 只切输出；Unbake 才清理 Bake。
+- [ ] 外部替换 Controller 时阻断，不强制覆盖。
+- [ ] UI 必须有进行中、成功和失败反馈。
+- [ ] 静态检查不能替代真实 Max、真实 Rig 和 Unity 验证。
