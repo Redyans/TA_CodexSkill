@@ -230,6 +230,59 @@ Canvas.RenderOverlays
 
 `vertexColorAlwaysGammaSpace = false` 是当前 Shader 的输入契约；不要只勾选该开关。若未来改为 `true`，必须同步删除/分支处理 Shader 对顶点色的再次 `LinearToSRGB`，并覆盖所有嵌套与运行时新建 Canvas。
 
+### PACG-UI-17｜RectMask2D 真机失效案例：动态参数与变体剥离
+
+#### 项目事实与现象
+
+在 `GammaUIDefault` / `GammaUIDefaultSoftMaskable` 上，编辑器中 `RectMask2D` 可裁剪，打包真机曾出现 Image 完全不受矩形裁剪的现象。UGUI 本身的实现链路已在当前工程的 `com.unity.ugui@1.0.0` 源码中确认：`RectMask2D.PerformClipping` 计算合成矩形后调用 `MaskableGraphic.SetClipRect`，再由 `CanvasRenderer.EnableRectClipping` 写入当前 Renderer 的状态；`MaskableGraphic.Cull` 另行处理 `canvasRenderer.cull`。因此没有证据表明需要把 `RectMask2D` 换成 `Mask`。
+
+目标 Shader、材质和剥离配置的事实来源：
+
+| 项目 | 当前证据 |
+| --- | --- |
+| Image Shader | `Assets/Shader/UI/GammaUI/GammaUIDefault.shader` |
+| SoftMaskable Shader | `Assets/Shader/UI/GammaUI/GammaUIDefaultSoftMaskable.shader` |
+| 对照实现 | `Assets/Shader/UI/GammaUI/GammaUIAdditive.cginc` 使用普通 `multi_compile` 和 `UnityGet2DClipping` |
+| 典型材质 | `Assets/AssetRaw/Materials/GammaUIDefault.mat`，静态材质 Keyword 为空 |
+| 自定义剥离器 | `Assets/TEngine/Editor/ShaderStripping/TEngineShaderVariantStripper.cs` |
+| 剥离 Profile | `Assets/TEngine/Editor/ShaderStripping/ShaderStrippingProfile.asset`：`Enabled = 1`、`EnableAssetsLocalComboStrip = 1`、`FallbackPolicy = 0 (KeepAll)` |
+| SoftMask 注册 | `Assets/ProjectSettings/UISoftMaskProjectSettings.asset` 显式登记 `Valkyria/UI/GammaDefault` → `Hidden/Valkyria/UI/GammaDefault (SoftMaskable)`；当前静态变体条目主要看到 `SOFTMASKABLE` 与 `SOFTMASKABLE UNITY_UI_ALPHACLIP`，未看到 `UNITY_UI_CLIP_RECT` 组合，但这不等于最终包一定缺失 |
+
+#### 根因判断与兼容性风险
+
+最强根因候选是 `UNITY_UI_CLIP_RECT` 的 Keyword 作用域与本项目本地组合剥离策略不兼容：
+
+1. 历史版本在两个 Shader 的 `GammaUI` 与 `UniversalForward` Pass 中使用 `#pragma multi_compile_local _ UNITY_UI_CLIP_RECT`。
+2. `ShaderVariantUsageCollector` 以 `Material.enabledKeywords` 建立材质组合；没有启用 Keyword 的材质会记录为空字符串/空本地签名。
+3. `TEngineShaderVariantStripper.GetLocalKeywordNameSet` 只把不可被全局覆盖的本地 Keyword 纳入签名；`multi_compile_local` 的 `UNITY_UI_CLIP_RECT` 会进入该集合。
+4. 对 `Assets/` Shader 开启本地组合剥离后，材质只提供空组合时，裁剪变体可能被判断为未使用而从最终包剥除。运行时 `CanvasRenderer` 仍会设置裁剪矩形，但 Shader 没有 `UNITY_UI_CLIP_RECT` 分支可执行，表现为“整张 Image 可见”。
+
+这是**构建链静态推导的高概率解释**，尚未用出问题的最终 Android 包的 Variant 日志或设备 Frame Debugger 证明。`FallbackPolicy = KeepAll` 只控制“完全没有采集到材质证据”的 Shader；材质已被收集且空组合形成一条记录时，仍可能进入本地组合剥离。
+
+另一个真实但次优先的风险是参数布局：`_TextureSampleAdd`、`_ClipRect`、`_UIMaskSoftnessX`、`_UIMaskSoftnessY` 属于 CanvasRenderer 动态输入。若放在 `UnityPerMaterial`，在 SRP Batcher 与自定义 `GammaUICompositeFeature` 的 `context.DrawRenderers` 路径中可能读取默认值、前一个 Renderer 的值或过期矩形。它更能解释“矩形错误/串值/Softness 失效”，不能单独证明“完全不裁剪”。
+
+#### 已落地修正与边界
+
+当前工作区分支 `feature/TA_modelImportSetting` 的 HEAD `7f65cf994b` 位于相关修正之后，已包含以下 Shader 提交：
+
+- `576efcc32e`：将 `_TextureSampleAdd`、`_ClipRect`、`_UIMaskSoftnessX/Y` 移出 `UnityPerMaterial`，两个 Shader 的两个 Pass 同步调整；
+- `00fe97e973`：将 `UNITY_UI_CLIP_RECT` 与 `UNITY_UI_ALPHACLIP` 从 `multi_compile_local` 改为普通 `multi_compile`，两个 Shader 的两个 Pass 同步调整。
+
+当前源码仍保留原有的 `UNITY_UI_CLIP_RECT` 计算和 SoftMask 分支；修复目标是保证 UGUI 动态参数和运行时 Keyword 能到达同一套裁剪逻辑，而不是改业务脚本或改变 Mask 类型。由于 Gamma UI 使用 `GammaUICompositeFeature` 的 `ShaderTagId("GammaUI")` / `context.DrawRenderers`，必须把 Shader 修复、RendererFeature 路径和变体构建作为一条链复验。
+
+#### 验证证据、未验证项与回退
+
+落地后按以下顺序验证：
+
+1. 在 `RectMask2D` 下让 Image 明显越出边界；同一 Image 临时改用 `UI/Default`，确认 `validRect`、`canvasRenderer.cull` 和 RectMask2D 行为正常。
+2. 换回 `GammaUIDefault`，在 Frame Debugger/RenderDoc 确认实际 `Used Shader/Pass = GammaUI`、当前 `_ClipRect` 为有限且正确的矩形，并确认 `UNITY_UI_CLIP_RECT` 变体存在。
+3. 分别验证 `GammaUIDefault` 与 `GammaUIDefaultSoftMaskable`；覆盖子节点移动/缩放、嵌套 RectMask2D、非零 Softness、Alpha Clip 和 SceneView fallback。
+4. 重新导入 Shader/Material，并重新收集、构建和替换 YooAsset/AssetBundle；不能用旧 Bundle 证明新 Shader 已进入包。保存 Shader stripping 日志或 Variant Capture，记录两个 Shader、两个 Pass 的实际保留组合。
+
+当前仅有源码、提交历史和配置的静态证据；没有完成重新构建 Android 包、Unity Frame Debugger/RenderDoc 抓帧或真机 A/B。因此不能把 `00fe97e973` 已存在等同于“用户手上的问题包已修复”。若仍失败，先按“无 Draw（CPU Cull/Canvas/Layer）→ 有 Draw 但无像素（Pass/变体/参数）”分类，不要直接改 Prefab。
+
+安全回退仍遵循 [Gamma UI 通用排查与回退参考](../../references/gamma-ui-color-domain-and-renderer-feature.md)：先恢复受影响 Image/子树的旧材质，再禁用 Gamma Feature，保留 Shader/Feature GUID 和 Bundle 引用，待资源与包体确认后再清理。不要把 RectMask2D 改成 Mask、用脚本 Alpha 伪造裁剪或删除 Gamma 材质来掩盖变体问题。
+
 ## 5. 正确使用和迁移边界
 
 ### PACG-UI-09｜普通 Image 的当前使用方法

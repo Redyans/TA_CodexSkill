@@ -150,6 +150,18 @@ Runtime、Editor、RendererFeature、VolumeComponent、ShaderGUI/旧式 Material
 
 处理该资源库时先以 Unity `AnimationClip.humanMotion` 确认 Humanoid 状态，再用 Motion 的 `15%/50%/85% × 0°/45°/90°` 或 Pose 三视图完成语义复核。动画、预览图、已确认配对音频与各自 `.meta` 以资源组为单位迁移；不能只搬 `.anim`，也不能凭文件名或帧差删除疑似非 Humanoid 资源。
 
+### PRJ-TOOL-20｜通用模型导入规则采用预设源与 ProjectSettings 快照分离
+
+当前模型导入规则位于 `Assets/GameScripts/Editor/ModelImportManualSettings.cs`、`ModelImportRulePreset.cs` 和 `ModelAutoImportSettingsPostprocessor.cs`，预设资产放在 `Assets/Editor/TA_Tools/Common/ModelImportPresets/`，入口为 `Project Settings > ProjectACG > Model Import`。它独立于 `TA_Tools > TA > Model > FBX 导入设置批处理`，不引用或调用该窗口。
+
+规则按“手动目录排除 → `whitelist` Label → 最深目录 → 最具体文件名”解析；文件名规则可整页覆盖 `Model / Rig / Animation / Materials`，未覆盖页继承目录规则。导入回调只读 `ProjectSettings/ModelImportManualSettings.asset` 的快照；已有模型必须通过显式“应用并重新导入”或单目录重导入更新。完整实现、已解决的命名空间/深拷贝/测试锁问题和验证边界见 [通用模型导入规则 Profile](model-import-rule-pipeline.md)；跨项目方法见 [Unity 模型导入规则与编译快照参考](../../references/unity-model-import-rules-and-snapshot.md)。
+
+### PRJ-TOOL-18｜CharacterPrefabBuilder 按 FBX 槽数同步材质并保留旧索引
+
+当前 `CharacterPrefabBuilder` 的基础生成链以 FBX 实例 Renderer 的 `sharedMaterials.Length` 作为最终材质槽数量事实源，不能用外置 Mesh 的 `subMeshCount` 或分析窗口预览值代替实际写入。更新已有 Prefab 时，重叠索引的非空旧材质继续保留，新增槽从 FBX 对应索引补入，减少槽只截掉尾部；工具不自动创建 `.mat`，源槽为空或材质缺失必须显式暴露。
+
+主 Renderer、`RefreshFromTemplate`、`PreserveExistingAdditive` 和 LOD1 创建旁路必须使用同一材质绑定策略，避免主模型修复而 LOD 仍被旧数组覆盖。外置 Mesh、临时 `ModelImporter` 预设、坐标重建、典型 `emotion` 两 SubMesh/一材质槽问题、实现方式、测试矩阵和未验证边界见 [CharacterPrefabBuilder 生成与材质槽同步 Profile](character-prefab-builder-generation-and-material-sync.md)；ModelImporter 预设字段、原值快照/恢复、双工程同步边界和验证证据见 [CharacterPrefabBuilder ModelImporter 预设 Profile](character-prefab-model-importer-preset.md)。
+
 ## 7. 项目交付检查
 
 - 新工具路径、菜单和类名符合 PRJ-TOOL-01 至 PRJ-TOOL-03，或在 Tech README 记录历史例外。
@@ -163,4 +175,6 @@ Runtime、Editor、RendererFeature、VolumeComponent、ShaderGUI/旧式 Material
 - OutsourceMiniProjectBuilder 任务已按 PRJ-TOOL-15 检查最小依赖闭包、脚本/RendererFeature/VolumeComponent 分界、内部/强制模式边界、临时副本清理、更新备份、报告和目标工程 Batch Validation 入口；Unity EditMode 与目标工程实测未完成时必须在交付中明示。
 - AnimationBatchScreenshotTool 任务已按 PRJ-TOOL-16 检查兼容模式回退、Pose/短动画筛选、多个 FBX Clip 展开、按 Clip 帧率采样、覆盖输出和 Unity Editor 实际出图边界。
 - Booth 动画资源分类、改名或迁移任务已按 PRJ-TOOL-17 检查 Humanoid 导入结果、预览图完整性、资源组成员、GUID、内部名称、路径冲突和代表性重新导入。
+- 通用模型导入规则任务已按 PRJ-TOOL-20 检查预设/快照分离、目录/文件名优先级、白名单/手动排除、四页 `ModelImporter` 映射、显式重导入、Meta/GUID、与旧 FBX 批处理隔离及 Unity 实际导入边界。
+- CharacterPrefabBuilder 的 Mesh/材质同步任务已按 PRJ-TOOL-18 检查 FBX 源数组、旧索引保留、新槽补入、尾部截断、空槽、Refresh/Additive、LOD1 旁路、外置 Mesh、导入设置恢复和实际 Prefab 保存/重开结果。
 - README 已新增/更新；最终回复包含入口、验证和限制。

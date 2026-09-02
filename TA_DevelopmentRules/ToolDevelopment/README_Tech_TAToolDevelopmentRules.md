@@ -196,6 +196,7 @@ CORE 不包含固定目录、菜单、Unity 补丁版本、历史工具位置或
 ## 资源加载与规则维护
 
 - 新增简单窗口或查询工具：读取 TOOL-CLS-01、TOOL-UI-01、当前 Profile、目标附近同类窗口和 [references/tool-development-patterns.md](references/tool-development-patterns.md)。
+- Windows 下同时管理多个独立 Unity 工程、区分 VS Code 窗口/工程路径/Git 分支时：读取 [references/development-environment-window-and-branch-context.md](references/development-environment-window-and-branch-context.md)；该文档只记录开发环境显示层、工具使用和验证边界，不改变 Unity 运行时或 Player 构建规则。
 - 新增扫描、批量写入、生成或迁移工具：额外读取 TOOL-ARC-01、TOOL-OPS-01、TOOL-OPS-02 和 [references/tool-integration-checklist.md](references/tool-integration-checklist.md)。
 - 对 Humanoid 动画进行截图识别、分类、双语改名或资源组迁移：额外读取 [Unity 动画资源编目、识别与安全迁移参考](references/animation-resource-catalog-and-safe-migration.md)；ProjectACG 任务再读取 [动画资源编目与双语命名 Profile](Profiles/ProjectACG/animation-resource-catalog-and-bilingual-naming.md)。
 - Mini 工程、外包/内部工程生成或资源裁剪：额外读取 TOOL-ARC-01、TOOL-OPS-01、TOOL-OPS-02、TOOL-VAL-02、TOOL-VAL-03 和 [Unity Mini 工程导出与交付参考](references/outsource-mini-project-builder-delivery.md)；ProjectACG 任务再读取 [外包 Mini 工程生成工具 Profile](Profiles/ProjectACG/outsource-mini-project-builder.md)。
@@ -204,8 +205,11 @@ CORE 不包含固定目录、菜单、Unity 补丁版本、历史工具位置或
 - 直接编辑 FBX 源资源：额外读取 TOOL-CMP-01、TOOL-ARC-02、TOOL-ARC-03、TOOL-OPS-01、TOOL-VAL-02、TOOL-VAL-03 和 [references/fbx-source-asset-editor-development.md](references/fbx-source-asset-editor-development.md)；ProjectACG 任务再读取 [Profiles/ProjectACG/fbx-source-asset-editor.md](Profiles/ProjectACG/fbx-source-asset-editor.md)。
 - 预览、Inspector、Scene GUI 或临时渲染工具：额外读取 TOOL-ARC-02、TOOL-UI-02，并检查现有 Editor 生命周期与资源释放实现；涉及 `AnimationMode`、Selection 目标锁定、取消预览或源模型姿态恢复时，读取 [Unity 动画预览工具生命周期与姿态恢复参考](references/unity-animation-preview-lifecycle-and-pose-restoration.md)，ProjectACG 任务再读取 [AnimationClipPreviewer Profile](Profiles/ProjectACG/animation-clip-previewer.md)。
 - 动画批量截图或短 Clip 代表帧任务：额外读取 TOOL-CMP-01、TOOL-ARC-01、TOOL-OPS-01、TOOL-OPS-02、TOOL-VAL-02，以及 [动画批量截图与短 Clip 采样参考](references/animation-batch-screenshot-and-clip-sampling.md)；ProjectACG 任务再读取 [AnimationBatchScreenshotTool Profile](Profiles/ProjectACG/animation-batch-screenshot-tool.md)。
+- 由流程预设驱动 FBX `ModelImporter`、并生成外置 Mesh/Material/Prefab：额外读取 TOOL-CMP-01、TOOL-ARC-01、TOOL-ARC-02、TOOL-ARC-03、TOOL-OPS-01、TOOL-OPS-02、TOOL-VAL-02、TOOL-VAL-03，以及 [Unity ModelImporter 预设与安全 Mesh/Prefab 生成参考](references/model-importer-preset-and-safe-mesh-generation.md)；ProjectACG `CharacterPrefabBuilder` 任务再读取 [CharacterPrefabBuilder ModelImporter 预设 Profile](Profiles/ProjectACG/character-prefab-model-importer-preset.md)。
 - Prefab 重新生成后的配置迁移、组件/引用恢复、层级对象子树、路径映射或第三方组件缓存重建：读取 TOOL-CMP-01、TOOL-ARC-01、TOOL-ARC-02、TOOL-UI-01、TOOL-UI-02、TOOL-OPS-01、TOOL-OPS-02、TOOL-VAL-02 和 [Prefab 模块快照、映射与事务恢复参考](references/prefab-module-snapshot-and-restore.md)；ProjectACG `CharacterPrefabBuilder` 任务再读取 [Character Prefab 模块快照与恢复 Profile](Profiles/ProjectACG/character-prefab-module-snapshot-and-restore.md)。
+- ProjectACG `CharacterPrefabBuilder` 的 FBX 生成、外置 Mesh、SubMesh/材质槽、旧材质保留、LOD、临时导入预设或坐标重建：读取 TOOL-CMP-01、TOOL-ARC-01、TOOL-OPS-01、TOOL-OPS-02、TOOL-VAL-01、TOOL-VAL-02 和 [CharacterPrefabBuilder 生成与材质槽同步 Profile](Profiles/ProjectACG/character-prefab-builder-generation-and-material-sync.md)。
 - 导入、构建、运行时协作或全局 Hook：额外读取 TOOL-ARC-03、TOOL-VAL-03；先确认显式局部入口是否足够。
+- 模型导入规则、目录/文件名匹配或 `OnPreprocessModel`：额外读取 TOOL-ARC-03、TOOL-OPS-01、TOOL-OPS-02、TOOL-OPS-03、TOOL-VAL-01、TOOL-VAL-02、TOOL-VAL-03，以及 [Unity 模型导入规则与编译快照参考](references/unity-model-import-rules-and-snapshot.md)；ProjectACG 任务再读取 [通用模型导入规则 Profile](Profiles/ProjectACG/model-import-rule-pipeline.md)。
 - Shader、材质、变体或 RendererFeature 工具：同时读取 Shader 开发模块及其引用资料，二者的验证均不可省略。
 
 资源加载以目标功能和风险为边界。Profile、目标资产或 Unity API 与外部模板冲突时，以当前工程可验证事实为准，并把差异记录到 Profile 或候选中。

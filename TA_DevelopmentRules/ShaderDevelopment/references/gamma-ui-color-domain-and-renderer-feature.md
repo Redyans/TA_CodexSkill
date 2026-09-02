@@ -171,6 +171,87 @@ TMP SDF Atlas 是数据纹理。字体颜色、Outline、Underlay、Glow、Gradi
 
 架构 B 若把目标 UI 完整交给同一 Draw/DepthStencil，可以保留组内原生排序和 Mask；但 Opaque 与 Transparent 两个 Queue 仍不会仅凭 Sibling 顺序跨队列交错。需要精确交错时，统一 RenderQueue/绘制组或拆 Canvas，不要只挪 `RenderPassEvent`。
 
+### GUI-19｜UGUI 裁剪参数是 per-renderer 输入，不是固定材质输入
+
+`RectMask2D` 不会给 Image 生成一个新的几何网格，也不依赖 Stencil。UGUI 的标准链路是：
+
+```text
+RectMask2D.PerformClipping
+→ MaskableGraphic.SetClipRect / SetClipSoftness
+→ CanvasRenderer.EnableRectClipping / clippingSoftness
+→ UGUI 在每个 Renderer 提交时更新裁剪状态
+→ Shader 消费 _ClipRect、_UIMaskSoftnessX/Y 等值
+```
+
+因此应按“每个 CanvasRenderer 的动态输入”维护下列典型参数：
+
+| 参数 | 语义 | 维护边界 |
+| --- | --- | --- |
+| `_ClipRect` | 当前 Renderer 的合成裁剪矩形 | 由 UGUI/CanvasRenderer 更新；不是材质常量 |
+| `_UIMaskSoftnessX/Y` | 当前矩形的软边参数 | 与 `SetClipSoftness` 同步；不能只读默认值 |
+| `_TextureSampleAdd` | UGUI 纹理采样补偿 | 由 UI 提交路径维护；不要用业务脚本替代 |
+| `_MainTex_ST`、`_Color` | 材质/纹理接口 | 可留在 `UnityPerMaterial`，并保持 SRP Batcher 布局 |
+
+使用 SRP Batcher 或自定义 `DrawRenderers` 时，动态裁剪参数应按目标 Unity/UGUI 版本的 `UI/Default` 绑定方式声明在 `UnityPerMaterial` 外，避免被当作跨 Renderer 共享的材质常量；具体布局必须以该版本源码和实测绑定为准，不能跨版本照抄。**这不是把所有参数都移出 CBUFFER 的理由**：真正的每材质值仍应留在 `UnityPerMaterial`，并且两个 Pass 的布局必须一致。
+
+### GUI-20｜先区分 CPU Cull、GPU Clip 和 Pass 路径
+
+“RectMask2D 不生效”至少有三类不同故障，修复入口完全不同：
+
+1. **CPU Cull**：`validRect == false` 或裁剪矩形不与根 Canvas 重叠，`MaskableGraphic.Cull` 会设置 `canvasRenderer.cull = true`，Frame Debugger 中通常没有该 Graphic 的 Draw。
+2. **GPU Clip 未执行**：Draw 存在，但 `UNITY_UI_CLIP_RECT` 变体不存在、未被选中，或 `_ClipRect`/softness 不是当前 Renderer 的值；此时网格仍提交但像素没有按矩形衰减。
+3. **绘制路径错误**：对象走了 `Screen Space - Overlay`、默认透明 Pass 或其他 ShaderTag，未进入目标 Gamma `DrawRenderers`；这时不能只检查 Gamma Pass 的 HLSL。
+
+最小判别顺序：
+
+```text
+Draw 是否存在
+→ CanvasRenderer.cull / validRect
+→ 实际 Used Shader/Pass 与 ShaderTag
+→ UNITY_UI_CLIP_RECT 是否在当前变体
+→ _ClipRect 是否为有限且正确的屏幕/Canvas 空间矩形
+→ _UIMaskSoftnessX/Y 与嵌套 RectMask2D 是否更新
+```
+
+不要把“看不到 Draw”直接归因于 Shader 裁剪，也不要把“Draw 存在但整张图片可见”归因于 `RectMask2D` 组件本身损坏。
+
+### GUI-21｜运行时 UGUI Keyword 不应按材质静态组合盲目剥离
+
+`UNITY_UI_CLIP_RECT` 的开关来源是 UGUI 的运行时裁剪状态，而不是美术在材质 Inspector 中稳定勾选的功能。若项目的变体剥离器以 `Material.enabledKeywords` 推断局部组合：
+
+- `multi_compile_local` / `shader_feature_local` 会把该 Keyword 视为不可被全局覆盖的本地维度；材质只记录“空组合”时，裁剪组合可能被误判为未使用并剥除。
+- 普通 `multi_compile` 的 Keyword 不参与这种“材质本地组合”签名；它会保留由管线/运行时切换的组合，但会增加全局变体空间。
+
+选择原则：
+
+1. 由材质资产决定、可在收集阶段完整枚举的功能，优先 `shader_feature_local`，并验证所有存量材质和动态材质。
+2. 由 CanvasRenderer、RendererFeature、相机或运行时状态决定的 UGUI Keyword，优先使用对应的 `multi_compile`，或在剥离器中显式保留/排除该维度。
+3. 不得只因为“材质关键词为空”就断言无需裁剪变体；空材质组合与“运行时永远关闭裁剪”不是同一件事。
+4. `UNITY_UI_ALPHACLIP`、SoftMask 等其他 Keyword 必须分别追踪来源；不能把一次 `UNITY_UI_CLIP_RECT` 修复自动推广给所有 UI Keyword。
+
+变体报告必须同时列出：Keyword 来源、作用域、收集证据、剥离器规则、运行时切换点和最终包体中的实际保留组合。理论 pragma 组合或 Editor 编译通过都不能替代包体证据。
+
+### GUI-22｜自定义 DrawRenderers 必须验证 UGUI 参数和 Pass 选择
+
+当 Gamma UI 由 `ScriptableRenderPass` 的 `context.DrawRenderers` 绘制时，至少存在两层契约：
+
+- **Pass 选择契约**：`ShaderTagId`、`LightMode`、RenderQueue、Layer Mask 和相机类型必须匹配；Shader 文件中存在 `GammaUI` Pass 不等于本帧实际使用了它。
+- **Renderer 参数契约**：CanvasRenderer 设置的裁剪矩形、软边、顶点色、Stencil/ColorMask 和材质值必须在该 Draw 路径中保持可见；不得用全局材质或 `RenderStateBlock` 覆盖掉每个 Graphic 的状态。
+
+普通 `GammaUIDefault` 与 `GammaUIDefaultSoftMaskable` 需要分别覆盖 `GammaUI` 和 `UniversalForward` fallback。只修专用 Pass 会让 GameView 通过而 SceneView/未接入相机仍错误；只修 fallback 则可能让真正的 Gamma Draw 继续失效。SoftMaskable 的局部 Keyword/ShaderVariantCollection 也必须与 `UNITY_UI_CLIP_RECT` 的组合单独核对。
+
+### GUI-23｜“编辑器正常、真机失败”的构建链排查与回退
+
+出现编辑器正常、打包真机不裁剪时，按以下顺序收集证据：
+
+1. **复现约束**：让 Image 明显越出 RectMask2D；先将同一对象换成 `UI/Default` 做 A/B，确认 UGUI 的 `validRect`、`canvasRenderer.cull` 和矩形更新正常。
+2. **路径证据**：在目标设备或构建等价环境确认 Canvas 模式、Camera/Renderer、Layer、实际 `Used Shader/Pass` 和 `ShaderTagId`；区分 `Canvas.RenderOverlays`、默认透明 Pass 与 Gamma Draw。
+3. **数据证据**：抓取当前 Draw 的 `_ClipRect`、softness 和 `UNITY_UI_CLIP_RECT` 变体；检查嵌套 Mask、移动/缩放和非零 Softness。
+4. **构建证据**：查看 Shader stripping 日志/Variant Capture，确认 Gamma 普通与 SoftMaskable Shader 的 GammaUI/fallback 组合都进入最终包；YooAsset 或其他 AssetBundle 必须在 Shader 改动后重新收集、构建并替换旧包。
+5. **回退策略**：优先回退受影响 Image/子树材质或禁用 Gamma Feature，保留 Shader/Feature GUID 和资源引用，待包体确认后再清理；不要把 RectMask2D 改成 Mask 或用脚本 Alpha 伪造裁剪。
+
+最小验收矩阵至少包含：普通 Image、`GammaUIDefaultSoftMaskable`、嵌套 RectMask2D、子节点移动/缩放、非零 Softness、Alpha Clip、SceneView fallback、目标 Android 图形 API 和重新打包后的真机包。静态源码、Unity Editor 预览和旧 AssetBundle 均不能证明最终设备变体可用。
+
 ## 4. Canvas、默认材质与 RendererFeature
 
 ### GUI-11｜新建 Image/RawImage 不会因新增 Shader 自动改变默认材质
@@ -225,6 +306,8 @@ Canvas 的 `vertexColorAlwaysGammaSpace` 只定义顶点色输入，不会改变
 | 普通 Image 正常，视频/Camera RT 偏暗 | RenderTexture 输入域未适配 | `RenderTexture.sRGB`、GraphicsFormat、生产者与专用 Shader |
 | Mask 失效 | Mask 与子节点不共享 Draw/DepthStencil | Stencil 属性、ColorMask、Queue、RT |
 | 自定义 Shader 消失 | LightMode/ShaderTag 不在 Feature 支持列表 | 实际 Pass Tag 与 Draw Settings |
+| 编辑器可裁剪、真机整张 Image 可见 | 包体缺少运行时 `UNITY_UI_CLIP_RECT` 变体，或使用了旧 AssetBundle | stripping 日志/Variant Capture、设备实际 Used Shader/Pass、Bundle 构建版本 |
+| 裁剪边界错位、多个 Image 串值、Softness 失效 | CanvasRenderer 动态参数被当作材质常量或未随 Renderer 更新 | `_ClipRect`、`_UIMaskSoftnessX/Y`、SRP Batcher 与自定义 Draw 路径 |
 
 遇到“50% 不对”时先确认 UI 实际进入哪个 Pass，再确认目标 RT 的 GraphicsFormat/sRGB 标志，最后才调整转换函数。不要从 Inspector 勾选项直接推断 GPU Blend 域。
 
@@ -238,6 +321,8 @@ Canvas 的 `vertexColorAlwaysGammaSpace` 只定义顶点色输入，不会改变
 | 彩色 Sprite + Image Tint | 与美术参考一致 | 验证纹理、顶点色和材质色的乘法域 |
 | SpriteAtlas/RectMask2D | 采样和裁剪不变 | 验证 Default 接口 |
 | Mask 子树/SoftMask | 模板与软遮罩正确 | 验证共享 DepthStencil 与 Shader 接口 |
+| 嵌套 RectMask2D、移动/缩放、非零 Softness | 合成矩形和软边随 CanvasRenderer 更新 | 区分 `canvasRenderer.cull` 与片元裁剪 |
+| `GammaUIDefaultSoftMaskable` + RectMask2D | SoftMask 与矩形裁剪同时生效 | 单独确认局部 Keyword/SVC/包体组合 |
 | TMP 彩色字/Outline/Underlay/Glow | 与目标参考一致 | 验证 SDF 功能族 |
 | Additive/Multiply/粒子 | 单独参考图与 HDR/Bloom 契约 | 不能用普通 Alpha 结论代替 |
 | RawImage Texture2D/Video/Camera RT | 分输入域一致 | 验证动态纹理 |
