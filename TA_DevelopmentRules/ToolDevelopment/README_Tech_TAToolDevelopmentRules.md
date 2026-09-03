@@ -193,6 +193,8 @@ CORE 不包含固定目录、菜单、Unity 补丁版本、历史工具位置或
 - 原生 EditorWindow、中文专业术语和资源选择约定；
 - 批处理日志、构建/导入隔离、README 与角色 Shader 调试链路。
 
+RenderDoc 源码分支的版本与构建事实记录在 [RenderDoc v1.47 多 Vulkan 实例捕获案例](Profiles/RenderDoc/renderdoc-v1-47-multi-vulkan-case.md)；该 Profile 不属于 ProjectACG 运行时工具约定，只用于追踪本次 RenderDoc 改造的源码落点、Windows 交付产物和验证边界。
+
 ## 资源加载与规则维护
 
 - 新增简单窗口或查询工具：读取 TOOL-CLS-01、TOOL-UI-01、当前 Profile、目标附近同类窗口和 [references/tool-development-patterns.md](references/tool-development-patterns.md)。
@@ -209,6 +211,7 @@ CORE 不包含固定目录、菜单、Unity 补丁版本、历史工具位置或
 - Prefab 重新生成后的配置迁移、组件/引用恢复、层级对象子树、路径映射或第三方组件缓存重建：读取 TOOL-CMP-01、TOOL-ARC-01、TOOL-ARC-02、TOOL-UI-01、TOOL-UI-02、TOOL-OPS-01、TOOL-OPS-02、TOOL-VAL-02 和 [Prefab 模块快照、映射与事务恢复参考](references/prefab-module-snapshot-and-restore.md)；ProjectACG `CharacterPrefabBuilder` 任务再读取 [Character Prefab 模块快照与恢复 Profile](Profiles/ProjectACG/character-prefab-module-snapshot-and-restore.md)。
 - ProjectACG `CharacterPrefabBuilder` 的 FBX 生成、外置 Mesh、SubMesh/材质槽、旧材质保留、LOD、临时导入预设或坐标重建：读取 TOOL-CMP-01、TOOL-ARC-01、TOOL-OPS-01、TOOL-OPS-02、TOOL-VAL-01、TOOL-VAL-02 和 [CharacterPrefabBuilder 生成与材质槽同步 Profile](Profiles/ProjectACG/character-prefab-builder-generation-and-material-sync.md)。
 - 导入、构建、运行时协作或全局 Hook：额外读取 TOOL-ARC-03、TOOL-VAL-03；先确认显式局部入口是否足够。
+- 修改 RenderDoc 源码、处理 Vulkan 多实例捕获或构建 Windows 交付包：读取 [RenderDoc 多 Vulkan 实例捕获与 Windows 构建参考](references/renderdoc-vulkan-capture-and-windows-build.md) 和 [RenderDoc v1.47 多 Vulkan 实例捕获案例](Profiles/RenderDoc/renderdoc-v1-47-multi-vulkan-case.md)；同时以目标源码、官方构建文档和实际命令输出重新验证，不把符号改名当作性能优化或检测规避手段。
 - 模型导入规则、目录/文件名匹配或 `OnPreprocessModel`：额外读取 TOOL-ARC-03、TOOL-OPS-01、TOOL-OPS-02、TOOL-OPS-03、TOOL-VAL-01、TOOL-VAL-02、TOOL-VAL-03，以及 [Unity 模型导入规则与编译快照参考](references/unity-model-import-rules-and-snapshot.md)；ProjectACG 任务再读取 [通用模型导入规则 Profile](Profiles/ProjectACG/model-import-rule-pipeline.md)。
 - Shader、材质、变体或 RendererFeature 工具：同时读取 Shader 开发模块及其引用资料，二者的验证均不可省略。
 
