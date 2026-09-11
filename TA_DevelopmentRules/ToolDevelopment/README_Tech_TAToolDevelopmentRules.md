@@ -189,7 +189,7 @@ CORE 不包含固定目录、菜单、Unity 补丁版本、历史工具位置或
 当前 ProjectACG 的工具 Profile 位于 [Profiles/ProjectACG/README_Tech_ProjectACGTAToolsProfile.md](Profiles/ProjectACG/README_Tech_ProjectACGTAToolsProfile.md)，其中定义：
 
 - 新工具目录、类别、菜单和窗口命名；
-- 历史 Render、LYJ_Tool 与 Plugins/TA_Tools 的维护边界；
+- 历史 Render、LYJ_Tool 的维护边界，以及 `Assets/Plugins/TA_Tools` 已下线后的现状；
 - 原生 EditorWindow、中文专业术语和资源选择约定；
 - 批处理日志、构建/导入隔离、README 与角色 Shader 调试链路。
 
@@ -214,6 +214,10 @@ RenderDoc 源码分支的版本与构建事实记录在 [RenderDoc v1.47 多 Vul
 - 修改 RenderDoc 源码、处理 Vulkan 多实例捕获或构建 Windows 交付包：读取 [RenderDoc 多 Vulkan 实例捕获与 Windows 构建参考](references/renderdoc-vulkan-capture-and-windows-build.md) 和 [RenderDoc v1.47 多 Vulkan 实例捕获案例](Profiles/RenderDoc/renderdoc-v1-47-multi-vulkan-case.md)；同时以目标源码、官方构建文档和实际命令输出重新验证，不把符号改名当作性能优化或检测规避手段。
 - 在资源管理器里为包体文件增加一键安装入口、把 `adb` / `go-ios` 安装链路做成脚本工具，或排查「菜单不出现」「安装中途断开」「长任务看起来卡死」：读取 [移动设备一键安装工具链与右键集成参考](references/mobile-device-install-pipeline-and-context-menu.md)；同时验证注册位置、外壳刷新、并发互斥与设备侧安装结果，不以脚本退出码单独作为结论。
 - 模型导入规则、目录/文件名匹配或 `OnPreprocessModel`：额外读取 TOOL-ARC-03、TOOL-OPS-01、TOOL-OPS-02、TOOL-OPS-03、TOOL-VAL-01、TOOL-VAL-02、TOOL-VAL-03，以及 [Unity 模型导入规则与编译快照参考](references/unity-model-import-rules-and-snapshot.md)；ProjectACG 任务再读取 [通用模型导入规则 Profile](Profiles/ProjectACG/model-import-rule-pipeline.md)。
+- 把一套纯 Editor 工具目录从其他工程整体迁入、改写内部路径、处理目标工程同名工具或下线旧版运行时组件：额外读取 TOOL-CMP-01、TOOL-ARC-02、TOOL-OPS-01、TOOL-VAL-01、TOOL-VAL-03 和 [Unity Editor 工具集跨工程迁移与旧件下线参考](references/unity-editor-tool-cross-project-migration.md)；ProjectACG 地表工具任务再读取 [网格地形与地表工具集 Profile](Profiles/ProjectACG/mesh-surface-terrain-toolset.md)。
+- 无法启动 Unity Editor 但需要校验 Editor 脚本是否可编译，或排查「只在离线校验出现」的语法错误：读取 [Unity Editor 脚本离线编译校验参考](references/unity-editor-script-offline-compile-verification.md)；结论只能作为补充证据，Unity 内编译仍不可省略。
+- 实现或改造笔刷绘制、顶点色/遮罩绘制、按通道显示、另存或覆盖 Mesh 的窗口：读取 TOOL-UI-01、TOOL-UI-02、TOOL-ARC-02、TOOL-VAL-02 和 [Editor 笔刷与顶点色绘制工具 UI 参考](references/editor-brush-and-vertex-color-ui-patterns.md)；涉及顶点色通道语义时同时确认目标 Shader 约定。
+- 合并多份 `.shadervariants`（SVC）、汇总多平台或多质量档的变体采集结果、按 Shader 或按单条变体挑选写入，或改造难以定位的大列表变体选择器：读取 TOOL-CMP-01、TOOL-ARC-01、TOOL-UI-01、TOOL-OPS-01、TOOL-OPS-02、TOOL-VAL-01、TOOL-VAL-02 和 [ShaderVariantCollection 多来源合并工具参考](references/shader-variant-collection-merge-tool.md)；ProjectACG 任务再读取 [ProjectACG 工具 Profile](Profiles/ProjectACG/README_Tech_ProjectACGTAToolsProfile.md) 的 PRJ-TOOL-21。
 - Shader、材质、变体或 RendererFeature 工具：同时读取 Shader 开发模块及其引用资料，二者的验证均不可省略。
 
 资源加载以目标功能和风险为边界。Profile、目标资产或 Unity API 与外部模板冲突时，以当前工程可验证事实为准，并把差异记录到 Profile 或候选中。

@@ -140,6 +140,7 @@ description: 面向 Unity 与 DCC 技术美术的可迁移开发规则入口。�
 | 当前工程 CharacterPrefabBuilder 生成与材质槽同步 | [ToolDevelopment/Profiles/ProjectACG/character-prefab-builder-generation-and-material-sync.md](ToolDevelopment/Profiles/ProjectACG/character-prefab-builder-generation-and-material-sync.md) | ProjectACG CharacterPrefabBuilder 的 FBX 生成、外置 Mesh、SubMesh/材质槽、旧槽保留、LOD、导入预设、坐标重建、问题根因与验证矩阵。 |
 | 批量烘焙工作区与安全取消 | [ToolDevelopment/references/batch-baker-workspace-and-cancellation.md](ToolDevelopment/references/batch-baker-workspace-and-cancellation.md) | 单个/批量模式 UI、执行计划、自动命名、覆盖确认、真实阶段进度、安全取消、临时文件提交与验证矩阵。 |
 | 模块化批量资源工具设计 | [ToolDevelopment/references/modular-batch-resource-tool-design.md](ToolDevelopment/references/modular-batch-resource-tool-design.md) | 模型/GameObject、材质和贴图模块切换、Selection/目录范围、材质变体安全转换、紧凑 UI 与验证矩阵。 |
+| SVC 多来源合并工具 | [ToolDevelopment/references/shader-variant-collection-merge-tool.md](ToolDevelopment/references/shader-variant-collection-merge-tool.md) | SVC 序列化双路径读取、去重键、覆盖/并集、目标兼作输入、软依赖清单、大列表变体选择器和跨工程副本迁移检查。 |
 | Prefab 模块快照、映射与事务恢复 | [ToolDevelopment/references/prefab-module-snapshot-and-restore.md](ToolDevelopment/references/prefab-module-snapshot-and-restore.md) | 重新生成前快照、稳定路径、组件和层级对象原子模块、引用重绑、Analyze/Preview/Apply/Commit、第三方缓存重建、双栏映射 UI 与验证矩阵。 |
 | 工具集成检查 | [ToolDevelopment/references/tool-integration-checklist.md](ToolDevelopment/references/tool-integration-checklist.md) | 新增/修改工具、资源写入、导入/构建 Hook、菜单和 asmdef 的检查清单。 |
 | FBX 源数据编辑器开发参考 | [ToolDevelopment/references/fbx-source-asset-editor-development.md](ToolDevelopment/references/fbx-source-asset-editor-development.md) | FBX SDK 原始资源写回、单位/Pivot/UV/顶点色/材质槽/骨架实现、回读校验、程序集边界和问题规避。 |
@@ -148,6 +149,10 @@ description: 面向 Unity 与 DCC 技术美术的可迁移开发规则入口。�
 | Mini 工程导出与交付参考 | [ToolDevelopment/references/outsource-mini-project-builder-delivery.md](ToolDevelopment/references/outsource-mini-project-builder-delivery.md) | Mini 工程最小依赖闭包、脚本/渲染配置边界、内部/强制模式、阻断修复、临时副本和验证流程。 |
 | 当前工程 Mini 工程生成 Profile | [ToolDevelopment/Profiles/ProjectACG/outsource-mini-project-builder.md](ToolDevelopment/Profiles/ProjectACG/outsource-mini-project-builder.md) | ProjectACG 工具路径、三套 Profile、字段语义、MMD MaterialEditor、Warning 修正和当前验证状态。 |
 | 当前工程 Painter 调色 LUT 工具 | [ToolDevelopment/Profiles/ProjectACG/painter-color-profile-baker.md](ToolDevelopment/Profiles/ProjectACG/painter-color-profile-baker.md) | `PainterColorProfileBaker` 的可烘焙范围、Identity、White Point、sRGB、路径和黑图排查。 |
+| Unity 工具集跨工程迁移与旧件下线 | [ToolDevelopment/references/unity-editor-tool-cross-project-migration.md](ToolDevelopment/references/unity-editor-tool-cross-project-migration.md) | 迁移单位与 `.meta`/GUID、四项冲突预检、`Editor` 目录语义、硬编码路径改写、同名助手禁用去重、旧组件下线顺序、示例资产裁剪与回退备份。 |
+| Unity Editor 脚本离线编译校验 | [ToolDevelopment/references/unity-editor-script-offline-compile-verification.md](ToolDevelopment/references/unity-editor-script-offline-compile-verification.md) | 用 Unity 自带 Roslyn 校验 Editor 脚本、netstandard/netfx shim 引用、`UNITY_EDITOR` define、排除 `Assembly-CSharp*`、旧 Roslyn 假阳性判读与结论边界。 |
+| Editor 笔刷与顶点色绘制 UI | [ToolDevelopment/references/editor-brush-and-vertex-color-ui-patterns.md](ToolDevelopment/references/editor-brush-and-vertex-color-ui-patterns.md) | 笔刷缩略图 `StretchToFill`、绘制/显示通道分离、预览材质属性驱动单通道显示、另存与覆盖的保存方式门槛、预览生命周期与验证。 |
+| 当前工程网格地形与地表工具集 | [ToolDevelopment/Profiles/ProjectACG/mesh-surface-terrain-toolset.md](ToolDevelopment/Profiles/ProjectACG/mesh-surface-terrain-toolset.md) | ProjectACG `Assets/Editor/TA_Tools/Scene` 五组工具的目录/菜单、`MeshSurfaceDatabase` 数据资产、纯 Editor 边界、顶点色绘制现状、旧组件下线与体积裁剪记录。 |
 
 各模块自己的参考文档、报告模板和当前工程 Profile 均位于对应模块目录内，不在本入口重复维护。
 

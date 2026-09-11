@@ -25,7 +25,7 @@ ToolName 使用 PascalCase；一个工具一个目录。若工具有 Editor 代�
 
 ### PRJ-TOOL-02｜历史目录兼容
 
-当前工程已存在 Render、LYJ_Tool 等历史目录，以及 Assets/Plugins/TA_Tools 下的历史内容。它们只维护既有功能、路径和程序集，不做批量迁移，也不作为新工具默认位置。
+当前工程已存在 Render、LYJ_Tool 等历史目录。`Assets/Plugins/TA_Tools` 下的历史内容（`Scene/MeshSurfaceToolkit` 的 4 个旧版 Runtime 组件与 URP Shader）已按 PRJ-TOOL-22 下线，整个 `Assets/Plugins/TA_Tools` 目录树已移出工程；历史目录只维护既有功能、路径和程序集，不做批量迁移，也不作为新工具默认位置。
 
 新需求无法归入 PRJ-TOOL-01 的类别时，先确认产品/维护归属；不得仅因已有历史目录就把新的工具继续堆入其中。对历史工具的小修复保持其原目录、菜单和文档位置，避免无关资产移动导致 GUID、入口或引用变化。
 
@@ -162,6 +162,30 @@ Runtime、Editor、RendererFeature、VolumeComponent、ShaderGUI/旧式 Material
 
 主 Renderer、`RefreshFromTemplate`、`PreserveExistingAdditive` 和 LOD1 创建旁路必须使用同一材质绑定策略，避免主模型修复而 LOD 仍被旧数组覆盖。外置 Mesh、临时 `ModelImporter` 预设、坐标重建、典型 `emotion` 两 SubMesh/一材质槽问题、实现方式、测试矩阵和未验证边界见 [CharacterPrefabBuilder 生成与材质槽同步 Profile](character-prefab-builder-generation-and-material-sync.md)；ModelImporter 预设字段、原值快照/恢复、双工程同步边界和验证证据见 [CharacterPrefabBuilder ModelImporter 预设 Profile](character-prefab-model-importer-preset.md)。
 
+### PRJ-TOOL-21｜SVC 变体集合合并工具以单目标文件收敛多端采集结果
+
+当前 `ShaderVariantCollectionMergeWindow` 位于 `Assets/Editor/TA_Tools/TA/ShaderVariantCollect/ShaderVariantCollectionMergeWindow.cs`（单文件，未单独创建 asmdef，随默认 `Assembly-CSharp-Editor` 编译，不进入 Player），菜单为 `TA_Tools/TA/SVC 变体集合合并`（priority 212），并额外提供 Project 右键 `TA_Tools/合并选中的 ShaderVariantCollection 到目标...`（priority 2201，带 `MenuItem` 校验函数，只在选中项含 SVC 或含 SVC 的文件夹时可用）。同目录还维护 `README_Art_ShaderVariantCollectionMerge.md`（美术使用流程）与 `README_Tech_ShaderVariantCollectionMerge.md`（技术说明），当前版本 `v1.1.0`。
+
+工具支持三种合并范围（全部输入变体 / 指定 Shader 的全部变体 / 指定 Shader 的单条变体）和两种写入模式（覆盖目标 / 与目标去重并集）。之所以按“多输入 → 单目标”设计，是因为裁剪侧的 `ShaderStrippingProfile.ShaderVariantCollectionAllowListPath` 目前只接受单个 SVC 路径，多平台、多质量档的采集结果需要先合并成一份目标 SVC 再交给裁剪器，而不是为了多端收集去改裁剪器。输入 SVC 在任何模式下都不会被写入；目标允许同时作为输入，工具先读完所有输入再写目标。覆盖模式执行前二次确认，并在确认文案中给出目标原有的 Shader 数与变体数。
+
+目标 SVC 旁的 YooAsset `ShaderVariantCollectionManifest` 同名 `.json` 是可选软依赖，通过反射调用，类型或方法缺失时只写 SVC。`Undo.RegisterCompleteObjectUndo` 对非 `ScriptableObject` 可能抛异常，工具降级为警告并继续；因此该工具的回滚路径以版本管理为主，不能对用户宣称“可撤销”。通用实现、去重键、变体选择器 UI 模式和无 Unity 宿主的验证方式见 [SVC 多来源合并工具参考](../../references/shader-variant-collection-merge-tool.md)；去重用的关键字签名与 PassType 边界以 Shader 模块为准，不在本 Profile 重定义。
+
+版本与验证边界：`v1.1.0` 已将单条变体选择从原生 `EditorGUILayout.Popup` 改为「关键字搜索 + 排序 + 可点击列表 + 关键字快捷过滤」。已在源工程 `ProjectACG` 的 `feature/TA_Variant-` 分支完成 Roslyn 单文件编译（退出码 0）与菜单/命名静态检查，并已整体迁入 `ProjectACGMain3`（分支 `feature/TA_UIMap_WB_UICanvas`），两侧 `ShaderVariantCollectionMergeWindow.cs` 的 SHA256 一致。Unity 编辑器内的实际点击验证与覆盖/并集对拍仍未完成，交付时必须明示。
+
+### PRJ-TOOL-22｜地表与网格工具集统一位于 `Assets/Editor/TA_Tools/Scene` 并保持纯 Editor
+
+当前 `Terrain`（网格地形绘制、Terrain Mesh 转换器、地形 TextureArray 烘焙器、导出地形 RGBA 权重图、权重图程序化散布）、`MeshDecalTool`、`ReflectionProbePostBake`、`TerrainBlendBake`、`Foliage Renormalizer` 五组工具整体位于 `Assets/Editor/TA_Tools/Scene/` 下，属于 Editor-only 程序集，不进入 Player；使用时不要求在地形或模型上挂任何工具脚本。
+
+地形/网格绘制数据从「对象上的组件」改为 Editor-only 数据资产 `Assets/Tools/MeshSurfaceToolkit/MeshSurfaceDatabase.asset`；工具根目录由 `MeshSurfaceToolkitPaths` 按脚本自身位置反查，只有 `FallbackRoot` 需要随工程改写。旧版 `Assets/Plugins/TA_Tools/Scene/MeshSurfaceToolkit` 的 Runtime 组件与新编辑器数据类同名同命名空间，已连同整个 `Assets/Plugins/TA_Tools` 目录树移出工程（工程无版本控制，先备份再移动）；受影响的场景与 Prefab 会显示 `Missing (Mono Script)`，需在 Unity 内手动清理。
+
+`MeshDecalTool/Runtime/MeshDecal.cs` 与 `Foliage Renormalizer` 的 `MonoBehaviour` 目前只存在于编辑器；若存在 Player 运行时用途，必须把 Runtime 脚本移出 `Editor` 目录。完整目录、菜单、数据资产、体积裁剪与验证状态见 [网格地形与地表工具集 Profile](mesh-surface-terrain-toolset.md)；迁移方法见 [Unity Editor 工具集跨工程迁移与旧件下线参考](../../references/unity-editor-tool-cross-project-migration.md)。
+
+### PRJ-TOOL-23｜顶点色绘制窗口提供通道显示与另存/覆盖保存方式
+
+`CharacterVertexColorPainterWindow`（菜单 `TA_Tools/Character/Vertex Color Painter`，目录 `Assets/Editor/TA_Tools/Character/VertexColorPainter/`）提供两个通道控件：显示通道 `{"RGB","R","G","B","A"}`（默认 `RGB`，通过预览材质 `_VertexColorPainterPreviewMode` 单独查看通道）与绘制通道 `{"RGB","R","G","B","A"}`（默认 `A`）。保存方式为 `{"另存为新 Mesh","覆盖源 Mesh"}`：另存使用 `_VertexColor` 后缀并与源 Mesh 同目录，覆盖以 `MeshSurfaceEditorUtilities.IsEditableMeshAsset` 为门槛并在写入前校验顶点数与记录 Undo。
+
+预览走专用隐藏材质与 Shader，不写正式材质。笔刷缩略图必须用 `ScaleMode.StretchToFill` 与固定尺寸（`BrushPreviewSize`）绘制；同窗口按比例缩放的预览仍保留 `ScaleMode.ScaleToFit`，两者不可统一。通道语义属于项目 Shader 约定，工具不自行推断。通用实现约定见 [Editor 笔刷与顶点色绘制工具 UI 参考](../../references/editor-brush-and-vertex-color-ui-patterns.md)。
+
 ## 7. 项目交付检查
 
 - 新工具路径、菜单和类名符合 PRJ-TOOL-01 至 PRJ-TOOL-03，或在 Tech README 记录历史例外。
@@ -177,4 +201,7 @@ Runtime、Editor、RendererFeature、VolumeComponent、ShaderGUI/旧式 Material
 - Booth 动画资源分类、改名或迁移任务已按 PRJ-TOOL-17 检查 Humanoid 导入结果、预览图完整性、资源组成员、GUID、内部名称、路径冲突和代表性重新导入。
 - 通用模型导入规则任务已按 PRJ-TOOL-20 检查预设/快照分离、目录/文件名优先级、白名单/手动排除、四页 `ModelImporter` 映射、显式重导入、Meta/GUID、与旧 FBX 批处理隔离及 Unity 实际导入边界。
 - CharacterPrefabBuilder 的 Mesh/材质同步任务已按 PRJ-TOOL-18 检查 FBX 源数组、旧索引保留、新槽补入、尾部截断、空槽、Refresh/Additive、LOD1 旁路、外置 Mesh、导入设置恢复和实际 Prefab 保存/重开结果。
+- SVC 变体集合合并任务已按 PRJ-TOOL-21 检查输入/目标资产路径与类型校验、三种合并范围、覆盖/并集模式、目标同时作为输入、同名 JSON 清单软依赖、Undo 降级边界、跨工程副本迁移一致性和 Unity 内实际点击验证是否完成。
+- 地表/网格工具集任务已按 PRJ-TOOL-22 检查目录与菜单、数据资产路径、纯 Editor 边界、旧版 `Plugins/TA_Tools` 下线影响面、`Missing (Mono Script)` 清理和 README/Profile 同步；Unity 内实际打开与绘制验证未完成时必须明示。
+- 顶点色绘制任务已按 PRJ-TOOL-23 检查显示通道与绘制通道的独立性、单通道预览、另存与覆盖两类写入结果、不可写 Mesh 的门槛、Undo 与预览生命周期。
 - README 已新增/更新；最终回复包含入口、验证和限制。
