@@ -212,6 +212,7 @@ RenderDoc 源码分支的版本与构建事实记录在 [RenderDoc v1.47 多 Vul
 - ProjectACG `CharacterPrefabBuilder` 的 FBX 生成、外置 Mesh、SubMesh/材质槽、旧材质保留、LOD、临时导入预设或坐标重建：读取 TOOL-CMP-01、TOOL-ARC-01、TOOL-OPS-01、TOOL-OPS-02、TOOL-VAL-01、TOOL-VAL-02 和 [CharacterPrefabBuilder 生成与材质槽同步 Profile](Profiles/ProjectACG/character-prefab-builder-generation-and-material-sync.md)。
 - 导入、构建、运行时协作或全局 Hook：额外读取 TOOL-ARC-03、TOOL-VAL-03；先确认显式局部入口是否足够。
 - 修改 RenderDoc 源码、处理 Vulkan 多实例捕获或构建 Windows 交付包：读取 [RenderDoc 多 Vulkan 实例捕获与 Windows 构建参考](references/renderdoc-vulkan-capture-and-windows-build.md) 和 [RenderDoc v1.47 多 Vulkan 实例捕获案例](Profiles/RenderDoc/renderdoc-v1-47-multi-vulkan-case.md)；同时以目标源码、官方构建文档和实际命令输出重新验证，不把符号改名当作性能优化或检测规避手段。
+- 在资源管理器里为包体文件增加一键安装入口、把 `adb` / `go-ios` 安装链路做成脚本工具，或排查「菜单不出现」「安装中途断开」「长任务看起来卡死」：读取 [移动设备一键安装工具链与右键集成参考](references/mobile-device-install-pipeline-and-context-menu.md)；同时验证注册位置、外壳刷新、并发互斥与设备侧安装结果，不以脚本退出码单独作为结论。
 - 模型导入规则、目录/文件名匹配或 `OnPreprocessModel`：额外读取 TOOL-ARC-03、TOOL-OPS-01、TOOL-OPS-02、TOOL-OPS-03、TOOL-VAL-01、TOOL-VAL-02、TOOL-VAL-03，以及 [Unity 模型导入规则与编译快照参考](references/unity-model-import-rules-and-snapshot.md)；ProjectACG 任务再读取 [通用模型导入规则 Profile](Profiles/ProjectACG/model-import-rule-pipeline.md)。
 - Shader、材质、变体或 RendererFeature 工具：同时读取 Shader 开发模块及其引用资料，二者的验证均不可省略。
 
