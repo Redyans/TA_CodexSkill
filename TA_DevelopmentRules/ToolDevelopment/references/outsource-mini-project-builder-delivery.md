@@ -89,9 +89,22 @@ Shader 只描述绘制接口和 Include 依赖，不会反向声明哪个 Render
 
 至少记录任务 ID、输入快照、Profile 摘要、目标平台、源到目标映射、复制/剔除清单、依赖来源、问题分类、强制放行项、备份目录、最终路径和验证入口。日志区分 Info、Warning、Error，并汇总成功、跳过和失败数量。
 
+### 3.10 受保护 Shader 与材质引用兼容
+
+受保护 Shader 使用 `ScriptedImporter` 生成的 Shader 子资产。普通 `.mat` 不仅保存 Shader GUID，还保存 Shader 的 Local File ID；同一 GUID 的明文 `.shader` 与 `.pcgshader` 导入后，Local File ID 可能不同，因此只保留 GUID 不能保证材质不变紫。
+
+交付和导入链路应遵循以下顺序：
+
+1. `.pcgshader.meta` 继承源 `.shader.meta` 的 GUID；目标工程不能同时存在同 GUID 的明文 `.shader` 和 `.pcgshader`。
+2. 导出器或目标工程 SDK 在材质导入、`.pcgshader` 导入以及两者导入顺序相反时，解析实际导入 Shader 的 Local File ID，并只重写材质序列化中的 `m_Shader.fileID`。
+3. 不得改材质 GUID、Shader GUID、材质属性、Keyword 或 RenderQueue；修改后延迟重新导入，避免在 AssetPostprocessor 当前回调中递归刷新。
+4. 手工复制材质、导入 `.unitypackage`、从 Package 导入材质和 FBX `Extract Materials` 都必须走同一兼容链；不能要求美术手动在 Inspector 重新选择 Shader。
+
+Unity `2022.3.62f3` 的一次受保护 Shader 导入观察值为 `-7482078289662181024`，但生产实现应通过 `AssetDatabase.TryGetGUIDAndLocalFileIdentifier` 读取实际值，不能把该数字当成跨 Unity 版本常量。
+
 ## 4. 风险与不适用边界
 
-- 内部明文模式只改变交付保护和使用限制，不应默认关闭路径、依赖、Missing Script、程序集和文件系统检查。
+- 历史“内部/外部模式”字段如果仍需兼容旧 Profile，只能作为元数据或兼容输入；不得让它绕过路径、依赖、Missing Script、程序集、原样依赖、Package 白名单或安全扫描。Shader 明文/加密应由独立、可审计的 Profile 选项控制。
 - Shader 加密、源码裁剪和程序集裁剪不是同一件事；关闭其中一项不能推导其他项也关闭。
 - 删除场景对象不会自动删除 Profile 中显式交付的脚本；必须重新计算实际消费者。
 - 静态文本扫描不能证明目标工程可编译；条件编译、生成代码、第三方程序集和 Package 版本仍需目标工程验证。

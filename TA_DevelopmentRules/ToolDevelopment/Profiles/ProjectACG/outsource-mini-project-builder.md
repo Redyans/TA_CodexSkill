@@ -1,6 +1,6 @@
 # ProjectACG 外包 Mini 工程生成工具 Profile
 
-> 层级：PROFILE；适用工程：`D:/work2025U3D/Valkyria/ProjectACGMain/ProjectACG/Client`；基线 Unity：`2022.3.62f3`。本文件记录当前实现、配置语义和验证边界，不得提升为跨项目 CORE。
+> 层级：PROFILE；适用工程：`D:/work2025U3D/Valkyria/ProjectACGMain2/ProjectACG/Client`；基线 Unity：`2022.3.62f3`。本文件记录当前实现、配置语义和验证边界，不得提升为跨项目 CORE。
 
 ## 1. 项目事实与入口
 
@@ -38,7 +38,7 @@
 | `_allowedRuntimeScriptPrefixes` | `List<string>` | 允许交付的 Runtime 脚本目录/前缀；只复制真实需要的 `.cs/.asmdef/.asmref`，不等于复制整个程序集 |
 | `_editorScriptSources` | `List<Object>` | 随 Mini 工程交付的 Editor 源码目录或单文件；只允许 `Editor` 路径段或明确 Editor 程序集 |
 | `_excludedEditorScriptSources` | `List<Object>` | 从已选 Editor 父目录中剔除子目录/文件；排除项不在父范围内应阻断，避免配置看似生效但未实际过滤 |
-| `_internalRawDependencySources` | `List<Object>` | 仅内部模式使用的原样资源/目录，可包含 TA_Tools、Sirenix、DLL、UXML、图标等；外包模式明确忽略 |
+| `_internalRawDependencySources` | `List<Object>` | Profile 配置的通用原样资源/目录，可包含 TA_Tools、Sirenix、DLL、UXML、图标等；内部/外部调用路径一致复制，不由历史模式开关绕过 |
 | `_excludedSceneObjectPaths` | `List<string>` | 以完整 Hierarchy 路径从临时场景副本剔除对象及子节点；源场景不修改 |
 | `_excludedSceneMonoBehaviourScripts` | `List<MonoScript>` | 从临时场景副本剔除指定 `MonoBehaviour` 组件；优先级高于 Runtime 保留列表 |
 | `_excludedRendererFeatureScripts` | `List<MonoScript>` | 只接受 `ScriptableRendererFeature`，从 RendererData 副本剔除真实 Feature 引用 |
@@ -61,9 +61,9 @@ Inspector 对 Runtime、Editor、Package、ShaderGUI、额外资产和内部原�
 
 ### 3.1 内部模式与强制生成分开
 
-窗口顶部的“开启内部模式（无使用限制 / Shader 不加密）”只改变内部交付语义：自定义 Shader 明文复制，不安装 `ProtectedShaderImporter.cs`、保护 Shader asmdef 或 `ProjectACG.Outsource.ShaderCrypto.dll`，输出 `README_Internal.md`，并放宽输出可编辑根。它不关闭 Unity/平台、依赖、Missing Script、路径、符号链接和文件系统检查。
+历史窗口中的“内部模式/外部模式”字段只作为兼容数据读取，当前实现不再改变资源收集、Package/Sirenix 复制、脚本闭包校验、Shader 处理、manifest、可编辑目录或安全扫描。Shader 明文/加密只由 Profile 的 `ProtectCustomShaders` 决定；通用原样依赖在两种调用路径都复制。旧 manifest 中的 `internalMode` 固定写为 `false`，避免下游继续按旧语义分叉。
 
-“强制生成（忽略全部可判定阻断）”是独立确认开关，用于内部排查或临时产物。它会记录并忽略分析、环境、路径长度和安全扫描阻断，也会把步骤失败写入报告，但必要输入缺失、输出目录不可创建、磁盘拒绝写入、场景快照或 manifest 无法建立仍然失败。两者不能互相推断，也不写回外包 Profile 的永久设置。
+“强制生成（忽略全部可判定阻断）”仍是独立确认开关，只用于内部排查或临时产物。它会记录并忽略分析、环境、路径长度和安全扫描阻断，也会把步骤失败写入报告，但必要输入缺失、输出目录不可创建、磁盘拒绝写入、场景快照或 manifest 无法建立仍然失败；强制模式不能改变内部/外部统一导出契约。
 
 ### 3.2 脚本依赖按消费者而非程序集猜测
 
@@ -104,6 +104,64 @@ Assets/Editor/TA_Tools/TA/MMD/MMD4Mecanim/Scripts/MMD4Mecanim.dll
 
 这些是当前配置事实，不代表所有任务都应照抄。新任务应从实际场景消费者和分析报告重新建立最小列表。
 
+## 4.1 本轮排除契约（2026-09）
+
+以下内容属于当前 ProjectACG Mini 工程的明确剔除要求。Profile 中的 Package 排除、Runtime 源码排除和 RendererFeature 排除是三类不同动作，不能只在 UI 中隐藏名称；分析、临时快照、复制、manifest 和安全扫描必须使用同一份归一化结果。
+
+### Package 根目录：不复制、不写入目标 manifest
+
+| 排除根 | 当前语义 |
+| --- | --- |
+| `Packages/com.xuanxuan.nb.fx` | 项目内本地 Package，当前任务不交付 |
+| `Packages/appsflyer-unity-plugin` | 当前任务不交付；不得因历史平台兼容逻辑自动带入 |
+| `Packages/com.emilia.kit` | 项目内本地 Package，当前任务不交付 |
+| `Packages/UniTask` | 项目内本地 Package，当前任务不交付 |
+
+如果保留源码实际引用了上述 Package，不能靠“剔除名单”掩盖编译依赖：应先剔除消费者、改用目标已有依赖或把问题保留为阻断。官方 Registry/Built-in Package 仍按实际程序集依赖写入精确版本，不能把“排除本地 Package”误解为“删除所有 Package”。
+
+### Runtime 源码：从输出源码闭包中剔除
+
+当前明确不交付的脚本为：
+
+- `Assets/GameScripts/AOT/Common/CameraHotkeySwitcher.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Battle/CharacterMonsterEffect/CharacterDeath.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Battle/CharacterMonsterEffect/CharacterRedTint.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Battle/DamagePart.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Battle/FPawn.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Battle/FWeaponSocket.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Battle/PlayerState/PlayerCameraPostureConfig.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Battle/PlayerWeaponAimRigController.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Battle/Presentation/UltimateTimelineCameraTransformSync.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Battle/Weapon/WeaponManager.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Common/HallCharacterController.cs`
+- `Assets/GameScripts/HotFix/GameLogic/Common/RoomCharacterController.cs`
+
+源码文件不从主工程删除；只在临时场景快照和输出工程中省略。若剔除后仍有 Prefab、Scene、RendererData、VolumeProfile 或原样依赖资产引用这些类型，分析必须报告缺类阻断，而不是生成带 `Missing Script` 的工程。
+
+### RendererFeature：从 RendererData 副本中剔除
+
+`Assets/Shader/RenderFeature/UICorrectGamma/GammaUICompositeFeature.cs` 映射到 `ScriptableRendererFeature` 排除列表。清理动作只修改 RendererData 临时副本中的真实 Feature 引用和必要子资产；源 RendererData 不写回。Shader 名称或 Shader 源码不能用来反向推断 Feature 是否可删除。
+
+## 4.2 必须随工程交付的依赖
+
+- `Assets/Plugins/Sirenix` 是 Assets 插件而非 UPM Package。按插件根目录原样复制全部子目录、文件和目录/文件 `.meta`；内部/外部调用路径一致，不能只复制某个 Odin DLL。
+- `Assets/Packages/MagicaCloth2` 是本次配置要求整根复制的项目内 Assets 目录，不应错误写成 UPM `file:` manifest 包。当前交付必须保留该目录全部子目录、asmdef、脚本、资源和 `.meta`；其 `Unity.Burst`、`Unity.Collections`、`Unity.Mathematics` 由目标 manifest 按实际版本解析。只有后续完成真实消费者审计和目标工程验证后，才允许把整根复制收紧为更小闭包。
+- `Assets/Editor/Utils/DefaultMaterialShaderPolicy.cs` 是 Editor 源码闭包中的必交付文件。`ProjectACG.Editor.DefaultMaterialShaderPolicy` 被其他工具脚本引用时，缺少定义文件会在目标工程产生 `CS0246`；将其纳入最小 Editor 源码目录或通用原样依赖，不能仅复制引用方。
+- 原样依赖交付必须保留文件、文件 `.meta`、目录 `.meta` 和全部子目录；复制后在 manifest/report 中记录来源、目标路径和哈希。
+
+## 4.3 受保护 Shader、材质手工复制与 Package 导入
+
+当前 `.pcgshader` 保护链保留源 Shader GUID，但 ScriptedImporter 生成的 Shader Local File ID 与明文 `.shader` 不同。Unity `2022.3.62f3` 曾观察到 Local File ID `-7482078289662181024`，该值只用于本版本诊断和测试；生产代码应通过 `AssetDatabase.TryGetGUIDAndLocalFileIdentifier` 读取实际值。
+
+`ProtectedMaterialReferencePostprocessor` 的兼容边界为：
+
+1. 监听 `.mat` 和 `.pcgshader` 的导入；无论先导入材质还是先导入受保护 Shader，都在延迟回调中重试。
+2. 只改材质 YAML 的 `m_Shader.fileID`，不改材质 GUID、Shader GUID、属性、Keyword、RenderQueue 或其他序列化字段。
+3. 手工复制 `.mat`、导入 `.unitypackage`、从 Package 导入材质以及 FBX `Extract Materials` 均复用这条 SDK 兼容链；不要求美术在 Inspector 中重新指定 Shader。
+4. 同 GUID 的明文 `.shader` 与 `.pcgshader` 不能同时存在；追加独立 Shader 包时要删除/备份同 GUID 明文源，避免 Unity 选择错误资产。
+
+独立重新导出加密 Shader 时，只需交付 `.pcgshader`、匹配 `.meta`、最小 `ProtectedShaderImporter`/Crypto DLL、实际使用的 ShaderGUI 和显式运行时消费者；不把密钥源码、无关 URP 源码或整个业务目录带出。
+
 ## 5. 验证状态与维护边界
 
 已完成或观察到的验证：
@@ -112,7 +170,8 @@ Assets/Editor/TA_Tools/TA/MMD/MMD4Mecanim/Scripts/MMD4Mecanim.dll
 - `ProjectACG.OutsourceMiniProject.Editor.Tests.csproj`：0 warning / 0 error；
 - Unity 已重新编译相关 `Library/ScriptAssemblies`；
 - 新增的 MMD 旧式 `MaterialEditor` 收敛测试和缺失 CustomEditor Warning 测试已写入测试程序集。
+- 静态扫描确认当前三套 Profile 已配置 `Assets/Plugins/Sirenix`、`Assets/Packages/MagicaCloth2`、四个排除 Package 根和上述脚本/`GammaUICompositeFeature.cs` 排除项；`DefaultMaterialShaderPolicy.cs` 在分析器必交付 Editor 源码清单中。
 
-当前未完成：Unity EditMode 测试尚未在本轮实际运行，因为已有 Unity 实例打开，无法再启动第二个实例；目标 Mini 工程的真实首次导入、Batch Validation、材质绘制和 Android/Windows 双平台验证仍需在可用环境执行。
+当前未完成：Unity EditMode 测试尚未在本轮实际运行，因为已有 Unity 实例打开，无法再启动第二个实例；目标 Mini 工程的真实首次导入、Package Resolve、`OUTSOURCE_MINI_PROJECT_VALIDATION_OK`、材质手工拖入/`.unitypackage` 导入、Prefab/Scene 重开、材质绘制和 Android/Windows 双平台验证仍需在可用环境执行。静态编译通过不能替代这些验证。
 
 维护时先更新工具 README 和本 Profile 的“验证状态”，再考虑把已在多个项目复现的模式提炼为 `references/` 或 CORE。不要把本 Profile 的路径、版本、GUID、字段、默认列表和当前缺口复制进通用规则。
