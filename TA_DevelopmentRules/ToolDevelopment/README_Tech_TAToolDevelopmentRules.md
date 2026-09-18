@@ -198,6 +198,7 @@ RenderDoc 源码分支的版本与构建事实记录在 [RenderDoc v1.47 多 Vul
 ## 资源加载与规则维护
 
 - 新增简单窗口或查询工具：读取 TOOL-CLS-01、TOOL-UI-01、当前 Profile、目标附近同类窗口和 [references/tool-development-patterns.md](references/tool-development-patterns.md)。
+- 自动生成或更新 Timeline、Prefab、AnimationClip、Cinemachine Shot，并处理 `PlayableDirector` Track Binding / ExposedReference、分模块生成与组装时：读取 TOOL-CMP-01、TOOL-ARC-01、TOOL-OPS-01、TOOL-OPS-02、TOOL-VAL-02、[Timeline 资产生成、Prefab 绑定与增量组装参考](../TimelineDevelopment/references/timeline-asset-generation-and-prefab-binding.md)；ProjectACG 大招任务再读取 [大招 Timeline 基础资产生成器 Profile](Profiles/ProjectACG/ultimate-skill-timeline-generator.md)。
 - Windows 下同时管理多个独立 Unity 工程、区分 VS Code 窗口/工程路径/Git 分支时：读取 [references/development-environment-window-and-branch-context.md](references/development-environment-window-and-branch-context.md)；该文档只记录开发环境显示层、工具使用和验证边界，不改变 Unity 运行时或 Player 构建规则。
 - 新增扫描、批量写入、生成或迁移工具：额外读取 TOOL-ARC-01、TOOL-OPS-01、TOOL-OPS-02 和 [references/tool-integration-checklist.md](references/tool-integration-checklist.md)。
 - 对 Humanoid 动画进行截图识别、分类、双语改名或资源组迁移：额外读取 [Unity 动画资源编目、识别与安全迁移参考](references/animation-resource-catalog-and-safe-migration.md)；ProjectACG 任务再读取 [动画资源编目与双语命名 Profile](Profiles/ProjectACG/animation-resource-catalog-and-bilingual-naming.md)。
