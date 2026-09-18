@@ -9,7 +9,7 @@ description: Unity Timeline 开发的可迁移规则。以跨项目 CORE、通�
 
 > 文档模式：`ta-development-rules/timeline/v1`
 > 语言与编码：中文，UTF-8
-> 模块入口：TA 规则总入口见 [../README_Tech_TADevelopmentRules.md](../README_Tech_TADevelopmentRules.md)；通用实现模式见 [references/timeline-development-patterns.md](references/timeline-development-patterns.md)；URP Volume 通用规则见 [references/timeline-volume-post-processing.md](references/timeline-volume-post-processing.md)；ProjectACG 定制事实分别见 [CharacterRender Timeline Profile](Profiles/ProjectACG/README_Tech_ProjectACGCharacterRenderTimelineProfile.md) 与 [Timeline Volume Profile](Profiles/ProjectACG/README_Tech_ProjectACGTimelineVolumeProfile.md)。
+> 模块入口：TA 规则总入口见 [../README_Tech_TADevelopmentRules.md](../README_Tech_TADevelopmentRules.md)；通用实现模式见 [references/timeline-development-patterns.md](references/timeline-development-patterns.md)；URP Volume 通用规则见 [references/timeline-volume-post-processing.md](references/timeline-volume-post-processing.md)；编辑期预览刷新与实时取值见 [references/timeline-preview-refresh-and-live-value-sync.md](references/timeline-preview-refresh-and-live-value-sync.md)；动画后跟随与 Playable 生命周期见 [references/timeline-post-animation-follow-and-playable-lifecycle.md](references/timeline-post-animation-follow-and-playable-lifecycle.md)；按名称/路径解析目标与嵌套挂点跟随见 [references/timeline-object-attachment-resolution.md](references/timeline-object-attachment-resolution.md)；自动创建 Timeline/Prefab、持久绑定与增量组装见 [references/timeline-asset-generation-and-prefab-binding.md](references/timeline-asset-generation-and-prefab-binding.md)；ProjectACG 定制事实分别见 [CharacterRender Timeline Profile](Profiles/ProjectACG/README_Tech_ProjectACGCharacterRenderTimelineProfile.md)、[Timeline Volume Profile](Profiles/ProjectACG/README_Tech_ProjectACGTimelineVolumeProfile.md) 与 [Mount Follow Track Profile](Profiles/ProjectACG/mount-follow-track.md)。
 
 本模块适用于 Unity Timeline 的 `TrackAsset`、`PlayableAsset`/Clip、`PlayableBehaviour`、Mixer、`ILayerable`、绑定、Inspector、Scene Handle，以及由 Timeline 驱动的材质与渲染状态。
 
@@ -74,6 +74,16 @@ description: Unity Timeline 开发的可迁移规则。以跨项目 CORE、通�
 - 优先使用可审计的 Editor 迁移工具；必须直接修复 YAML 时，仅修改目标子资产的脚本引用和必要显示元数据，不重排、不格式化或覆盖同一 Timeline 资产中的无关脏改。
 - 迁移后必须在 Unity 中确认旧 Clip 数据未丢失、Inspector 正常、Timeline 不再出现 Missing Script/黄色脚本告警，并保留可回退的资产变更记录。
 
+#### TML-CMP-03｜Add 菜单分组与片段可见性由类型声明决定
+
+Timeline 的轨道分组名、以及"这条轨道能加哪些片段"都由类型声明与反射推导，不由 Inspector 决定；声明方式选错会让菜单里出现不属于该轨道的片段，或让轨道跑到意料之外的分组里。
+
+- **必须（MUST）**：`[TrackClipType(typeof(<具体片段类型>))]` 只声明本轨道真正接受的**具体**片段类型；多条轨道需要共用字段与 `CreatePlayable` 时，把共用部分抽到**抽象**基类，各轨道分别声明自己的具体片段类型。
+- **应当（SHOULD）**：需要固定 Add 菜单分组时，用轨道类型所在命名空间控制分组（Timeline 在取不到内部分组属性时回退为 `命名空间 + "/"`）；确认目标版本的菜单分组规则后再决定是否改用 `DisplayName` 中的 `/` 路径。
+- **禁止（MUST NOT）**：用"片段 A 继承片段 B"表达"共用能力"。Timeline 用 `TrackClipType` 声明类型的 `IsAssignableFrom` 过滤片段，继承关系会让两条轨道的 Add 菜单互相多出对方的片段。
+- **验证**：在 Timeline 中逐条轨道打开 Add 菜单并尝试拖拽片段，确认只列出该轨道声明的片段；确认轨道出现在预期分组；确认抽象基类不出现在任何片段的创建菜单中。
+- **例外与回退**：只用一条 `PlayableTrack` 承载全部片段时不需要菜单隔离，但仍保持"一个可独立显示的片段类型占一个 `.cs`"。
+
 ### TML-ARC｜层、绑定与职责边界
 
 #### TML-ARC-01｜Layer 只隔离自身状态，不隐式跨层混合
@@ -93,6 +103,18 @@ description: Unity Timeline 开发的可迁移规则。以跨项目 CORE、通�
 | 材质资源资产 | 显式用户操作、Undo、脏标记和资源影响说明。 | Timeline 播放时隐式修改共享材质。 |
 | 相机级 RenderFeature / 屏幕空间资源 | Timeline 专属协调器 + 全局优先级 + 生命周期清理。 | 每个角色或 Mixer 直接抢写同一全局状态。 |
 | 场景 / Volume | 使用既有 Volume/场景控制器的优先级合同。 | 绕过 Volume 显式覆盖或把场景状态伪装成角色局部参数。 |
+
+#### TML-ARC-03｜运行时目标解析必须绑定优先、歧义报错
+
+Timeline 上"按名称或路径找目标"（挂点、插槽、特效点、音效点）如果没有显式绑定，就必须先按轨道绑定收窄范围，再按 Director 链自动解析；命中多个不同目标时必须失败，不得猜测。
+
+- **必须（MUST）**：绑定优先。轨道已经绑定了对象时，只在该绑定对象的层级内解析，找不到就报找不到，不再去其它轨道或父级 Timeline 兜底。
+- **必须（MUST）**：自动解析命中多个**不同**目标时判定为歧义，明确失败并列出全部候选；同一个目标被多条路径重复命中不算歧义，需要去重而不是报错。
+- **应当（SHOULD）**：提供相对路径输入作为消歧手段；路径匹配失败时**不得**降级为名称匹配，否则消歧能力失效。
+- **应当（SHOULD）**：解析范围包含**绑定根自身**。让整块对象跟随另一个对象时，用户不应被迫先在对象里补一个空挂点；同时容忍"路径首段就是绑定根名字"与开头 `./` 这两种常见写法。
+- **应当（SHOULD）**：解析规则集中在无状态工具类中，运行时与编辑器校验共用同一实现；解析失败原因用枚举区分"未绑定 / 找不到 / 歧义"，诊断输出带上本次实际搜索过的范围。
+- **验证**：两个同名模型同框时，绑定轨只命中自己的模型；不绑定轨必须报歧义并列出候选；改填相对路径或改用绑定轨后恢复单选；未绑定与找不到分别给出不同提示而不是静默不跟随。
+- **例外与回退**：无法建立父级链或同名实例无法区分时，回退到显式绑定轨道；诊断必须说明搜索范围，避免把"没认出"表现成"不存在"。
 
 ### TML-BLD｜混合与恢复
 
@@ -116,6 +138,22 @@ description: Unity Timeline 开发的可迁移规则。以跨项目 CORE、通�
 4. 保留已有系统的优先级，例如 Volume 显式覆盖通常高于 Timeline，Timeline 高于默认 Controller；
 5. 使用专属全局键，不覆盖默认 Controller 的全局键，避免相机回调在同帧反写。
 
+### TML-LIF｜求值顺序与生命周期
+
+#### TML-LIF-01｜跨 Playable 输出的同帧依赖必须显式定序
+
+- Animation Track 与自定义 Track 是独立 Playable 输出；自定义 Behaviour 在 `ProcessFrame` 读取动画骨骼时，不得把 Timeline 面板里的轨道上下顺序当作“动画一定先写回”的执行合同。
+- 当目标必须读取本帧最终动画姿态时，优先建立明确的 PlayableGraph / Animation Job 依赖；无法改图时，可以在 `ProcessFrame` 做即时写入，再在确认晚于动画系统的阶段做最终校正。双阶段写入必须同时验证运行时播放、编辑期 `Evaluate`、暂停拖帧和首帧进入。
+- 后置阶段若使用 `LateUpdate`，必须声明并验证执行顺序，且说明它只是相对于目标项目当前动画链路的时序保证；Animation Rigging、自定义约束或其他 `LateUpdate` 写入者仍可能晚于它。
+- “保持初始相对偏移”不得把动画写回前采到的挂点姿态永久固化。保存目标的原始世界位姿，并在第一次取得最终挂点姿态时重算一次相对偏移。
+
+#### TML-LIF-02｜区分图暂停、Clip 出界与 Playable 销毁
+
+- `OnBehaviourPause` 不等价于“Clip 已结束”。整张 PlayableGraph 暂停、Director 停止求值或 Clip 离开有效区间都可能进入该回调；释放资源或隐藏目标前，必须按目标 Unity/Timeline 版本核对 `FrameData.effectivePlayState` 等上下文。
+- 图暂停但当前 Clip 仍有效时，通常应保留预览目标和后置驱动；Clip 真正出界时才停用临时实例或恢复场景目标；`OnPlayableDestroy` 负责最终释放、销毁与兜底恢复。
+- 清理入口必须幂等，同一个目标重复经历 Pause、图重建和 Destroy 时不得重复叠加恢复、错误采样新基准或遗留隐藏对象。
+- 具体实现、诊断矩阵与验证方法见 [动画后跟随与 Playable 生命周期参考](references/timeline-post-animation-follow-and-playable-lifecycle.md)。
+
 ### TML-EDT｜Inspector、Scene Handle 与预览
 
 #### TML-EDT-01｜Editor 临时状态必须可释放
@@ -131,6 +169,17 @@ description: Unity Timeline 开发的可迁移规则。以跨项目 CORE、通�
 - `ClipEditor.GetClipOptions` 可设置正常状态的高亮色、Tooltip 与新建 Clip 的默认显示名，但必须从 `base.GetClipOptions` 开始，不能清空或伪造 `errorText` 来隐藏黄色感叹号。
 - 黄色图标或黄色标题首先按真实资产错误处理：检查 `PlayableAsset` 的 `MonoScript`、导入错误、`m_Script` GUID 与脚本类型；只在错误消除后再定义正常视觉样式。
 - `OnCreate` 只影响新建 Clip。已有 Timeline 资产的名称或脚本迁移必须单独处理，并在播放前逐项确认。
+
+#### TML-EDT-03｜区分图结构变更与仅数值变更的预览刷新
+
+`TimelineEditor.Refresh(RefreshReason.ContentsModified)` 会重建整张 playable 图；重建过程会先退出预览模式（`AnimationMode` 把记录过的属性还原到进入前的值），相机轨与动画轨驱动的对象因此可见回跳。连续拖动数值时表现为 Game 视图整幅闪动、位移。
+
+- **必须（MUST）**：把片段字段分成"影响图结构"（目标对象引用、`ExposedReference`、绑定对象、需要重新实例化的 Prefab、片段与轨道类型）与"只影响数值"两类；前者用 `ContentsModified`，后者用 `SceneNeedsUpdate`。刷新请求在 `IInspectorChangeHandler.OnPlayableAssetChangedInInspector` 中按类别派发。
+- **应当（SHOULD）**：只影响数值的字段由运行时 Behaviour 从片段资产读取（建图时把片段资产交给 Behaviour，每帧同步），使修改数值不依赖重建图。
+- **禁止（MUST NOT）**：仅数值变更也走 `ContentsModified`；也禁止为了"完全不闪"而不做刷新——Timeline 暂停时不会重跑 `PlayableBehaviour.ProcessFrame`，不刷新会让新值不生效。
+- **必须（MUST）**：预览期间写过的场景状态必须有“Clip 真正退出”和 `OnPlayableDestroy` 两条幂等清理路径；`OnBehaviourPause` 中先按 `FrameData` 区分图暂停与 Clip 出界，不能一进入回调就无条件还原。只依赖 Pause 或 Destroy 任一路径，都会在暂停预览、图重建或重新求值时留下消失、漂移或错误基准。
+- **验证**：在含相机轨或动画轨的 Timeline 上连续拖动数值，Game 视图不得闪动或位移；暂停状态改数值时目标必须立刻更新；换目标对象允许一次重建；反复编辑后停手，位姿不得漂移。
+- **例外与回退**：目标 Timeline 版本的 `RefreshReason` 语义变化时，回退到 `ContentsModified`，并在交付说明中写明"编辑期会有一次预览重建"；解析结果带缓存时，编辑器校验必须强制刷新。
 
 ### TML-VAL｜验证门槛
 
@@ -150,5 +199,6 @@ description: Unity Timeline 开发的可迁移规则。以跨项目 CORE、通�
 
 - 缓存目标 Renderer、材质槽和 `MaterialPropertyBlock`；不在每帧反复做全层级搜索、反射或资源扫描。
 - 全局状态只在最终仲裁后写出；不要在每个 Clip 或每个 Renderer 循环中重复写相同的全局参数。
+- Editor 工具批量创建/更新 Timeline、Prefab、AnimationClip、Cinemachine Shot 或 `PlayableDirector` 引用时，读取 [Timeline 资产生成、Prefab 绑定与增量组装参考](references/timeline-asset-generation-and-prefab-binding.md)，并分别验证 Timeline 子资产落盘、Prefab 持久对象绑定、重复生成与单模块组装。
 - Timeline 渲染功能的最终说明必须包含：修改入口、混合与优先级合同、验证证据、未验证的 Unity 行为，以及多角色/多相机/共享材质等剩余风险。
 - Project 路径、具体 Track 名、枚举数值、Shader 参数名和 RendererFeature 实现细节只进入项目 Profile 或功能 README，不写入本模块 CORE。
