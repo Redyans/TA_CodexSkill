@@ -186,11 +186,13 @@ Runtime、Editor、RendererFeature、VolumeComponent、ShaderGUI/旧式 Material
 
 预览走专用隐藏材质与 Shader，不写正式材质。笔刷缩略图必须用 `ScaleMode.StretchToFill` 与固定尺寸（`BrushPreviewSize`）绘制；同窗口按比例缩放的预览仍保留 `ScaleMode.ScaleToFit`，两者不可统一。通道语义属于项目 Shader 约定，工具不自行推断。通用实现约定见 [Editor 笔刷与顶点色绘制工具 UI 参考](../../references/editor-brush-and-vertex-color-ui-patterns.md)。
 
-### PRJ-TOOL-24｜大招 Timeline 生成器分离模块资源生成与局部组装
+### PRJ-TOOL-24｜Timeline 基础资产生成器分离制作预览与正式运行
 
-当前 `UltimateSkillCameraTimelineGenerator` 位于 `Assets/Editor/TA_Tools/Animation/UltimateSkillCameraTimelineGenerator/`，菜单为 `TA_Tools/Animation/技能大招资产生成器`。它使用历史 Odin 窗口，以直接资源列表支持多个动作、多个镜头、道具、音效和特效；主操作区按“只生成｜对应组装”两列提供道具、音效、镜头和特效的模块入口，并保留完整生成/组装入口。
+当前 `UltimateSkillCameraTimelineGenerator` 位于 `Assets/Editor/TA_Tools/Animation/UltimateSkillCameraTimelineGenerator/`，菜单为 `TA_Tools/Animation/技能大招资产生成器`。它使用历史 Odin 窗口，顶部三个横排按钮切换“大招技能 / 剧情过场 / 抽卡角色表演”，以直接资源列表支持多个动作、多个镜头、道具、音效和特效；大招主操作区按“只生成｜对应组装”两列提供模块入口，并保留完整生成/组装入口。
 
-镜头只产出 AnimationClip 与纯层级 Prefab，不生成 Animator Controller 或镜头子 Timeline；主 Prefab 实例上的空 Animator由主 Timeline 驱动。相机 Transform、Cinemachine Shot 和可选 FOV Track 共用时间区间；FOV 曲线转换到 `CinemachineVirtualCamera.m_Lens.FieldOfView`。Prop、FX 与 Cinemachine Shot 的 ExposedReference 必须绑定主 Prefab 内持久对象，并在 Prefab 保存后执行二次绑定与回读自检。固定命名、目录、Track/层级、`Battle_CameraPos` FOV `50`、已解决问题和未验证边界见 [大招 Timeline 基础资产生成器 Profile](ultimate-skill-timeline-generator.md)；跨项目方法见 [Timeline 资产生成、Prefab 绑定与增量组装参考](../../../TimelineDevelopment/references/timeline-asset-generation-and-prefab-binding.md)。
+三种制作类型都支持 Virtual Camera、直接驱动现有渲染 Camera、Prefab 自带实体 Camera。镜头只产出 AnimationClip 与纯层级 Prefab，不生成 Animator Controller 或镜头子 Timeline；主 Prefab 内一个无 Controller Animator 驱动共享镜头层级。所有镜头按列表顺序放在一条 `CameraAnimation`，每个 Clip 同时保存 Transform 与 `Camera.fieldOfView`，不再生成每镜头 FOV Track。Prop、FX 与 Cinemachine Shot 的 ExposedReference 必须绑定主 Prefab 内持久对象，并在 Prefab 保存后执行二次绑定与回读自检。
+
+剧情/抽卡当前只保证 Unity Editor 制作预览：虚拟模式用 `EditorCameraPreview` 自动绑定有效 Camera/Brain，直接模式用 `DirectCameraSync` 且 `editorPreviewOnly=true`，实体模式直接启用 Prefab Camera；正式 Player 加载、绑定和播放由程序侧另行接入，不修改现有 Presentation 业务模块。大招既有运行时 FOV 同步保留。固定命名、目录、Track/层级、`Battle_CameraPos` FOV `50`、已解决问题和未验证边界见 [Timeline 基础资产生成器 Profile](ultimate-skill-timeline-generator.md)；跨项目方法见 [Timeline 资产生成、Prefab 绑定与增量组装参考](../../../TimelineDevelopment/references/timeline-asset-generation-and-prefab-binding.md) 与 [Timeline 镜头制作、Editor 预览与运行时边界参考](../../../TimelineDevelopment/references/timeline-camera-authoring-editor-preview-and-runtime-boundary.md)。
 
 ## 7. 项目交付检查
 
@@ -210,5 +212,5 @@ Runtime、Editor、RendererFeature、VolumeComponent、ShaderGUI/旧式 Material
 - SVC 变体集合合并任务已按 PRJ-TOOL-21 检查输入/目标资产路径与类型校验、三种合并范围、覆盖/并集模式、目标同时作为输入、同名 JSON 清单软依赖、Undo 降级边界、跨工程副本迁移一致性和 Unity 内实际点击验证是否完成。
 - 地表/网格工具集任务已按 PRJ-TOOL-22 检查目录与菜单、数据资产路径、纯 Editor 边界、旧版 `Plugins/TA_Tools` 下线影响面、`Missing (Mono Script)` 清理和 README/Profile 同步；Unity 内实际打开与绘制验证未完成时必须明示。
 - 顶点色绘制任务已按 PRJ-TOOL-23 检查显示通道与绘制通道的独立性、单通道预览、另存与覆盖两类写入结果、不可写 Mesh 的门槛、Undo 与预览生命周期。
-- 大招 Timeline 工具任务已按 PRJ-TOOL-24 检查多个动作/镜头顺序、模块生成/组装作用域、原路径更新、Timeline 子资产保存、Prefab 持久对象二次绑定、Prop/FX/Shot 引用、Cinemachine/FOV、`Battle_CameraPos`、旧产物清理及 Unity 内实际重开/播放验证边界。
+- Timeline 基础资产生成器任务已按 PRJ-TOOL-24 检查三种制作类型、三种镜头模式、多个动作/镜头顺序、单轨 Transform/FOV、模块生成/组装作用域、原路径更新、Prefab 持久对象二次绑定、Prop/FX/Shot 引用、`Battle_CameraPos`、Editor-only Preview Track、Player 边界、旧产物清理及 Unity 内实际重开/播放验证边界。
 - README 已新增/更新；最终回复包含入口、验证和限制。

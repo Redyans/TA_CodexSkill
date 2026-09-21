@@ -7,7 +7,7 @@ description: ProjectACG 当前工程的挂点跟随 Timeline 轨道 Profile。�
 
 ## 1. 适用范围与迁移边界
 
-本 Profile 仅适用于 `D:\work2025U3D\Valkyria\ProjectACGMain2\ProjectACG\Client` 当前实现。跨项目强制规则以 [Timeline CORE](../../README_Tech_TimelineDevelopmentRules.md) 为准；可迁移的实现与排查方法见 [片段参数预览刷新与运行时数值同步](../../references/timeline-preview-refresh-and-live-value-sync.md)、[动画后跟随与 Playable 生命周期](../../references/timeline-post-animation-follow-and-playable-lifecycle.md) 与 [目标解析及嵌套挂点跟随](../../references/timeline-object-attachment-resolution.md)；本文件只记录 ProjectACG 的路径、类型、菜单、解析范围、当前算法与验证状态。
+本 Profile 仅适用于 `D:\work2025U3D\Valkyria\ProjectACG\Client` 当前实现；其中历史提交证据来自同项目的既有开发记录。跨项目强制规则以 [Timeline CORE](../../README_Tech_TimelineDevelopmentRules.md) 为准；可迁移的实现与排查方法见 [相对位姿、偏移倍率与 Scene Handle](../../references/timeline-relative-pose-authoring.md)、[片段参数预览刷新与运行时数值同步](../../references/timeline-preview-refresh-and-live-value-sync.md)、[动画后跟随与 Playable 生命周期](../../references/timeline-post-animation-follow-and-playable-lifecycle.md) 与 [目标解析及嵌套挂点跟随](../../references/timeline-object-attachment-resolution.md)；本文件只记录 ProjectACG 的路径、类型、菜单、解析范围、当前算法与验证状态。
 
 迁移到其他项目时必须删除或重建本 Profile。不得把 `fx` 命名空间、`MountFollowTrack` / `BoundMountFollowTrack` 两条轨道的划分、ProjectACG 的挂点命名（`weapon_r`、`Bip001/...`）、下方 `.meta` GUID 或当前性能结论当成跨项目统一规范。
 
@@ -123,7 +123,7 @@ Director 链的构建顺序（`MountResolver.GetDirectorChain` / `BuildDirectorC
 | 字段 | 派发 |
 | --- | --- |
 | 目标物体（预制体目标 / 场景目标） | `TimelineEditor.Refresh(RefreshReason.ContentsModified)`（需要重新实例化 Prefab、重新解析 `ExposedReference`） |
-| 挂点文本、跟随轴、偏移、缩放倍率、保持相对偏移 | `TimelineEditor.Refresh(RefreshReason.SceneNeedsUpdate)` |
+| 挂点文本、跟随轴、偏移、缩放倍率、进入 Clip 时保持当前相对位姿 | `TimelineEditor.Refresh(RefreshReason.SceneNeedsUpdate)` |
 
 实时取值：`MountFollowClipBase.SyncLiveValues(behaviour)` 把上述数值字段同步给 `MountFollowBehaviour`，`CreatePlayable` 与 `ProcessFrame` 都会调用，所以改数值不必重建图；`mountId` 变化时 Behaviour 就地重新解析挂点并重置 `m_HasKeptOffset`。
 
@@ -149,11 +149,15 @@ Director 链的构建顺序（`MountResolver.GetDirectorChain` / `BuildDirectorC
 
 不要用调整 Timeline 轨道上下顺序代替该时序。`32000` 是 ProjectACG 当前动画链路下的实现值；如果后续引入更晚执行的 Animation Rigging、IK 或自定义骨骼约束，必须重新验证并考虑升级为图内依赖。
 
-### 7.3 保持相对偏移的首帧校准
+### 7.3 相对位姿、倍率与 Scene Handle
 
-开启 `keepInitialOffset` 时，Behaviour 先保存目标的原始世界位置 / 旋转到 `m_KeptSourceWorldPosition` 与 `m_KeptSourceWorldRotation`。`ProcessFrame` 为即时显示先计算一次偏移，并设置 `m_NeedsLateOffsetRefresh`；第一次 `ApplyAfterAnimation()` 取得最终挂点姿态后，再用同一份原始世界位姿调用 `RefreshKeptOffset()`。
+`MountFollowClipBase` 的 `positionOffset` / `rotationOffset` 保存原始偏移；`offsetScaleEnabled` 开启后，`offsetScale`（`0.01-1`）在运行时统一乘到位置和旋转偏移上。关闭倍率开关时有效倍率为 `1`，旧 Timeline 资产保持旧行为。Scene Handle 与运行时使用同一个有效倍率，拖动后除以倍率写回原始字段，避免缩放两次。
 
-这样不会把动画写回前的首帧挂点姿态固化成永久偏差，也不会从已经被跟随移动过的目标反复采样基准。
+Inspector 的“进入 Clip 时保持当前相对位姿”是动态模式：Behaviour 保存目标当前实例的世界位置 / 旋转到 `m_KeptSourceWorldPosition` 与 `m_KeptSourceWorldRotation`，再按挂点局部空间计算相对位姿；第一次 `ApplyAfterAnimation()` 取得最终挂点姿态后，用同一份原始世界位姿调用 `RefreshKeptOffset()`，避免把动画写回前的姿态固化成固定偏差。场景目标和 Prefab 实例都按当前实例 Transform 捕获，不读取 Prefab 资源 Transform。
+
+Inspector 的“从模型当前位置获取偏移”是编辑器烘焙模式，仅对 Hierarchy 场景目标启用：用运行时同一个 `MountResolver` 解析唯一挂点，计算模型当前位姿相对挂点的局部位置 / 旋转，按有效倍率反算写入 `positionOffset` / `rotationOffset`，并关闭 `keepInitialOffset`。这样结果可见、可审查，且可继续使用 Scene Handle 微调，点击前后实际姿态不应跳变。
+
+动态模式打开/关闭在预览期间会清理旧的捕获基准；重新打开时按模型此刻的位姿重新捕获，不复用旧基准。动态模式下 Scene Handle 隐藏，因为手填偏移会被动态基准忽略。
 
 ### 7.4 暂停、出界与销毁
 
@@ -216,6 +220,8 @@ if (info.effectivePlayState == PlayState.Playing) return;
 
 - 没有做 Profiler 采样，性能结论为结构分析；
 - 未做 Unity 批处理（BatchMode）编译与自动化用例，校验时机是编辑器处于打开状态；
+- 本次相对位姿、偏移倍率和“从模型当前位置获取偏移”已完成 AOT 与 GameLogic 离线编译（0 error）；Editor 全量工程仍被工作区相机 Timeline 工具的 5 个既有缺失类型错误阻断，错误不在本次 Mount Follow 文件；
+- 新增按钮与动态/烘焙双模式尚未在 Unity Timeline 窗口完成完整人工视觉验收，尤其需要覆盖倍率 `0.01`、旋转归一化、Undo、Prefab 实例和两个 Track 入口；
 - 本次新增的“快速动画帧末贴合、Clip 内暂停不消失、越过 Clip 后正确清理、倒回重播”尚未在 Unity Timeline 窗口做人工视觉与 Transform 数值验收；`MountFollowTrack` 与 `BoundMountFollowTrack` 两条入口都需要覆盖；
 - "绑定对象自身"的运行时行为（填 `.`、填绑定对象名字、下拉框第 0 项、命中回显"自身"）无法离线验证，需要 `Transform` 实例，必须在 Unity 里复验；
 - 未验证 Timeline 升级到 1.7.7 以上后的 `RefreshReason`、`previewMode`、菜单分组与片段菜单判定行为；
