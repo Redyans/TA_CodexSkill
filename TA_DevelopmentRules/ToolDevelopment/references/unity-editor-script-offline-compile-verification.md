@@ -32,12 +32,15 @@
 
 典型假阳性：`return a != null ? a : b;`（`RenderTexture`/`Texture2D` 收敛到 `Texture`）会被旧编译器报 `CS0173`，而同一份代码在 Unity 自带编译器下 `exit=0`。
 
+`MonoBleedingEdge/bin/mcs.bat`（Mono C# 编译器，默认 `4.5` 配置）同样不可用：与面向 netstandard 的 Unity 模块程序集混用时，会成片报 `CS0433`（类型重复定义），产生与真实编译无关的噪音。
+
 结论：只有当编译器与 Unity 一致时，离线结论才可信。出现「只在离线校验里出现的语法错误」时，先更换编译器再下结论。
 
 ### 3.2 引用集合必须成组
 
 - `-nostdlib+` 时必须同时引用 `netstandard.dll` 与 `netfx shim` 组；缺少后者时，以 mscorlib 为目标的第三方程序集（如 `Sirenix.*`）会报 `CS0012`（类型在 `mscorlib` 中定义）。
 - 加入工程 `Library/ScriptAssemblies` 时要排除 `Assembly-CSharp*.dll`：否则会与本次参与编译的脚本形成同名类型噪音，并掩盖「该工具是否真的依赖运行时程序集」这一判断。
+- 不要引用 `Data/Managed/UnityEngine.dll`（facade）与 `Data/Managed/UnityEngine/*.dll`（模块程序集）的并集：类型已全部包含在模块程序集里，同时引用会成片报 `CS0433`（例如 `UnityEngine.Material`、`UnityEngine.Rect` 定义多次）。Editor 脚本只需要模块程序集加 `UnityEditor.dll`。
 
 ### 3.3 define 必须显式声明
 
@@ -91,3 +94,4 @@ $args | Set-Content "<temp>/refs.rsp"
 | define | 做一次故意去掉 `UNITY_EDITOR` 的对照。 | 对照能复现预期的成片错误，证明当前结论来自正确 define。 |
 | 结论冲突 | 与 Unity 内编译结果比对。 | 冲突时以 Unity Editor 结果为准，离线脚本降级为补充证据。 |
 | 回退 | 离线产物只写临时目录。 | 工程目录内不残留 `.dll`、`.rsp` 或中间文件。 |
+| 改动前后对照 | 用同一条命令额外编译改动前（HEAD）版本。 | 改动前版本同样 `exit=0`（或只出现已登记告警），证明本次报错来自改动而不是脚手架。 |
