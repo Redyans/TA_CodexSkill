@@ -7,7 +7,7 @@ description: ProjectACG Timeline 基础资产生成器的产品合同、Odin UI�
 
 > 类型：`PROFILE`。适用范围：ProjectACG `Client` 工作区中的 `UltimateSkillCameraTimelineGenerator`，包括大招技能、剧情过场和抽卡角色表演三种制作类型。通用工具规则见 [TA 工具开发模块](../../README_Tech_TAToolDevelopmentRules.md)，通用 Timeline 规则见 [Timeline 开发模块](../../../TimelineDevelopment/README_Tech_TimelineDevelopmentRules.md)。本文件只记录当前项目的类型、路径、命名、层级、运行时契约和已验证事实，不把 ProjectACG 的固定实现提升为 CORE。
 >
-> 最后整理：`2026-09-18`（Asia/Shanghai）。
+> 最后整理：`2026-09-19`（Asia/Shanghai）。
 
 ## 1. 工具定位与当前入口
 
@@ -26,10 +26,11 @@ description: ProjectACG Timeline 基础资产生成器的产品合同、Odin UI�
 | 编辑器主类 | `UltimateSkillCameraTimelineGeneratorWindow`，按主流程、Odin UI、Validation、Presentation 拆为 partial 文件。 |
 | 菜单入口 | `TA_Tools/Animation/技能大招资产生成器`。历史菜单名暂未随能力扩展而改名。 |
 | UI | `OdinEditorWindow`。`_settings` 使用 `[InlineProperty] + [HideLabel]`，避免空的 `Settings` 区和窄列。 |
-| 运行时绑定 | `GameLogic.Battle.UltimateTimelineBindings`、`UltimateTimelineRuntimeContext`。 |
-| 场景预览 | `UltimateTimelineBindingsEditor` 和 Editor-only `UltimateTimelineEditorFovPreview`。 |
+| 大招运行时绑定 | `GameLogic.Battle.UltimateTimelineBindings`、`UltimateTimelineRuntimeContext`；本轮保留其 FOV 与三种镜头模式能力。 |
+| 场景预览 | 大招使用 `UltimateTimelineBindingsEditor` 与 Editor-only `UltimateTimelineEditorFovPreview`；剧情/抽卡使用 AOT Track 目录中的 Editor 预览 Track。 |
+| 运行边界 | 剧情/抽卡当前只保证 Unity Editor 内制作、播放和调试；正式 Player 加载、实例化、业务绑定与调用由程序侧后续接入，本轮不修改现有 Presentation 运行模块。 |
 | 主要依赖 | Unity Timeline、Cinemachine、URP Volume、自定义 Mount Follow Track/Clip。 |
-| 工具内说明 | 同目录的 `README_Art_UltimateSkillCameraTimelineGenerator.md` 和 `README_Tech_UltimateSkillCameraTimelineGenerator.md`。 |
+| 工具内说明 | 同目录的 `README_Art_UltimateSkillCameraTimelineGenerator.md` 和 `README_Tech_UltimateSkillCameraTimelineGenerator.md`；其中仍可能保留历史抽卡正式运行描述，当前边界以代码和本 Profile 的“剧情/抽卡仅 Editor 预览”为准，后续应同步消除文档漂移。 |
 
 ## 2. 需求演进后形成的最终合同
 
@@ -40,18 +41,20 @@ description: ProjectACG Timeline 基础资产生成器的产品合同、Odin UI�
 | 制作类型 | 当前产物与边界 |
 | --- | --- |
 | 大招技能 | 延续角色目录、`tl_hero_*`、`tPre_hero_*`、Cinemachine Shot、FX 子 Timeline 等完整工作流。 |
-| 剧情过场 | 生成 `tl_story_<演出名>.playable` 与 `tPre_story_<演出名>.prefab`；支持多角色动作、多镜头、道具、音效和特效，但当前不实现 Storyline 节点剧情系统。 |
-| 抽卡角色表演 | 生成 `TL_Gacha_Char_<角色编号>.playable` 与 `Stage_Gacha_Char_<角色编号>.prefab`，并配置 `PresentationStageBinder`、`PresentationSignalReceiver`。 |
+| 剧情过场 | 生成 `tl_story_<演出名>.playable` 与 `tPre_story_<演出名>.prefab`；支持多角色动作、多镜头、道具、音效和特效，但当前不实现 Storyline 节点剧情系统，只保证 Editor 制作预览。 |
+| 抽卡角色表演 | 生成 `TL_Gacha_Char_<角色编号>.playable` 与 `Stage_Gacha_Char_<角色编号>.prefab`，配置基础 Stage 层级以及现有 `PresentationStageBinder`、`PresentationSignalReceiver` 结构；当前只保证 Editor 制作预览，不代表抽卡运行流程已经接通。 |
 
 每种制作类型都可以选择三种镜头驱动方式：
 
 | 镜头模式 | 工作方式 | 适用情况 |
 | --- | --- | --- |
-| `VirtualCamera` | 动画驱动共享机位，Cinemachine Virtual Camera 跟随机位，Brain 输出到渲染 Camera。 | 大招默认；需要镜头混合、优先级和 Cinemachine 工作流。 |
-| `DirectRenderCamera` | Timeline 先驱动 Prefab 内代理 Camera，再把 Transform/FOV 同步到现有渲染 Camera。 | 场景已有唯一渲染 Camera，不想创建虚拟相机输出。 |
-| `PrefabEntityCamera` | Prefab 内实体 Camera 直接负责渲染，演出期间临时切换外部 Camera 状态。 | 独立演出 Prefab，希望最短输出链路。 |
+| `VirtualCamera` | 动画驱动共享机位，Cinemachine Virtual Camera 跟随机位，Brain 输出到渲染 Camera。 | 大招使用既有运行链路；剧情/抽卡由 `EditorCameraPreview` 在 Editor 自动绑定有效 Camera/Brain，Player 中该预览逻辑为空操作。 |
+| `DirectRenderCamera` | Timeline 先驱动 Prefab 内代理 Camera，再把 Transform/FOV 同步到现有渲染 Camera。 | 大招使用正式同步；剧情/抽卡生成的 `DirectCameraSync` Clip 设置 `editorPreviewOnly=true`，仅在 Unity Editor（含 Editor Play Mode）预览。 |
+| `PrefabEntityCamera` | Prefab 内实体 Camera 直接负责渲染。 | 工具生成并启用实体 Camera，Editor 可直接预览；剧情/抽卡的正式运行时相机切换、加载和恢复仍由程序侧实现。 |
 
 三种模式共用镜头动画资源和 `CameraAnimation` 轨道。差异只在最终输出层，不应复制三套镜头导入逻辑。
+
+剧情/抽卡的 Editor 预览能力不能写成“运行时已支持”。本轮只新增生成器与 Timeline Track，没有改动 `PresentationPlaybackModule`、`PresentationStageBinder` 的业务调用链或抽卡状态机；这些资产在 Player 中何时加载、绑定和播放，由程序侧另行接入。大招已有运行时 FOV 同步继续保留，不因该边界回退。
 
 ### 2.2 面向美术的输入
 
@@ -150,6 +153,18 @@ description: ProjectACG Timeline 基础资产生成器的产品合同、Odin UI�
 
 旧层级 `Cam_Ani`、`Cam_Virtual`、`Fx`、`Prop` 已废弃，不要在新逻辑里重新生成。
 
+### 4.3 剧情/抽卡的最小镜头轨道
+
+剧情和抽卡同样只生成一条 `CameraAnimation`，多个镜头 Clip 按列表顺序连续排列，Transform 与 FOV 位于同一个 AnimationClip。根据镜头模式只增加必要轨道：
+
+| 镜头模式 | 额外轨道 | Player 边界 |
+| --- | --- | --- |
+| `VirtualCamera` | 一条 `EditorCameraPreview`、一条 `Ultimate_Camera`。 | `PresentationCameraPreviewTrack` 的实际绑定与同步代码只在 `UNITY_EDITOR` 下执行。 |
+| `DirectRenderCamera` | 一条 `DirectCameraSync`，覆盖主 Timeline 时长。 | Clip 的 `editorPreviewOnly=true`；Player 不复制镜头到场景 Camera。 |
+| `PrefabEntityCamera` | 无相机辅助 Track。 | Prefab 内 Camera 仅代表可预览资产结构，正式运行调用不在工具范围内。 |
+
+切换模式或重复生成时，工具删除自己拥有的相机辅助轨，并清理历史 `Camera FOV ` 前缀轨；非工具轨道和美术新增轨道保留。
+
 ## 5. 镜头资产、共享驱动与三种输出模式
 
 ### 5.1 独立镜头 Prefab 必须保持纯净
@@ -175,7 +190,7 @@ description: ProjectACG Timeline 基础资产生成器的产品合同、Odin UI�
 
 虚拟相机和直接驱动模式下，这个 Camera 默认禁用，因此不会参与 Culling、渲染或产生额外画面；它只保存被动画求值后的 FOV。实体 Camera 模式下它才会启用并直接输出。单个禁用 Camera 与一个共享 Animator 的成本可控，远低于每个镜头各放一套 Camera、Animator、Controller 和子 Timeline。
 
-### 5.3 三种输出模式的运行路径
+### 5.3 三种输出模式的数据路径
 
 ```text
 CameraAnimation Clip
@@ -188,6 +203,8 @@ CameraAnimation Clip
 
 `PrefabEntityCamera` 链路最短，但不能脱离画面栈、后处理、相机切换和平台验证就简单判定为“绝对性能最优”。真正的选择依据是是否需要 Cinemachine 混合、是否必须复用现有渲染 Camera，以及演出期间由谁拥有最终输出。
 
+对大招，该数据路径由既有战斗运行上下文和 Track 共同完成。对剧情/抽卡，本轮只保证 Editor 中能看到同样的数据路径：虚拟模式自动选择有效场景 Camera，必要时临时补 `HideAndDontSave` Brain；直接模式自动把共享 Camera 的 Transform/FOV 同步到当前有效渲染 Camera；实体模式直接启用 Prefab 内 Camera。Player 中的正式调用与相机控制权不由生成器决定。
+
 ## 6. FOV 的最终实现
 
 3ds Max 导出的镜头动画同时包含位置、旋转和 FOV。生成阶段把曲线路径归一到共享层级的 `Camera_Root/Camera`，FOV 保持为 `Camera.fieldOfView`，并与 Transform 一起保存在对应的镜头动画 Clip 中。
@@ -199,7 +216,7 @@ CameraAnimation Clip
 - 镜头替换后容易残留旧 FOV 轨；
 - 一次镜头修改需要同时维护两条轨。
 
-当前方案把多个镜头动画放在同一条 `CameraAnimation` 上，Clip 自己携带 Transform 与 FOV。虚拟相机模式的正式运行时流程是：
+当前方案把多个镜头动画放在同一条 `CameraAnimation` 上，Clip 自己携带 Transform 与 FOV。大招虚拟相机模式的正式运行时流程是：
 
 1. Timeline 求值共享 Camera 的 Transform 与 `fieldOfView`。
 2. `UltimateTimelineRuntimeContext` 在 Timeline 求值后读取共享 Camera FOV。
@@ -214,6 +231,14 @@ Editor Timeline 预览没有正式战斗更新循环，因此 `UltimateTimelineE
 - 不产生运行时轮询成本；
 - 停止预览、切换 Timeline、进入 Play Mode 或程序集重载时恢复原 Lens；
 - 用 `AnimationMode` 临时属性记录，避免把预览值保存成 Prefab/场景覆盖。
+
+剧情/抽卡不复用大招运行上下文：
+
+- 虚拟模式由 `PresentationCameraPreviewTrack` 在 Editor 临时绑定 `Ultimate_Camera` 到有效 Brain，并用反射把共享源 Camera FOV 写入虚拟相机 Lens；Player 中该 Behaviour 不执行绑定逻辑。
+- 直接模式由 `DirectRenderCameraSyncTrack` 同步 Transform/FOV；生成器把 Clip 标记为 `editorPreviewOnly=true`，Player 立即返回。
+- 实体模式不需要 FOV 辅助轨，`CameraAnimation` 直接驱动启用的 Prefab Camera。
+
+虚拟预览 Camera 的解析优先级为：有效 `Camera.main`，然后约定名称 `mainCamera_CJ_1`、已有启用 Brain 的 Camera、Depth 最高的有效 Camera。`DirectCameraSync` 优先当前有效主/活动 Camera，再使用显式 Binding 或约定名称兜底。两条路径都会排除共享源 Camera；Director 与 `camAni_group` 为兄弟节点时，会继续从 Director 父节点查找。
 
 ## 7. Cinemachine 结构与 `Battle_CameraPos`
 
@@ -327,6 +352,8 @@ Timeline Asset 上“有 Clip”和 Prefab 内 PlayableDirector“引用已保�
 
 按钮必须拒绝 Project Prefab、Prefab Mode 对象、没有 Animator 或有多个候选 Animator 的角色、重名 `mainCamera_CJ_1`，以及缺少 Camera/CinemachineBrain 的场景相机。这样可以把“预览方便”与“运行时依赖”分离，不为打包加入编辑器查找逻辑。
 
+剧情/抽卡的相机预览不要求美术再点击该大招绑定按钮。对应 Timeline Track 会在 Editor 求值时解析当前有效 Camera：虚拟模式临时设置 Cinemachine Generic Binding，直接模式同步源 Camera 到有效渲染 Camera。所有临时绑定、Brain、Camera 位姿、FOV 和启用状态都必须在 Graph Stop、Playable Destroy 或 Dispose 时幂等恢复。
+
 ## 11. 重复生成与美术内容保护边界
 
 ### 11.1 应当保留
@@ -361,6 +388,10 @@ Timeline Asset 上“有 Clip”和 Prefab 内 PlayableDirector“引用已保�
 | 命名不合规就完全不能生成 | 把源文件规范误当成工具输入门槛。 | 不强制源名称，只保证输出名称和冲突检测。 |
 | 单模块组装被其它模块错误拦截 | 自检没有按 Scope 分支。 | 校验、生成和生成后自检统一使用模块作用域。 |
 | 重复生成丢 GUID 或美术轨道 | 删除后重建整个资源。 | 原路径更新，只重建工具拥有内容。 |
+| 剧情/抽卡在 Editor 能播，却误以为 Player 已接通 | 把制作预览、资产结构和业务运行调用混成同一合同。 | Preview Track 在 Player 空操作；Profile 明确正式加载、绑定、调用由程序侧接入。 |
+| 为了预览修改现有 Presentation 运行模块 | 没先冻结授权范围，直接把 Editor 自动查找写进业务链。 | 回退 Presentation 业务代码，只保留生成器与通用 Track；大招已有 FOV 运行支持单独保留。 |
+| Editor 虚拟相机无 Brain 不出画面 | 场景当前 Camera 没有 CinemachineBrain。 | 预览会话临时添加 `HideAndDontSave` Brain，结束时移除并恢复原状态。 |
+| DirectCameraSync 每帧扫描 Camera | 目标解析没有会话缓存和重试节流。 | 缓存 Camera/Brain，失效后按小频率重查；渲染回调只处理目标 Camera。 |
 
 最关键的通用经验是：先明确资产所有权，再写重复生成。Timeline 轨道、Prefab 子节点和 ExposedReference 必须各自区分“工具拥有”“美术拥有”“运行时注入”；否则所谓自动生成很容易变成不可预测的破坏性重建。
 
@@ -382,14 +413,21 @@ Timeline Asset 上“有 Clip”和 Prefab 内 PlayableDirector“引用已保�
 
 ### 14.1 已执行的静态验证
 
-当前代码曾执行：
+本轮代码曾执行：
 
 ```powershell
-dotnet build Assembly-CSharp-Editor.csproj --no-restore `
-  -p:UseSharedCompilation=false -p:WarningLevel=0 -v:minimal
+dotnet build AOT.csproj --no-restore
+dotnet build Assembly-CSharp-Editor.csproj --no-restore
+git diff --check
 ```
 
-结果为 `0 errors`。由于命令显式设置 `WarningLevel=0`，这只能证明该配置下编译无错误，不能作为“工程没有 Warning”的证据。另已执行 `git diff --check`，未发现空白错误。
+结果：
+
+- `AOT.csproj`：`0 errors`，31 个仓库既有 Warning；
+- `Assembly-CSharp-Editor.csproj`：`0 errors`，673 个仓库既有 Warning；
+- `git diff --check`：通过。
+
+本轮没有保留对 `PresentationPlaybackModule`、`PresentationStageBinder` 业务调用文件或 `GachaResultPresentationStateTests.cs` 的修改；剧情/抽卡运行时接入不在本次静态验证结论内。上述编译结果只证明当前 csproj 快照可编译，不能替代 Unity 资源生成和播放验证。
 
 ### 14.2 Unity 内必须人工复验
 
@@ -403,6 +441,9 @@ dotnet build Assembly-CSharp-Editor.csproj --no-restore `
 | FOV | Timeline Play、Seek、Stop、重复播放时 FOV 正确，退出预览恢复 Lens。 |
 | `Battle_CameraPos` | 原点、FOV 50、Animator 无 Controller、Body/Aim 为 Do nothing、Noise 为 None，并且存在空的标准 `cm/CinemachinePipeline`。 |
 | 三种镜头模式 | Virtual、Direct、Prefab Entity 分别验证最终输出、禁用/恢复状态和后处理表现。 |
+| 剧情/抽卡 Editor 边界 | Virtual 模式临时 Brain/Binding 可恢复；Direct 的 `editorPreviewOnly` 在 Player 不执行；Entity 模式不依赖辅助 Track。 |
+| Player 运行边界 | 确认剧情/抽卡没有自动接入现有 Presentation 业务链；由程序侧另行验证加载、实例化、绑定、播放、跳过和卸载。 |
+| 文档漂移 | 工具目录 Art/Tech README 中旧的抽卡正式运行描述需要后续同步；在同步前不得把旧描述当作当前运行能力证据。 |
 | 场景预览 | 一键绑定角色与 `mainCamera_CJ_1`，切换场景/角色后不保留错误引用。 |
 | 异常输入 | 空列表、重复镜头编号、无动画 FBX、只读目录和中途异常有中文原因。 |
 | 性能 | Profiler 检查没有多 Camera 重复渲染、无额外运行时 Editor 服务、无每帧对象查找/集合分配。 |
@@ -414,10 +455,13 @@ dotnet build Assembly-CSharp-Editor.csproj --no-restore `
 - [ ] 修改前已读取工具 Art/Tech README、本 Profile、目标主 Timeline/Prefab。
 - [ ] 新字段或按钮已同步 UI、Scope、校验、执行、覆盖提示和生成后自检。
 - [ ] 三种制作类型仍用顶部横排按钮；每种类型仍能选择三种镜头驱动方式。
+- [ ] 剧情/抽卡仍只承诺 Editor 制作预览；没有为了自动播放而修改现有 Presentation 业务调用链。
 - [ ] 动作、镜头、道具、音效、特效仍使用简单列表，顺序等于 Clip 顺序。
 - [ ] 独立镜头 Prefab 没有 Camera、Animator、Controller、子 Timeline 和同步脚本。
 - [ ] 主 Prefab 共享镜头实例有一个 Animator 和 FOV 接收 Camera；Camera 启用状态符合驱动模式。
 - [ ] 多镜头仍合并到一条 `CameraAnimation`；没有重新生成独立 FOV Track。
+- [ ] 剧情/抽卡虚拟模式的 `EditorCameraPreview` 在 Player 空操作；直接模式 Clip 的 `editorPreviewOnly=true`；实体模式不生成多余同步轨。
+- [ ] Editor 临时 Camera Binding、Brain、位姿、FOV 和启用状态能在 Stop/Destroy/Dispose 后恢复。
 - [ ] `Battle_CameraPos` 保持原点、FOV 50、Do nothing/Do nothing/None、存在空的标准 `cm/CinemachinePipeline`，且不自动生成 Shot。
 - [ ] 主 Prefab 层级仍为 `chara_group/camAni_group/camVirtual_group/fx_group/prop_group/sound_group`。
 - [ ] Prop/FX/Shot 的 ExposedReference 指向主 Prefab 内最终实例，不指向 Project 资源或临时对象。
@@ -430,6 +474,7 @@ dotnet build Assembly-CSharp-Editor.csproj --no-restore `
 ## 16. 关联参考
 
 - [Timeline 资产生成、Prefab 绑定与增量组装](../../../TimelineDevelopment/references/timeline-asset-generation-and-prefab-binding.md)
+- [Timeline 镜头制作、Editor 预览与运行时边界](../../../TimelineDevelopment/references/timeline-camera-authoring-editor-preview-and-runtime-boundary.md)
 - [Timeline 场景对象附着与引用解析](../../../TimelineDevelopment/references/timeline-object-attachment-resolution.md)
 - [Timeline 预览刷新与实时值同步](../../../TimelineDevelopment/references/timeline-preview-refresh-and-live-value-sync.md)
 - [Unity 动画预览生命周期与姿态恢复](../../references/unity-animation-preview-lifecycle-and-pose-restoration.md)

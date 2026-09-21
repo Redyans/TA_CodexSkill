@@ -102,7 +102,9 @@ flowchart TD
 | 音效组装 | 只替换 AudioTrack 的 Clip。 | 主 Prefab 层级和其它轨道。 |
 | 特效组装 | 只替换 FX Track 和 Prefab 特效容器。 | 镜头、道具、音效及其它人工节点。 |
 
-增量组装时先按稳定名称或类型找到现有目标轨道，再删除该轨道上的工具 Clip；不要为了更新一条轨道调用“删除所有根轨”的完整重建函数。目标结构不存在时可以回退到完整组装，但 UI、日志和文档要说明这次回退会扩大写入范围。
+增量组装时先按“固定名称 + 固定类型”共同识别工具轨道，再删除该轨道上的工具 Clip；不要只按类型删除全部同类轨道，也不要为了更新一条轨道调用“删除所有根轨”的完整重建函数。历史迁移可以额外清理工具明确拥有的旧前缀，但必须列出白名单。目标结构不存在时可以回退到完整组装，但 UI、日志和文档要说明这次回退会扩大写入范围。
+
+工具所有权判断应集中复用，并同时供创建、清理、自检和文档使用。美术新增的其它轨道及其相对顺序必须保留；新增一种工具轨道时，必须同步更新四个入口，不能只补创建逻辑。
 
 ### 3.4 原路径更新，不做 delete-then-create
 
@@ -168,23 +170,25 @@ Timeline `AnimationTrack` 需要绑定 `Animator`，但不代表模块 Prefab �
 
 这样能避免状态机与 Timeline 同时写同一组 Transform 曲线。
 
-### 3.10 移除被动画曲线指向的组件时，要迁移曲线语义
+### 3.10 Transform 与 FOV 优先保存在同一个镜头 AnimationClip
 
-DCC 相机动画通常把 FOV 曲线绑定到 `Camera.field of view`。如果运行时结构移除了 `Camera` 组件，位置/旋转仍会播放，但 FOV 会静默失效。
+DCC 相机动画通常同时包含 Transform 和 `Camera.fieldOfView`。默认做法应是把两类曲线归一到主 Prefab 内的共享相机层级，并让多个镜头 Clip 连续放在同一条 `CameraAnimation` 上，而不是为每个镜头再创建独立 FOV Track。
 
-解决思路不是把不需要的 Camera 加回来，而是把曲线转换到实际消费者，例如 Cinemachine 虚拟相机的 Lens FOV，并创建一条绑定到该虚拟相机 Animator 的独立 FOV AnimationTrack。转换后同时检查：
+当最终输出不是普通 Camera 时，保留一个禁用渲染的共享源 Camera 作为曲线接收器，再由输出适配层消费求值结果：
 
-- 属性路径、组件类型和字段名正确；
-- 原曲线关键帧与切线被保留；
-- FOV Track 与镜头 Transform Track 使用相同起点和长度；
-- FOV Track 绑定的是虚拟相机上的 Animator，而不是镜头层级 Animator；
-- 无 FOV 曲线的镜头不生成空 FOV Track。
+- Cinemachine 模式把共享源 Camera 的 FOV 同步到工具虚拟相机 Lens；
+- 直接驱动模式把共享源 Camera 的 Transform/FOV 同步到场景渲染 Camera；
+- Prefab 实体 Camera 模式直接使用源 Camera 输出。
 
-这一模式也适用于“源动画指向旧组件，但最终运行结构由代理组件消费”的其它情况。
+这样可以保证每个镜头只维护一个 Clip，Transform/FOV 天然使用相同起点、长度、速度和替换边界。重复生成时还应清理旧版 `Camera FOV `、`Camera Animation ` 等工具前缀轨，避免辅助轨残留。
 
-### 3.11 镜头 Transform 与 Cinemachine Shot 共用时间区间
+只有目标组件无法从共享源值适配、且目标项目已经验证独立曲线绑定稳定时，才考虑额外 FOV Track。此时仍应共用同一个 `{ start, duration }`，并把这项版本特例记录到项目 Profile。
 
-对每个镜头先计算一个 `{ start, duration }`，再让镜头 Transform AnimationTrack、可选 FOV Track 和 Cinemachine Shot 复用该区间。不要分别累加三遍，否则浮点误差或空项跳过会造成切镜与动画错位。
+Editor 预览、三种镜头输出模式和 Player 边界见 [Timeline 镜头制作、Editor 预览与运行时边界参考](timeline-camera-authoring-editor-preview-and-runtime-boundary.md)。
+
+### 3.11 镜头 AnimationClip 与 Cinemachine Shot 共用时间区间
+
+对每个镜头先计算一个 `{ start, duration }`，再让 `CameraAnimation` 上的 AnimationClip 和 Cinemachine Shot 复用该区间。不要分别累加两遍，否则浮点误差或空项跳过会造成切镜与动画错位。
 
 多动作与多镜头可以分别按各自列表连续排列，不必强制一一配对；是否对齐由具体技能合同决定。总时长通常优先取角色动作总长度，无动作时才回退到镜头总长度。铺满型模块（道具、音效、特效）的 Clip 使用同一个总时长来源。
 
@@ -213,7 +217,8 @@ DCC 相机动画通常把 FOV 曲线绑定到 `Camera.field of view`。如果运
 | Cinemachine Shot 的 Virtual Camera 为 `None` | Clip 引用名不一致，或绑定的是保存前临时对象。 | 统一引用名；Prefab 落盘后用持久子对象二次绑定并回读。 |
 | Prop Clip 的场景目标丢失 | 绑定到 Project Prefab 或 PrefabContents 临时实例。 | 绑定最终主 Prefab 的 Prop 容器子对象。 |
 | FX 的 `Source Game Object` 丢失 | `ControlPlayableAsset` 仍配置为运行时实例化 Prefab，或 Parent Object 没回填。 | `prefabGameObject = null`；`sourceGameObject` 指向主 Prefab 内 FX 实例。 |
-| 能播放相机位移旋转，FOV 不动 | FOV 曲线仍指向已移除的 `Camera`。 | 将曲线迁移到实际 Lens 消费者并使用独立绑定轨。 |
+| 能播放相机位移旋转，FOV 不动 | FOV 曲线没有接收组件，或最终输出端没有消费共享源 Camera 的 FOV。 | 保留共享源 Camera 接收 Transform/FOV，再由虚拟、直接或实体输出层消费；默认不拆独立 FOV 轨。 |
+| 重复生成后残留旧 FOV 轨 | 新版已改为单轨多 Clip，但清理逻辑没有覆盖历史前缀。 | 按工具固定类型与历史前缀清理旧轨，同时保留非工具人工轨。 |
 | 重复生成后手工内容丢失 | 工具没有声明所有权，完整清空 Timeline/Prefab。 | 使用独占容器和模块级更新；完整重建前捕获允许保留的人工内容。 |
 | 重复生成后节点越来越多 | 未清理工具拥有的旧实例，或按数量而非稳定键匹配。 | 只清理对应独占容器，再按当前上下文重建。 |
 | 找不到刚创建的 Clip | Timeline 子资产尚未保存，或用 `PropertyName.ToString()` 比较名称。 | Timeline 先 `SaveAssets`；读取纯 `exposedName`。 |
@@ -230,7 +235,8 @@ DCC 相机动画通常把 FOV 曲线绑定到 `Camera.field of view`。如果运
 | 完整重建 | 即使单模块组装安全，完整组装仍可能重建全部工具轨道；必须单独验证人工轨道、Marker 和绑定是否保留。 |
 | 外部 Track 类型 | 自定义挂点 Track、特效 Track 的字段名、默认挂点和恢复语义属于项目事实，不能从本参考推断。 |
 | Cinemachine 版本 | Body/Aim 组件类型、Lens 字段和 Shot API 可能变化，升级包版本后要重新验证。 |
-| FOV 曲线 | 只迁移字段名不足以保证视觉一致；还需确认传感器、Gate Fit、焦距换算和纵横比合同。 |
+| FOV 曲线 | `fieldOfView` 不一定是物理相机的最终视觉真相；还需确认传感器、Gate Fit、焦距换算、纵横比和最终输出消费者。 |
+| Editor 预览 | 自动 Camera/Brain 绑定只代表制作预览，不等于 Player 已完成加载、实例化、控制权和生命周期接入。 |
 | Undo | AssetDatabase、Prefab 保存和 Timeline 子资产写入通常不具备完整 Undo；回滚主要依赖版本管理、备份或重新生成。 |
 | CLI 编译 | `dotnet build` 只能证明当前 csproj 快照可编译，不能证明 Unity 导入、Timeline 播放和 Prefab 引用落盘正确。 |
 
@@ -245,7 +251,8 @@ DCC 相机动画通常把 FOV 曲线绑定到 `Camera.field of view`。如果运
 | 重复生成 | 同一配置执行两次。 | 不重复堆节点；原路径、GUID 和绑定稳定。 |
 | 单模块组装 | 分别组装镜头、道具、音效、特效。 | 只更新目标模块，其它轨道和容器不变。 |
 | 绑定 | 保存、关闭、重新打开主 Prefab。 | Shot、Prop、FX 和 AnimationTrack 绑定仍指向 Prefab 内对象。 |
-| 镜头 | Transform、FOV、切镜、Seek、Pause、Stop。 | 三类曲线时间一致，停止/重播无错误状态。 |
+| 镜头 | Transform、FOV、切镜、Seek、Pause、Stop。 | Transform/FOV 位于同一个镜头 Clip；Shot 时段一致；停止/重播无错误状态。 |
+| Player 边界 | Editor-only Preview Track 或同步标记。 | Player 不扫描场景、不注册预览回调、不控制正式 Camera；已有运行链路行为不变。 |
 | 人工内容 | 添加一个工具范围外的手工 Clip/节点后重组。 | 按所有权合同保留；无法保留时提前警告并可回退。 |
 | 失败恢复 | 中途抛异常、目标只读、资源缺失。 | 输出明确失败项；现有资产不被部分清空或伪报成功。 |
 
@@ -266,7 +273,7 @@ DCC 相机动画通常把 FOV 曲线绑定到 `Camera.field of view`。如果运
 - 单模块更新失败时，不继续执行完整重建；保留原主资源并报告缺失条件。
 - 需要完整重建时先由版本管理或备份保护主 Timeline/Prefab。
 - 新绑定方案不稳定时，回退到显式 Track Binding 或由美术手动设置的稳定引用，不用名称猜测替代。
-- FOV 转换不确定时保留源曲线副本，并在代表性镜头中对拍 DCC 与 Unity 结果。
+- FOV 输出适配不确定时保留源曲线副本，优先用共享源 Camera 对拍 DCC 与 Unity 结果，不要先破坏性拆分或改写曲线。
 
 ### 6.4 交付记录
 
