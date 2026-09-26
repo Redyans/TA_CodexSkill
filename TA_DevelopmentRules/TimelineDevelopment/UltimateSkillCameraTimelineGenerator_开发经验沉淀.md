@@ -486,3 +486,325 @@ PresetPropertySnapshot
 ## 一句话总结
 
 多资产 Editor 工具的核心不是“把文件写出来”，而是**准确控制修改属于哪个资产、保存到什么路径、保存后如何同步实例状态**；本地预设则是把可复用参数与工程资产生命周期彻底分离。
+
+#
+
+# 2026-09-24 最终口径与可迁移规则
+
+> 类型：`PROFILE + REFERENCE`。本节记录 ProjectACG 当前实现的最终合同，并把已经验证的实现模式提炼成可迁移规则。迁移到其他 Unity 工程时，必须重新核对 Unity 版本、Prefab 结构、Timeline 绑定和运行时消费者。
+
+## 1. 最终合同：路径、名称与功能边界
+
+### 1.1 输出目录必须服从窗口选择
+
+生成器的 `outputFolder` 是唯一的用户输出目录来源：
+
+- 选择了有效的 `Assets/` 文件夹时，主 Timeline、主 Prefab 以及 `cam/`、`fx/`、`pp/` 等模块目录都在该目录下生成。
+- 工具不会因为目录名称缺少 `hero`，就把路径自动搬到 `Assets/AssetRaw/character/hero/<角色编号>/timeline/New`。
+- 没有选择有效目录时，才回退到 `Assets/AssetRaw/character/hero/<角色编号>/timeline/New`，该目录不存在时再回退到 `timeline`。
+- 因此，资源名去掉 `hero / weapon / monster / boss` 与输出路径是两个独立问题，不能用改名逻辑改写路径。
+
+示例：如果窗口选择的是 `Assets/AssetRaw/character/hero/100601/timeline/New`，生成结果必须留在这个目录；如果选择的是 `Assets/AssetRaw/character/100101`，它也是有效 `Assets/` 目录，工具必须在这个目录下生成，而不是另建 `New`。
+
+### 1.2 只有主资源名称去掉类别词
+
+当前大招主资源命名为：
+
+~~~text
+tl_<角色编号>_<技能名称>.playable
+tPre_<角色编号>_<技能名称去掉 bigskill 前导零>.prefab
+~~~
+
+例如：
+
+~~~text
+tl_100601_bigskill02.playable
+tPre_100601_bigskill2.prefab
+~~~
+
+这里去掉的是主 Timeline 和主 Prefab 名称中的类别层，不是删除目录层，也不是修改角色资源根目录。模块资源仍按职责保留明确前缀：
+
+~~~text
+tPre_fx_<角色编号>_<特效名>.prefab
+tl_fx_<角色编号>_<特效名>.playable
+pp_fx_<角色编号>_<特效名>.asset
+ani_c_hero_cam_<镜头编号>_<角色编号>_<技能名>.anim
+tPre_cam_<镜头编号>_<角色编号>_<技能名>.prefab
+~~~
+
+资源名称、资源目录、资源内容是三个独立契约。修改其中一个时，必须说明另外两个是否保持不变。
+
+### 1.3 已取消的相机同步需求不能重新引入
+
+曾经提出过“生成主 Timeline Prefab 时添加 `UltimateTimelineCameraTransformSync`，并把 `cameraAnimationSource` 指向 `Battle_CameraPos`”，随后已明确取消。当前合同是：
+
+- 不在生成结果中重新添加 `UltimateTimelineCameraTransformSync`。
+- 不为该组件配置 `cameraAnimationSource`。
+- 独立镜头 Prefab 保持纯机位数据，不挂 Animator Controller、PlayableDirector、Cinemachine 或同步组件。
+- 虚拟相机链路仍可以使用 `Battle_CameraPos`、共享 Animator 和 `CameraAnimation` 轨道；这不等于恢复旧同步组件。
+- 生成后的镜头归一化与自检应继续清理或拒绝旧同步组件，避免旧资产把两套驱动方式叠加。
+
+### 1.4 生成、组装和独立保存是三种不同操作
+
+| 操作 | 允许修改 | 不应顺手修改 |
+| --- | --- | --- |
+| 只生成模块 | 模块资源和功能必需的源资源最小改动 | 主 Timeline 结构和无关模块 |
+| 模块组装 | 已有主 Timeline / 主 Prefab 中的目标模块 | 其它模块、美术手工节点 |
+| 生成并组装全部 | 本次生成范围内的完整资产链 | 无关资产和其它 Dirty 资产 |
+| 保存到源 Prefab | 选中的嵌套子 Prefab 源文件 | 外层主 Timeline Prefab |
+
+生成失败时优先保留原资源，不采用“先删除所有内容再重建”的破坏式策略。重复生成应按原路径更新并尽量保留 GUID。
+
+## 2. 嵌套 Prefab 独立保存规则
+
+### 2.1 问题、根因与结论
+
+最初的 `ArgumentNullException` 来自把空对象传给 `PrefabUtility.GetCorrespondingObjectFromSource<TObject>`。更深层的根因是：嵌套 Prefab 的“最近实例根”和外层 Prefab 的原始来源不一定相同；错误地使用外层来源会把保存目标解析成主 Timeline Prefab。
+
+保存语义必须固定为：**从主 Timeline Prefab 的 Hierarchy 实例出发，只把 `fx_group` 下选中的嵌套 FX 写回它自己的源 Prefab，外层 Prefab 不保存。**
+
+### 2.2 推荐实现顺序
+
+~~~text
+校验当前对象是 Hierarchy 中的嵌套实例
+  -> 获取 owner 主 Prefab 路径
+  -> 获取最近嵌套实例根路径
+  -> 必要时回退到 original source 路径
+  -> 拒绝 target == owner
+  -> 克隆所有待保存实例
+  -> 解包克隆根，避免自引用
+  -> SaveAsPrefabAsset 到 target
+  -> 只 Import target
+  -> 找回 live 实例
+  -> RevertPrefabInstance 清理旧 override
+  -> 销毁临时克隆
+~~~
+
+关键实现要求：
+
+- 保存入口拒绝 Project 资源和 Prefab Mode 对象，要求用户从 Hierarchy 中的主 Timeline Prefab 实例操作。
+- 优先调用 `GetPrefabAssetPathOfNearestInstanceRoot`；`GetCorrespondingObjectFromOriginalSource` 只作为回退。
+- 写入前比较 owner 路径和 target 路径，路径相同或 target 不是 `.prefab` 时立即拒绝。
+- 调用 `SaveAsPrefabAsset` 的克隆根必须是普通根对象；如果仍关联待覆盖 Prefab，先用 `UnpackPrefabInstance` 解包。
+- 写入前先完成所有实例快照。Prefab 导入会使原 Hierarchy 引用失效，不能在写入过程中继续依赖旧引用。
+- 只对目标资源调用 `AssetDatabase.ImportAsset`，不要用全局 `AssetDatabase.SaveAssets()` 把外层 Prefab 或其它 Dirty 资产一起写盘。
+- 源 Prefab 写入成功后，对原 live 实例执行 `RevertPrefabInstance`。源文件已经包含本次修改，旧的 AddedGameObject 和属性 override 若不清理，就会在 Hierarchy 中出现两份相同内容。
+
+### 2.3 手动使用步骤
+
+1. 在 Project 中把主 Timeline Prefab 拖入场景或打开其可编辑实例。
+2. 在 Hierarchy 选中主 Prefab 上的 `UltimateFxGroupBindings` 对象。
+3. 在 Inspector 点击“保存到源 Prefab”。
+4. 只检查 `fx_group` 下的嵌套特效是否回写成功；外层主 Prefab 不应被另存或删除。
+5. 保存后检查 Hierarchy 是否只剩一份特效，源 FX Prefab 的 `.meta` GUID 是否保持不变。
+
+不要从 Project 窗口直接选主 Prefab 资产执行该按钮，也不要在 Prefab Mode 内把外层 Prefab 当作嵌套 FX 保存。
+
+## 3. 道具 Animator 的最小修改规则
+
+道具配置动画时，Timeline 的 `AnimationTrack` 必须有 Animator 绑定目标，但这不意味着所有道具都要改 Prefab：
+
+- 动画列表为空：不修改道具 Prefab，不添加任何组件。
+- 动画列表非空且整棵 Prefab 已有 Animator：复用现有 Animator。
+- 动画列表非空且整棵 Prefab 没有 Animator：只在源 Prefab 根节点添加一个无 Controller 的 Animator。
+- 不新增其它组件，不自动创建 Animator Controller，不改已有 Controller，不移动已有 Animator。
+- 使用 `GetComponentInChildren<Animator>(true)` 检查包含 inactive 节点的完整层级，避免子节点已有 Animator 时又在根节点重复添加。
+- 只有实际新增组件时才保存源 Prefab；`LoadPrefabContents` 与 `UnloadPrefabContents` 必须放在成对的生命周期内。
+
+这是可迁移的最小变更原则：工具只补足当前功能不可缺少的组件，不借生成流程顺手“整理”用户资源。
+
+## 4. 本地预设的完整设计
+
+### 4.1 生命周期与构建边界
+
+预设保存的是“下次打开工具继续编辑的参数”，不是生成结果。当前实现使用：
+
+~~~text
+<项目根>/Library/TA_Tools/UltimateSkillCameraTimelineGenerator/Presets/*.json
+~~~
+
+上次加载的名称放在 `EditorPrefs`。预设不写入 `Assets/`，不产生 Unity 资源 `.meta`，不参与 AssetBundle 或 Player 构建；真正生成的 Timeline、Prefab、AnimationClip、后处理资源仍按正常 `Assets/` 资源参与后续构建。
+
+### 4.2 快照与兼容
+
+使用 `SerializedObject` 从 `_productionMode`、`_settings`、`_storySettings`、`_gachaSettings` 递归捕获属性：
+
+- 基础值保存为字符串和属性类型。
+- 数组保存长度并递归保存元素。
+- Generic 属性保存子属性。
+- ObjectReference 保存 GUID、localFileId 和原始路径，不只保存路径。
+- JSON 带 `schemaVersion`，当前为 `1`。
+- 加载时按 property path 容错；字段已删除时记录 MissingProperties，继续恢复其它字段。
+- 资源移动或删除时按 GUID 找回；子资源按 localFileId 匹配，找不到时记录 MissingAssets，不让整个预设静默失败。
+
+### 4.3 默认名称与界面
+
+默认预设名按制作模式动态计算：
+
+| 模式 | 默认名称 |
+| --- | --- |
+| 大招技能 | `<角色编号>_<技能名称>` |
+| 剧情过场 | 演出名称，没有时使用 `story01` |
+| 抽卡角色表演 | 角色编号 |
+
+预设名称为空时使用动态默认值；用户手动保存或加载具体名称后才固定该名称。保存、加载、删除、打开本地目录四个操作放在预设区底部同一横向组，名称输入与已有预设下拉选择共用一个入口。
+
+预设名参与文件名生成，必须替换非法文件名字符、去除末尾点号，并拒绝空值、`.` 和 `..`。
+
+## 5. Timeline 与 Prefab 绑定实现经验
+
+### 5.1 轨道所有权
+
+生成器把工具轨道、工具节点和美术手工内容分开管理：
+
+- 工具生成的轨道可按稳定前缀查找、清理和重建。
+- 美术手动增加的非工具轨道、Cinemachine Shot 和节点默认保留。
+- 局部组装只能修改目标 Scope，不应清空其它模块。
+- 主 Prefab 已存在时使用 `LoadPrefabContents` 在原路径更新，避免新建同名文件替换旧 GUID。
+
+主 Timeline 的相机动画使用一条共享 `CameraAnimation` 轨道；多个镜头按时间连续排列，Transform 和 FOV 放在同一个动画 Clip 内。主 Prefab 中第一项镜头实例只作为共享驱动对象，绑定到同一条轨道，不为每个镜头额外创建 Animator、Controller 或子 Timeline。
+
+### 5.2 ExposedReference 两遍保存
+
+Timeline 新对象的 fileID 在第一次保存前可能不稳定，直接设置 ExposedReference 容易造成引用丢失。可靠方式是：
+
+1. 第一遍创建完整层级并保存，让对象拿到稳定 fileID。
+2. 第二遍重新加载 Prefab，重新写 ExposedReference，再保存。
+3. 第二遍不要无意义地重新设置 PlayableAsset 或重建 playable graph，避免覆盖引用表。
+
+比较 ExposedReference 名称时读取序列化字段，不使用 `PropertyName.ToString()` 作为业务名称。
+
+## 6. 可迁移稳定规则
+
+以下规则来自本次故障和修正，迁移到其它 Editor 资产工具时可直接作为设计检查项；其中固定路径和类型名属于当前项目 Profile，不能冒充跨项目 API 契约。
+
+### ASSET-OWNER-01｜先确定资产所有者再写入
+
+- **结论**：每次写盘前必须明确 owner asset、target asset 和当前 live instance。
+- **必须（MUST）**：校验 target 存在、类型正确、路径可写，并确认不会误指向 owner。
+- **应当（SHOULD）**：把路径解析、冲突判断和写入动作拆开。
+- **禁止（MUST NOT）**：把“当前选中的 Unity 对象”直接当作源资产路径。
+- **验证**：输出日志或诊断信息能明确显示 owner、target 和写入范围。
+- **例外与回退**：无法判断归属时拒绝保存，不猜路径。
+
+### NESTED-PREFAB-02｜嵌套源保存必须快照并清理实例覆盖
+
+- **结论**：嵌套 Prefab 的独立保存采用“克隆快照 -> 解包 -> 写源 -> 导入 -> 回退 live 实例”。
+- **必须（MUST）**：保存后清理已经被源 Prefab 吸收的 AddedGameObject 和属性 override。
+- **禁止（MUST NOT）**：保存嵌套对象时调用全局 `SaveAssets` 或覆盖 owner Prefab。
+- **验证**：源 Prefab 内容正确、Hierarchy 只有一份、owner 文件无意外变化。
+- **例外与回退**：找不回 live 实例时提示“源已保存但实例未清理”，不能假装完整成功。
+
+### OUTPUT-PATH-03｜用户路径优先，默认路径只做回退
+
+- **结论**：用户明确选择的有效目录具有最高优先级。
+- **必须（MUST）**：所有主资源和模块子目录从同一输出根派生。
+- **禁止（MUST NOT）**：因为命名规则变化而自动迁移用户目录。
+- **验证**：用两个不同的有效输出目录生成，结果均落在所选目录内。
+- **例外与回退**：选择为空、失效或不在 `Assets/` 下时才使用项目默认目录，并在界面提示。
+
+### ASSET-NAME-04｜名称契约与目录契约分离
+
+- **结论**：资源命名规则只能决定文件名，不能隐式改变目录。
+- **必须（MUST）**：主资源、模块资源分别定义命名函数，并为关键示例提供 SmokeTest。
+- **禁止（MUST NOT）**：用字符串替换同时修改文件名和路径。
+- **验证**：覆盖角色编号、技能前导零、特效名和类别词输入。
+- **例外与回退**：非法字符统一归一化，无法得到有效名称时阻断生成。
+
+### COMPONENT-MIN-05｜只补功能必需组件
+
+- **结论**：组件补齐必须由功能输入触发，并且是幂等的。
+- **必须（MUST）**：先查整个层级，复用已有组件；只有缺失时新增。
+- **禁止（MUST NOT）**：对未配置功能的对象添加组件，或顺手重写 Controller 和其它组件。
+- **验证**：对“无动画、有动画、子节点已有 Animator”三种 Prefab 分别检查差异。
+- **例外与回退**：已有组件结构不符合绑定要求时报告人工处理，不自动破坏用户结构。
+
+### PRESET-SCOPE-06｜预设只保存编辑参数
+
+- **结论**：预设与工程资产生命周期隔离。
+- **必须（MUST）**：预设写在本机非 `Assets/` 目录，资源引用使用 GUID + localFileId。
+- **禁止（MUST NOT）**：把生成结果、临时实例或机器绝对路径写进可提交资产。
+- **验证**：Unity 重启后可加载；预设目录不进入构建输入；资源移动后能报告缺失而不是静默指向错误资源。
+- **例外与回退**：Schema 不兼容时拒绝或按版本迁移，不直接把未知字段覆盖成默认值。
+
+### TIMELINE-BIND-07｜绑定对象与求值对象必须显式
+
+- **结论**：Timeline 轨道绑定的是明确的 Animator、Camera、Director 或自定义绑定对象，不依赖名称碰运气。
+- **必须（MUST）**：生成后自检轨道数量、Clip 数量、时间、绑定对象类型和关键对象层级。
+- **禁止（MUST NOT）**：同时保留旧的多轨驱动和新的共享轨驱动，或让多个组件争抢同一条曲线。
+- **验证**：生成、Seek、暂停、停止、重复生成和场景预览均检查绑定与恢复。
+- **例外与回退**：绑定缺失时阻断并指明对象、轨道和资产路径。
+
+## 7. 常见问题排查顺序
+
+遇到生成器问题时按下面顺序定位，避免先改代码猜原因：
+
+1. **先看路径**：窗口选择的 `outputFolder` 是否是有效 `Assets/` 目录，生成日志中的绝对路径是否与预期相同。
+2. **再看名称**：主资源是否仅按命名函数生成，模块资源是否误用了主资源命名函数。
+3. **再看 owner/target**：保存按钮当前操作的是主 Prefab 实例、嵌套实例还是 Project 资源，target 是否等于 owner。
+4. **再看 Prefab 状态**：源 Prefab 是否写入成功，目标是否导入，live 实例是否执行回退，Hierarchy 是否残留 override。
+5. **再看绑定**：Timeline 轨道是否只有预期数量，Animator/Camera/Director 类型是否正确，ExposedReference 是否在第二遍保存后仍存在。
+6. **再看最小修改**：没有配置动画的道具是否被改，是否出现重复 Animator、旧 Controller 或旧同步组件。
+7. **最后看运行表现**：Editor 预览、Timeline Seek/Stop、Cinemachine 输出、FOV、特效、音效和道具动画是否一致。
+
+## 8. 工具与验证方法
+
+### 8.1 代码与静态排查工具
+
+常用工具组合：
+
+~~~text
+rg -n "关键类型|关键字段|目标资源名" <工具目录>
+git status --short
+git diff --check
+git diff -- <目标文件>
+~~~
+
+Unity Editor 资产问题不能只靠文本搜索解决，但 `rg` 适合先建立调用链：生成入口、路径解析、命名函数、Prefab 保存、预设序列化和 Validation 应分别定位。
+
+### 8.2 Unity 内验证矩阵
+
+| 风险 | 最小验证 |
+| --- | --- |
+| 代码编译 | Unity 真实 Editor 程序集编译通过，无 API/类型错误。 |
+| 路径与名称 | 选择自定义目录生成，确认所有输出在该目录；检查主资源和模块资源名称。 |
+| 嵌套保存 | 从 Hierarchy 实例保存子 FX；owner 不变，source 更新，实例重复内容消失。 |
+| 道具 Animator | 配置动画的道具恰好有一个可用 Animator；未配置动画的道具无变化。 |
+| 预设 | 保存、关闭重开、自动加载、切换、删除、缺失资源提示和本机 Library 边界。 |
+| Timeline | 轨道、Clip、时长、Animator/Camera/Director 绑定和 ExposedReference 正确。 |
+| 编辑器预览 | 播放、暂停、Seek、Stop、重建图和切换对象后状态能恢复。 |
+| 构建风险 | 本地预设不进入构建；生成到 `Assets/` 的实际资源按正常资源规则检查引用和构建收集。 |
+
+### 8.3 文档写入与编码检查
+
+Windows 下修改中文文档时，使用显式 UTF-8 文件 API 或仓库提供的 `write-utf8.ps1`，不要用 `>`、`Out-File`、`Set-Content` 或未经配置的原生程序管道。写入后至少检查：
+
+- 文件可用 UTF-8 完整读回。
+- 关键中文、路径、类型名和规则 ID 存在。
+- 内容没有 `Unicode 替换符` 或意外的 `?`。
+- Markdown 链接和代码块没有被破坏。
+- 既有文档没有被无关重编码或整段覆盖。
+
+## 9. 当前未由命令替代的人工确认
+
+本总结记录的是实现经验和静态代码事实，仍需要在目标 Unity 版本内人工复验：
+
+- 实际点击保存后，嵌套 FX 源 Prefab、外层 Timeline Prefab 和 Hierarchy 的最终状态。
+- 真实 Timeline 预览中相机 Transform、FOV、Cinemachine、特效、道具动画和音效的观感。
+- 资源移动、域重载、Unity 重启后的预设恢复。
+- 目标平台 AssetBundle/Player 构建对生成资源引用的最终收集结果。
+
+这些项目不能由 `rg`、JSON 读取或离线 C# 编译单独证明，交付时必须把“已完成的静态验证”和“待 Unity 人工验证”分开记录。
+
+## 10. 一页式复用清单
+
+- [ ] 先读取仓库、模块和目标文档的 AGENTS 规则，判断内容属于 CORE、REFERENCE、PROFILE 还是功能 README。
+- [ ] 明确 owner asset、target asset、live instance 和写入范围。
+- [ ] 用户选定路径优先，默认路径只回退；名称规则不改目录规则。
+- [ ] 资产覆盖更新保留原路径和 GUID，局部组装只清理工具自己拥有的内容。
+- [ ] 嵌套 Prefab 保存采用快照、解包、写源、局部导入、回退实例。
+- [ ] 只在功能输入存在且组件缺失时补组件。
+- [ ] Timeline 绑定、ExposedReference 和恢复语义在生成后自检。
+- [ ] 预设只保存参数，放在本机 `Library`，引用使用 GUID + localFileId，带 Schema 版本。
+- [ ] 取消的旧需求、旧组件和旧命名不要因历史资产或旧文档重新带回。
+- [ ] 最终交付写清修改、验证、未验证项和剩余风险。
