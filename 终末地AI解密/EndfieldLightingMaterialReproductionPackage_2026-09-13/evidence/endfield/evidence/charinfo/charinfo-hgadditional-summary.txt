@@ -1,0 +1,24 @@
+﻿overview prefabs=23 native=206 per_prefab=[7, 8, 9, 10, 11, 12, 13] unresolved=0 hg_component=206/206(100.0%) hg_missing=0 hg_ambiguous=0
+  m_LightCharacterOnly: present=206/206(100.0%) values=1:206
+  m_lightNPRSpecMetalOnly: present=206/206(100.0%) values=1:206
+  m_lightNPRSpecMaxRoughness: present=206/206(100.0%) values=0.0:2,0.566:5,0.6:199
+  m_lightNPRSpecRoughnessBias: present=206/206(100.0%) values=0.0:5,0.8:137,0.95:64
+  m_lightNPRRimWidth: present=206/206(100.0%) values=0.0:1,0.144:1,0.25:1,0.281:1,0.3:15,0.35:7,0.368:2,0.4:65,0.45:2,0.5:1,0.569:3,0.8:1,1.0:106
+  m_volumetricScatteringIntensity: present=206/206(100.0%) values=1.0:206
+  enableLightMeshForReflectionProbe: present=206/206(100.0%) values=1:206
+skill prefabs=23 native=197 per_prefab=[6, 7, 8, 9, 10, 11, 12] unresolved=0 hg_component=197/197(100.0%) hg_missing=0 hg_ambiguous=0
+  m_LightCharacterOnly: present=197/197(100.0%) values=0:23,1:174
+  m_lightNPRSpecMetalOnly: present=197/197(100.0%) values=1:197
+  m_lightNPRSpecMaxRoughness: present=197/197(100.0%) values=0.0:2,0.6:195
+  m_lightNPRSpecRoughnessBias: present=197/197(100.0%) values=0.8:185,0.95:12
+  m_lightNPRRimWidth: present=197/197(100.0%) values=0.0:1,0.1:1,0.125:1,0.15:2,0.2:9,0.25:1,0.3:23,0.314:9,0.342:1,0.35:4,0.38:1,0.4:64,0.45:1,1.0:79
+  m_volumetricScatteringIntensity: present=197/197(100.0%) values=1.0:197
+  enableLightMeshForReflectionProbe: present=197/197(100.0%) values=1:197
+equip prefabs=23 native=151 per_prefab=[4, 5, 6, 7, 8, 9] unresolved=0 hg_component=151/151(100.0%) hg_missing=0 hg_ambiguous=0
+  m_LightCharacterOnly: present=151/151(100.0%) values=1:151
+  m_lightNPRSpecMetalOnly: present=151/151(100.0%) values=1:151
+  m_lightNPRSpecMaxRoughness: present=151/151(100.0%) values=0.6:151
+  m_lightNPRSpecRoughnessBias: present=151/151(100.0%) values=0.8:138,0.95:13
+  m_lightNPRRimWidth: present=151/151(100.0%) values=0.0:1,0.1:1,0.125:1,0.2:4,0.281:1,0.3:21,0.341:13,0.35:4,0.36:1,0.4:51,0.45:2,0.5:1,1.0:50
+  m_volumetricScatteringIntensity: present=151/151(100.0%) values=1.0:151
+  enableLightMeshForReflectionProbe: present=151/151(100.0%) values=1:151

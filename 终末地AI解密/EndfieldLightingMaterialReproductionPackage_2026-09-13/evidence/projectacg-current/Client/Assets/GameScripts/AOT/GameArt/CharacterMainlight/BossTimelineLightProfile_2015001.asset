@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f8f425fc470254895ef3e24218bfa9, type: 3}
+  m_Name: BossTimelineLightProfile_2015001
+  m_EditorClassIdentifier: 
+  _configuration:
+    Name: Battle
+    UseCameraDirection: 1
+    LightRotationOffsetEuler: {x: 13.37, y: -5, z: 0}
+    MainLightColor: {r: 1, g: 1, b: 1, a: 1}
+    MainLightIntensity: 0.15
+    MainLightDirection: {x: -2.18, y: -0.48, z: -4.3}
+    EnableCustomMainLightOnMaterials: 0
+    EnableMonsterCustomMainLightOnMaterials: 1
+    EnableGunCustomMainLightOnMaterials: 0
+    EnableAdditionalLights: 1
+    SceneShadowModeValue: 2
+    EnableCharacterSceneShadow: 0
+    EnableHairFringeSelfShadow: 0
+    EnableMonsterSceneShadow: 0
+    EnableGunSceneShadow: 0
+    OverridePerObjectShadowDirection: 0
+    PerObjectShadowDirection: {x: 0, y: 1, z: 0}
+    EnablePlanarShadow: 0
+    EnableCharacterPlanarShadow: 1
+    EnableMonsterPlanarShadow: 1
+    EnableGunPlanarShadow: 1
+    PlanarShadowFalloff: 1
+    PlanarShadowRange: 0
+    PlanarShadowLightDirection: {x: 0, y: 1, z: 0}
+    UsePlanarShadowCameraFacingDirection: 0
+    ShowPlanarShadowSceneDirection: 0
+    PlanarShadowSceneHandleLength: 1.5
+    PlanarShadowSceneHandleColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+    PlanarShadowPlaneHeight: 0
+    UsePlanarShadowBoundsCenter: 1
+    PlanarShadowColor: {r: 0, g: 0, b: 0, a: 1}
+    EnableCustomEnvironmentLightOnMaterials: 0
+    EnableMonsterCustomEnvironmentLightOnMaterials: 1
+    EnableGunCustomEnvironmentLightOnMaterials: 0
+    CustomEnvironmentColor: {r: 1, g: 1, b: 1, a: 1}
+    CustomEnvironmentLightBlend: 1.5
+    IndirectSpecularIntensity: 5.9
+    EnableCustomEnvironmentCubemap: 0
+    CustomEnvironmentCubemap: {fileID: 0}
+    CustomEnvironmentCubemapRotation: 0
+    CustomEnvironmentCubemapIntensity: 0
+    ShowSceneDirection: 0
+    SceneHandleLength: 1.5
+    SceneHandleColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+    ShowPerObjectShadowSceneDirection: 0
+    PerObjectShadowSceneHandleLength: 1.5
+    PerObjectShadowSceneHandleColor: {r: 0.25, g: 0.7, b: 1, a: 1}
+  _legacyConfigurations: []

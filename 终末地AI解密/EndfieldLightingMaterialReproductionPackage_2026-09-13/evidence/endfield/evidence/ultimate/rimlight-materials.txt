@@ -1,0 +1,5273 @@
+BUNDLE CAB-91472acf70c3705304e461c250b5360b
+=== MonoBehaviour MonoBehaviour ID=-3162798872052405019 ===
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 5259139620705394962
+	string m_Name = "P_common_firebuff_02_rimlight_asset"
+	UInt8 useECSRenderer = 0
+	int settingLodLevel = 15
+	int platformLayer = 7
+	int targetLayer = 3
+	EntityVFXAddictiveMaterialData data
+		int priorityType = 0
+		int rendererMask = -67108865
+		UInt8 useScaledTime = 1
+		UInt8 enableVertColorIfMeshHasVFXVertColor = 1
+		PPtr<$Material> material
+			int m_FileID = 0
+			SInt64 m_PathID = 2057802694992139458
+		UInt8 loop = 1
+		UInt8 useDissolveCurve = 0
+		UInt8 useScanCurve = 0
+		UInt8 useCutoffPosY = 0
+		UInt8 useCutoffPosYAutoBounds = 0
+		float cutoffPosYAbsoluteBounds = 3
+		UInt8 useCutoffLocalDirection = 0
+		Vector3f cutoffDirection
+			float x = 0
+			float y = 1
+			float z = 0
+		float duration = 0.1
+		UInt8 useStartCurve = 1
+		AnimationCurve opacityCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 0
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 2
+						float outSlope = 2
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve dissolveCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 0.8
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve scanCurve
+			vector m_Curve
+				Array Array
+				int size = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve cutoffPosYCurve
+			vector m_Curve
+				Array Array
+				int size = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		EntityVFXCurveData customCurves
+			Array Array
+			int size = 0
+		UInt8 useLoopCurve = 1
+		float loopDuration = 1
+		AnimationCurve loopCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve dissolveLoopCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 0.8
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0.33333334
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 0.8
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0.33333334
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		EntityVFXCurveData customLoopCurves
+			Array Array
+			int size = 0
+		UInt8 useEndCurve = 1
+		float endDuration = 0.1
+		AnimationCurve endCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 1
+						float inSlope = -1
+						float outSlope = -1
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0.33333334
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 0
+						float inSlope = -1
+						float outSlope = -1
+						int weightedMode = 0
+						float inWeight = 0.33333334
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve dissolveEndCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 0.8
+						float inSlope = 0.19999999
+						float outSlope = 0.19999999
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0.33333334
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 0.19999999
+						float outSlope = 0.19999999
+						int weightedMode = 0
+						float inWeight = 0.33333334
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		EntityVFXCurveData customEndCurves
+			Array Array
+			int size = 0
+		UInt8 useAddictiveProperties = 0
+		UInt8 useAddictivePropertiesUpdate = 0
+		vector addictiveVectorProperties
+			Array Array
+			int size = 0
+
+=== Material Material ID=2057802694992139458 ===
+Material Base
+	string m_Name = "M_fx_common_buff_1248_rimlight_asset"
+	PPtr<Shader> m_Shader
+		int m_FileID = 2
+		SInt64 m_PathID = -1430105248647086886
+	vector m_ValidKeywords
+		Array Array
+		int size = 3
+			[0]
+			string data = "_SAMPLE_TEX0"
+			[1]
+			string data = "_SAMPLE_TEX1"
+			[2]
+			string data = "_USE_FRESNEL"
+	vector m_InvalidKeywords
+		Array Array
+		int size = 0
+	unsigned int m_LightmapFlags = 4
+	bool m_EnableInstancingVariants = False
+	bool m_DoubleSidedGI = False
+	int m_CustomRenderQueue = 3000
+	map stringTagMap
+		Array Array
+		int size = 1
+			[0]
+			pair data
+				string first = "RenderType"
+				string second = "Transparent"
+	vector disabledShaderPasses
+		Array Array
+		int size = 2
+			[0]
+			string data = "DepthOnly"
+			[1]
+			string data = "GBuffer"
+	UnityPropertySheet m_SavedProperties
+		map m_TexEnvs
+			Array Array
+			int size = 19
+				[0]
+				pair data
+					string first = "_BlendTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 2
+							float y = 4
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[1]
+				pair data
+					string first = "_ColorTexture"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[2]
+				pair data
+					string first = "_DissolveTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 4
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[3]
+				pair data
+					string first = "_DisturbTex1"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 5
+							SInt64 m_PathID = -605262808788149926
+						Vector2f m_Scale
+							float x = 8
+							float y = 8
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[4]
+				pair data
+					string first = "_DisturbTex2"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[5]
+				pair data
+					string first = "_LookupTable"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[6]
+				pair data
+					string first = "_MainTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 4
+							SInt64 m_PathID = 2165531356190299128
+						Vector2f m_Scale
+							float x = 3
+							float y = 3
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[7]
+				pair data
+					string first = "_MaskTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 3
+							SInt64 m_PathID = -3860580854172396559
+						Vector2f m_Scale
+							float x = 2
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[8]
+				pair data
+					string first = "_OffsetMaskTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[9]
+				pair data
+					string first = "_OffsetTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[10]
+				pair data
+					string first = "_PositionTexture"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[11]
+				pair data
+					string first = "_RotationTexture"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[12]
+				pair data
+					string first = "_SampleTex0"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 5
+							SInt64 m_PathID = -605262808788149926
+						Vector2f m_Scale
+							float x = 8
+							float y = 8
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[13]
+				pair data
+					string first = "_SampleTex1"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 3
+							SInt64 m_PathID = -3860580854172396559
+						Vector2f m_Scale
+							float x = 2
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[14]
+				pair data
+					string first = "_SampleTex2"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 2
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[15]
+				pair data
+					string first = "_SampleTex3"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 4
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[16]
+				pair data
+					string first = "_SampleTex4"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 4
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[17]
+				pair data
+					string first = "_SampleTex5"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[18]
+				pair data
+					string first = "_WeightTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = -0.35
+						Vector2f m_Offset
+							float x = 0
+							float y = 0.45
+						int m_UVSetIndex = 0
+		map m_Ints
+			Array Array
+			int size = 0
+		map m_Floats
+			Array Array
+			int size = 222
+				[0]
+				pair data
+					string first = "_AdvancedOptions"
+					float second = 0
+				[1]
+				pair data
+					string first = "_AlphaDstBlend"
+					float second = 10
+				[2]
+				pair data
+					string first = "_AlphaSrcBlend"
+					float second = 1
+				[3]
+				pair data
+					string first = "_B_UNLOAD_ROT_TEX"
+					float second = 0
+				[4]
+				pair data
+					string first = "_B_animateFirstFrame"
+					float second = 0
+				[5]
+				pair data
+					string first = "_B_autoPlayback"
+					float second = 0
+				[6]
+				pair data
+					string first = "_B_pscaleAreInPosA"
+					float second = 0
+				[7]
+				pair data
+					string first = "_B_stretchByVel"
+					float second = 0
+				[8]
+				pair data
+					string first = "_B_surfaceNormals"
+					float second = 0
+				[9]
+				pair data
+					string first = "_B_uvFromRG"
+					float second = 0
+				[10]
+				pair data
+					string first = "_Bi_Disturb"
+					float second = 1
+				[11]
+				pair data
+					string first = "_Bi_Offset"
+					float second = 0
+				[12]
+				pair data
+					string first = "_BlendMode"
+					float second = 1
+				[13]
+				pair data
+					string first = "_BlendTexMipmapBias"
+					float second = 0
+				[14]
+				pair data
+					string first = "_BlendTexUVRotate"
+					float second = 0
+				[15]
+				pair data
+					string first = "_BlendTexUseDisturb"
+					float second = 0
+				[16]
+				pair data
+					string first = "_BlendUVSet"
+					float second = 0
+				[17]
+				pair data
+					string first = "_BoxInnerRadius"
+					float second = 1
+				[18]
+				pair data
+					string first = "_BoxOuterRadius"
+					float second = 2
+				[19]
+				pair data
+					string first = "_BreathingMinAlpha"
+					float second = 0
+				[20]
+				pair data
+					string first = "_BreathingPower"
+					float second = 1
+				[21]
+				pair data
+					string first = "_BreathingSpeed"
+					float second = 1
+				[22]
+				pair data
+					string first = "_BrightType"
+					float second = 0
+				[23]
+				pair data
+					string first = "_CharacterHeight"
+					float second = 1.5
+				[24]
+				pair data
+					string first = "_CullMode"
+					float second = 2
+				[25]
+				pair data
+					string first = "_DebugSampleTexUses"
+					float second = 0
+				[26]
+				pair data
+					string first = "_DisableVertColor"
+					float second = 0
+				[27]
+				pair data
+					string first = "_DisableZTest"
+					float second = 0
+				[28]
+				pair data
+					string first = "_DissolveEdgeSharp"
+					float second = 20
+				[29]
+				pair data
+					string first = "_DissolveEmissiveEdge"
+					float second = 0.08
+				[30]
+				pair data
+					string first = "_DissolveScheduleOffset"
+					float second = 0.85
+				[31]
+				pair data
+					string first = "_DissolveTexMipmapBias"
+					float second = 0
+				[32]
+				pair data
+					string first = "_DissolveTexUseDisturb"
+					float second = 1
+				[33]
+				pair data
+					string first = "_DissolveUVRotate"
+					float second = 0
+				[34]
+				pair data
+					string first = "_DissolveUVSet"
+					float second = 1
+				[35]
+				pair data
+					string first = "_DissolveUseWeight"
+					float second = 1
+				[36]
+				pair data
+					string first = "_DistortAlpha"
+					float second = 1
+				[37]
+				pair data
+					string first = "_DistortIntensity"
+					float second = 0
+				[38]
+				pair data
+					string first = "_DistortOnEdge"
+					float second = 0
+				[39]
+				pair data
+					string first = "_DistortScale"
+					float second = 5
+				[40]
+				pair data
+					string first = "_DistortSpeed"
+					float second = 1
+				[41]
+				pair data
+					string first = "_DisturbTex1MipmapBias"
+					float second = 0
+				[42]
+				pair data
+					string first = "_DisturbTex1Normal"
+					float second = 1
+				[43]
+				pair data
+					string first = "_DisturbTex2MipmapBias"
+					float second = 0
+				[44]
+				pair data
+					string first = "_DisturbTex2Normal"
+					float second = 0
+				[45]
+				pair data
+					string first = "_DisturbUIntensity1"
+					float second = 0.1
+				[46]
+				pair data
+					string first = "_DisturbUIntensity2"
+					float second = 0
+				[47]
+				pair data
+					string first = "_DisturbUVSet"
+					float second = 0
+				[48]
+				pair data
+					string first = "_DisturbUseWeight"
+					float second = 1
+				[49]
+				pair data
+					string first = "_DisturbVIntensity1"
+					float second = 0.1
+				[50]
+				pair data
+					string first = "_DisturbVIntensity2"
+					float second = 0
+				[51]
+				pair data
+					string first = "_DstBlend"
+					float second = 10
+				[52]
+				pair data
+					string first = "_EdgeColorMode"
+					float second = 0
+				[53]
+				pair data
+					string first = "_EdgeDistance"
+					float second = 0.001
+				[54]
+				pair data
+					string first = "_EdgeDistanceOffset"
+					float second = 0.001
+				[55]
+				pair data
+					string first = "_EnableComposeVolumetric"
+					float second = 0
+				[56]
+				pair data
+					string first = "_EnableHoudiniVAT"
+					float second = 0
+				[57]
+				pair data
+					string first = "_EnableTransparentMV"
+					float second = 0
+				[58]
+				pair data
+					string first = "_EnvLightStrength"
+					float second = 0
+				[59]
+				pair data
+					string first = "_ExpIntensity"
+					float second = 10.9
+				[60]
+				pair data
+					string first = "_ExpThreshold"
+					float second = 0.352
+				[61]
+				pair data
+					string first = "_FogIntensity"
+					float second = 1
+				[62]
+				pair data
+					string first = "_FogIntensityFadeOutDistance"
+					float second = 2000
+				[63]
+				pair data
+					string first = "_FresnelAffectOpacity"
+					float second = 0.72
+				[64]
+				pair data
+					string first = "_FresnelBias"
+					float second = 0.455
+				[65]
+				pair data
+					string first = "_FresnelFlip"
+					float second = 0
+				[66]
+				pair data
+					string first = "_FresnelPower"
+					float second = 1
+				[67]
+				pair data
+					string first = "_HoudiniVATType"
+					float second = 0
+				[68]
+				pair data
+					string first = "_IgnorePostExposure"
+					float second = 0
+				[69]
+				pair data
+					string first = "_InParticle"
+					float second = 0
+				[70]
+				pair data
+					string first = "_InnerRadius"
+					float second = 0
+				[71]
+				pair data
+					string first = "_IsSceneEffect"
+					float second = 0
+				[72]
+				pair data
+					string first = "_IsUI"
+					float second = 0
+				[73]
+				pair data
+					string first = "_MVDstColorBlend"
+					float second = 6
+				[74]
+				pair data
+					string first = "_MVSrcColorBlend"
+					float second = 3
+				[75]
+				pair data
+					string first = "_MainProperties"
+					float second = 0
+				[76]
+				pair data
+					string first = "_MainTexMipmapBias"
+					float second = 0
+				[77]
+				pair data
+					string first = "_MainTexUVRotate"
+					float second = 0
+				[78]
+				pair data
+					string first = "_MainTexUseDisturb"
+					float second = 0.38
+				[79]
+				pair data
+					string first = "_MainUVSet"
+					float second = 0
+				[80]
+				pair data
+					string first = "_MaskTexMipmapBias"
+					float second = 0
+				[81]
+				pair data
+					string first = "_MaskTexUVRotate"
+					float second = 0
+				[82]
+				pair data
+					string first = "_MaskTexUseDisturb"
+					float second = 0
+				[83]
+				pair data
+					string first = "_MaskUVSet"
+					float second = 0
+				[84]
+				pair data
+					string first = "_NearCameraFadeDistanceEnd"
+					float second = 25.4
+				[85]
+				pair data
+					string first = "_NearCameraFadeDistanceEnd2"
+					float second = 100
+				[86]
+				pair data
+					string first = "_NearCameraFadeDistanceStart"
+					float second = 6.2
+				[87]
+				pair data
+					string first = "_NearCameraFadeDistanceStart2"
+					float second = 120
+				[88]
+				pair data
+					string first = "_OffsetIntensity"
+					float second = 0.01
+				[89]
+				pair data
+					string first = "_OffsetMaskPower"
+					float second = 5
+				[90]
+				pair data
+					string first = "_OffsetSwitchDir"
+					float second = 2
+				[91]
+				pair data
+					string first = "_OffsetUVSet"
+					float second = 0
+				[92]
+				pair data
+					string first = "_OuterRadius"
+					float second = 2
+				[93]
+				pair data
+					string first = "_PortalStencilSet"
+					float second = 0
+				[94]
+				pair data
+					string first = "_ProcedureAlpha"
+					float second = 1
+				[95]
+				pair data
+					string first = "_RayleighMieLerpFactor"
+					float second = 0
+				[96]
+				pair data
+					string first = "_RenderTransparentAfterDOF"
+					float second = 0
+				[97]
+				pair data
+					string first = "_RenderTransparentAfterDistortion"
+					float second = 0
+				[98]
+				pair data
+					string first = "_Responsive"
+					float second = 0
+				[99]
+				pair data
+					string first = "_SafeFullAbsorpDistance"
+					float second = 0
+				[100]
+				pair data
+					string first = "_SampleTex0MipmapBias"
+					float second = 0
+				[101]
+				pair data
+					string first = "_SampleTex0UVSet"
+					float second = 0
+				[102]
+				pair data
+					string first = "_SampleTex0Use"
+					float second = 0
+				[103]
+				pair data
+					string first = "_SampleTex0UseDisturb"
+					float second = 0
+				[104]
+				pair data
+					string first = "_SampleTex0UseWeight0"
+					float second = 1
+				[105]
+				pair data
+					string first = "_SampleTex0UseWeight2"
+					float second = 0
+				[106]
+				pair data
+					string first = "_SampleTex0UseWeight3"
+					float second = 0
+				[107]
+				pair data
+					string first = "_SampleTex0UseWeight4"
+					float second = 0
+				[108]
+				pair data
+					string first = "_SampleTex0UseWeight5"
+					float second = 0
+				[109]
+				pair data
+					string first = "_SampleTex1MipmapBias"
+					float second = 0
+				[110]
+				pair data
+					string first = "_SampleTex1UVSet"
+					float second = 0
+				[111]
+				pair data
+					string first = "_SampleTex1Use"
+					float second = 3
+				[112]
+				pair data
+					string first = "_SampleTex1UseDisturb"
+					float second = 0
+				[113]
+				pair data
+					string first = "_SampleTex1UseWeight1"
+					float second = 0
+				[114]
+				pair data
+					string first = "_SampleTex1UseWeight2"
+					float second = 0
+				[115]
+				pair data
+					string first = "_SampleTex1UseWeight3"
+					float second = 1
+				[116]
+				pair data
+					string first = "_SampleTex1UseWeight4"
+					float second = 0
+				[117]
+				pair data
+					string first = "_SampleTex1UseWeight5"
+					float second = 0
+				[118]
+				pair data
+					string first = "_SampleTex2MipmapBias"
+					float second = 0
+				[119]
+				pair data
+					string first = "_SampleTex2UVSet"
+					float second = 1
+				[120]
+				pair data
+					string first = "_SampleTex2Use"
+					float second = 3
+				[121]
+				pair data
+					string first = "_SampleTex2UseDisturb"
+					float second = 1
+				[122]
+				pair data
+					string first = "_SampleTex2UseWeight2"
+					float second = 0
+				[123]
+				pair data
+					string first = "_SampleTex2UseWeight3"
+					float second = 1
+				[124]
+				pair data
+					string first = "_SampleTex2UseWeight4"
+					float second = 0
+				[125]
+				pair data
+					string first = "_SampleTex2UseWeight5"
+					float second = 0
+				[126]
+				pair data
+					string first = "_SampleTex3MipmapBias"
+					float second = 0
+				[127]
+				pair data
+					string first = "_SampleTex3UVSet"
+					float second = 1
+				[128]
+				pair data
+					string first = "_SampleTex3Use"
+					float second = 5
+				[129]
+				pair data
+					string first = "_SampleTex3UseDisturb"
+					float second = 1
+				[130]
+				pair data
+					string first = "_SampleTex3UseWeight3"
+					float second = 0
+				[131]
+				pair data
+					string first = "_SampleTex3UseWeight4"
+					float second = 0
+				[132]
+				pair data
+					string first = "_SampleTex3UseWeight5"
+					float second = 1
+				[133]
+				pair data
+					string first = "_SampleTex4MipmapBias"
+					float second = 0
+				[134]
+				pair data
+					string first = "_SampleTex4UVSet"
+					float second = 1
+				[135]
+				pair data
+					string first = "_SampleTex4Use"
+					float second = 5
+				[136]
+				pair data
+					string first = "_SampleTex4UseDisturb"
+					float second = 1
+				[137]
+				pair data
+					string first = "_SampleTex4UseWeight4"
+					float second = 0
+				[138]
+				pair data
+					string first = "_SampleTex4UseWeight5"
+					float second = 1
+				[139]
+				pair data
+					string first = "_SampleTex5MipmapBias"
+					float second = 0
+				[140]
+				pair data
+					string first = "_SampleTex5UVSet"
+					float second = 0
+				[141]
+				pair data
+					string first = "_SampleTex5Use"
+					float second = 0
+				[142]
+				pair data
+					string first = "_SampleTex5UseDisturb"
+					float second = 0
+				[143]
+				pair data
+					string first = "_ScanLineSchedule"
+					float second = 0
+				[144]
+				pair data
+					string first = "_ScanLineWidth"
+					float second = 0
+				[145]
+				pair data
+					string first = "_ScreenUVUseDepth"
+					float second = 0
+				[146]
+				pair data
+					string first = "_SectorAngle"
+					float second = 0
+				[147]
+				pair data
+					string first = "_SectorCenterRadius"
+					float second = 2
+				[148]
+				pair data
+					string first = "_SectorRadius"
+					float second = 2
+				[149]
+				pair data
+					string first = "_SoftBias"
+					float second = 0
+				[150]
+				pair data
+					string first = "_SoftDistance"
+					float second = 0.001
+				[151]
+				pair data
+					string first = "_SrcBlend"
+					float second = 1
+				[152]
+				pair data
+					string first = "_StencilComp"
+					float second = 8
+				[153]
+				pair data
+					string first = "_StencilOp"
+					float second = 0
+				[154]
+				pair data
+					string first = "_StencilReadMask"
+					float second = 255
+				[155]
+				pair data
+					string first = "_StencilRef"
+					float second = 0
+				[156]
+				pair data
+					string first = "_StencilWriteMask"
+					float second = 255
+				[157]
+				pair data
+					string first = "_SubsurfaceIntensity"
+					float second = 0
+				[158]
+				pair data
+					string first = "_SurfaceType"
+					float second = 1
+				[159]
+				pair data
+					string first = "_TextureFormat"
+					float second = 1
+				[160]
+				pair data
+					string first = "_TintColorAlpha"
+					float second = 1
+				[161]
+				pair data
+					string first = "_TintColorIntensity"
+					float second = 3.8
+				[162]
+				pair data
+					string first = "_TransparentSortPriority"
+					float second = 0
+				[163]
+				pair data
+					string first = "_UseAnimBreathing"
+					float second = 0
+				[164]
+				pair data
+					string first = "_UseBlend"
+					float second = 0
+				[165]
+				pair data
+					string first = "_UseBright"
+					float second = 0
+				[166]
+				pair data
+					string first = "_UseDissolve"
+					float second = 0
+				[167]
+				pair data
+					string first = "_UseDisturb"
+					float second = 1
+				[168]
+				pair data
+					string first = "_UseDisturb2"
+					float second = 0
+				[169]
+				pair data
+					string first = "_UseEdgeColor"
+					float second = 0
+				[170]
+				pair data
+					string first = "_UseFog"
+					float second = 0
+				[171]
+				pair data
+					string first = "_UseForceDynamicLighting"
+					float second = 0
+				[172]
+				pair data
+					string first = "_UseFresnel"
+					float second = 1
+				[173]
+				pair data
+					string first = "_UseLighting"
+					float second = 0
+				[174]
+				pair data
+					string first = "_UseMainTexAsAlpha"
+					float second = 0
+				[175]
+				pair data
+					string first = "_UseMask"
+					float second = 1
+				[176]
+				pair data
+					string first = "_UseMaskTexAsAlpha"
+					float second = 0
+				[177]
+				pair data
+					string first = "_UseNearCameraFade"
+					float second = 0
+				[178]
+				pair data
+					string first = "_UsePolarUV"
+					float second = 0
+				[179]
+				pair data
+					string first = "_UsePosYAsScreenV"
+					float second = 1
+				[180]
+				pair data
+					string first = "_UseSampleTex0"
+					float second = 1
+				[181]
+				pair data
+					string first = "_UseSampleTex0AsAlpha"
+					float second = 0
+				[182]
+				pair data
+					string first = "_UseSampleTex1"
+					float second = 1
+				[183]
+				pair data
+					string first = "_UseSampleTex1AsAlpha"
+					float second = 0
+				[184]
+				pair data
+					string first = "_UseSampleTex2"
+					float second = 0
+				[185]
+				pair data
+					string first = "_UseSampleTex2AsAlpha"
+					float second = 0
+				[186]
+				pair data
+					string first = "_UseSampleTex3"
+					float second = 0
+				[187]
+				pair data
+					string first = "_UseSampleTex3AsAlpha"
+					float second = 0
+				[188]
+				pair data
+					string first = "_UseSampleTex4"
+					float second = 0
+				[189]
+				pair data
+					string first = "_UseSampleTex4AsAlpha"
+					float second = 0
+				[190]
+				pair data
+					string first = "_UseSampleTex5"
+					float second = 0
+				[191]
+				pair data
+					string first = "_UseSampleTex5AsAlpha"
+					float second = 1
+				[192]
+				pair data
+					string first = "_UseScreenUV"
+					float second = 0
+				[193]
+				pair data
+					string first = "_UseSoftBlend"
+					float second = 0
+				[194]
+				pair data
+					string first = "_UseTrail"
+					float second = 0
+				[195]
+				pair data
+					string first = "_UseVATColorTex"
+					float second = 0
+				[196]
+				pair data
+					string first = "_UseVFXPortal"
+					float second = 0
+				[197]
+				pair data
+					string first = "_UseVertexOffset"
+					float second = 0
+				[198]
+				pair data
+					string first = "_UseVertexOffsetMask"
+					float second = 0
+				[199]
+				pair data
+					string first = "_UseWaterBlend"
+					float second = 0
+				[200]
+				pair data
+					string first = "_UseWeightTex"
+					float second = 0
+				[201]
+				pair data
+					string first = "_VertCameraOffset"
+					float second = -0.001
+				[202]
+				pair data
+					string first = "_WaterHeight"
+					float second = -9999
+				[203]
+				pair data
+					string first = "_WeightTexIntensity"
+					float second = 1
+				[204]
+				pair data
+					string first = "_WeightTexMipmapBias"
+					float second = 0
+				[205]
+				pair data
+					string first = "_WeightTexUVRotate"
+					float second = 0
+				[206]
+				pair data
+					string first = "_WeightUVSet"
+					float second = 1
+				[207]
+				pair data
+					string first = "_ZTest"
+					float second = 4
+				[208]
+				pair data
+					string first = "_ZWrite"
+					float second = 0
+				[209]
+				pair data
+					string first = "_boundMaxX"
+					float second = 0
+				[210]
+				pair data
+					string first = "_boundMaxY"
+					float second = 0
+				[211]
+				pair data
+					string first = "_boundMaxZ"
+					float second = 0
+				[212]
+				pair data
+					string first = "_boundMinX"
+					float second = 0
+				[213]
+				pair data
+					string first = "_boundMinY"
+					float second = 0
+				[214]
+				pair data
+					string first = "_boundMinZ"
+					float second = 0
+				[215]
+				pair data
+					string first = "_displayFrame"
+					float second = 0
+				[216]
+				pair data
+					string first = "_frameCount"
+					float second = 0
+				[217]
+				pair data
+					string first = "_gameTimeAtFirstFrame"
+					float second = 0
+				[218]
+				pair data
+					string first = "_globalPscaleMul"
+					float second = 1
+				[219]
+				pair data
+					string first = "_houdiniFPS"
+					float second = 0
+				[220]
+				pair data
+					string first = "_playbackSpeed"
+					float second = 0
+				[221]
+				pair data
+					string first = "_stretchByVelAmount"
+					float second = 0
+		map m_Colors
+			Array Array
+			int size = 41
+				[0]
+				pair data
+					string first = "_BlendTexUVSpeed"
+					ColorRGBA second
+						float r = 0.06
+						float g = 0
+						float b = 0
+						float a = 0
+				[1]
+				pair data
+					string first = "_BlendTint"
+					ColorRGBA second
+						float r = 0
+						float g = 56.21961
+						float b = 383.49805
+						float a = 1
+				[2]
+				pair data
+					string first = "_BrightCenter"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[3]
+				pair data
+					string first = "_BrightColor"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[4]
+				pair data
+					string first = "_DissolveEmissiveColor"
+					ColorRGBA second
+						float r = 4.237095
+						float g = 1.7081482
+						float b = 0.97608465
+						float a = 1
+				[5]
+				pair data
+					string first = "_DissolveUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -0.2
+						float b = 0
+						float a = 0
+				[6]
+				pair data
+					string first = "_DisturbUVSpeed1"
+					ColorRGBA second
+						float r = 0.05
+						float g = -0.1
+						float b = 0
+						float a = 0
+				[7]
+				pair data
+					string first = "_DisturbUVSpeed2"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[8]
+				pair data
+					string first = "_EdgeColor"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[9]
+				pair data
+					string first = "_FresnelColor"
+					ColorRGBA second
+						float r = 1.1486983
+						float g = 0.62164855
+						float b = 0
+						float a = 1
+				[10]
+				pair data
+					string first = "_MainTexUVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = -0
+						float b = 0
+						float a = 1
+				[11]
+				pair data
+					string first = "_MainTexUVSpeed"
+					ColorRGBA second
+						float r = 0.1
+						float g = 0
+						float b = 0
+						float a = 0
+				[12]
+				pair data
+					string first = "_MainTexUVWeights"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 0
+				[13]
+				pair data
+					string first = "_MaskTexUVSpeed"
+					ColorRGBA second
+						float r = 0.2
+						float g = 0.1
+						float b = 0
+						float a = 0
+				[14]
+				pair data
+					string first = "_OffsetDir"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[15]
+				pair data
+					string first = "_OffsetMaskSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[16]
+				pair data
+					string first = "_OffsetSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -0.2
+						float b = 0
+						float a = 0
+				[17]
+				pair data
+					string first = "_SampleTex0UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[18]
+				pair data
+					string first = "_SampleTex0UVSpeed"
+					ColorRGBA second
+						float r = 0.05
+						float g = -0.1
+						float b = 0
+						float a = 0
+				[19]
+				pair data
+					string first = "_SampleTex0UVWeights"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 0
+				[20]
+				pair data
+					string first = "_SampleTex1UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = -0
+						float b = 0
+						float a = 1
+				[21]
+				pair data
+					string first = "_SampleTex1UVSpeed"
+					ColorRGBA second
+						float r = 0.2
+						float g = 0.1
+						float b = 0
+						float a = 0
+				[22]
+				pair data
+					string first = "_SampleTex1UVWeights"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 0
+				[23]
+				pair data
+					string first = "_SampleTex2UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[24]
+				pair data
+					string first = "_SampleTex2UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[25]
+				pair data
+					string first = "_SampleTex2UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 1
+						float b = 0
+						float a = 0
+				[26]
+				pair data
+					string first = "_SampleTex3UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[27]
+				pair data
+					string first = "_SampleTex3UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -0.2
+						float b = 0
+						float a = 0
+				[28]
+				pair data
+					string first = "_SampleTex3UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 1
+						float b = 0
+						float a = 0
+				[29]
+				pair data
+					string first = "_SampleTex4UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[30]
+				pair data
+					string first = "_SampleTex4UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -0.2
+						float b = 0
+						float a = 0
+				[31]
+				pair data
+					string first = "_SampleTex4UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 1
+						float b = 0
+						float a = 0
+				[32]
+				pair data
+					string first = "_SampleTex5UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[33]
+				pair data
+					string first = "_SampleTex5UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[34]
+				pair data
+					string first = "_SampleTex5UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[35]
+				pair data
+					string first = "_ScanFillColor"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[36]
+				pair data
+					string first = "_TintColor"
+					ColorRGBA second
+						float r = 1
+						float g = 0.7686079
+						float b = 0.6698113
+						float a = 0.3764706
+				[37]
+				pair data
+					string first = "_WaterAbsorption"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[38]
+				pair data
+					string first = "_WaterAbsorption2"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[39]
+				pair data
+					string first = "_WaterScatter"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[40]
+				pair data
+					string first = "_WeightTexUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+	vector m_BuildTextureStacks
+		Array Array
+		int size = 0
+	PPtr<HGSubsurfaceProfile> m_SubsurfaceProfile
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+
+BUNDLE CAB-383b9c58ae7c595514766f274d35b01a
+=== MonoBehaviour MonoBehaviour ID=-7341024305655431145 ===
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 5259139620705394962
+	string m_Name = "P_common_lightningbuff_02_rimlight_asset"
+	UInt8 useECSRenderer = 0
+	int settingLodLevel = 15
+	int platformLayer = 7
+	int targetLayer = 3
+	EntityVFXAddictiveMaterialData data
+		int priorityType = 0
+		int rendererMask = -67108865
+		UInt8 useScaledTime = 1
+		UInt8 enableVertColorIfMeshHasVFXVertColor = 1
+		PPtr<$Material> material
+			int m_FileID = 0
+			SInt64 m_PathID = 1466565399686772415
+		UInt8 loop = 1
+		UInt8 useDissolveCurve = 0
+		UInt8 useScanCurve = 0
+		UInt8 useCutoffPosY = 0
+		UInt8 useCutoffPosYAutoBounds = 0
+		float cutoffPosYAbsoluteBounds = 3
+		UInt8 useCutoffLocalDirection = 0
+		Vector3f cutoffDirection
+			float x = 0
+			float y = 1
+			float z = 0
+		float duration = 0.1
+		UInt8 useStartCurve = 1
+		AnimationCurve opacityCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 0
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 2
+						float outSlope = 2
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve dissolveCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 0
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve scanCurve
+			vector m_Curve
+				Array Array
+				int size = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve cutoffPosYCurve
+			vector m_Curve
+				Array Array
+				int size = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		EntityVFXCurveData customCurves
+			Array Array
+			int size = 0
+		UInt8 useLoopCurve = 1
+		float loopDuration = 1
+		AnimationCurve loopCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0.33333334
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0.33333334
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve dissolveLoopCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		EntityVFXCurveData customLoopCurves
+			Array Array
+			int size = 0
+		UInt8 useEndCurve = 1
+		float endDuration = 0.1
+		AnimationCurve endCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 1
+						float inSlope = -1
+						float outSlope = -1
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0.33333334
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 0
+						float inSlope = -1
+						float outSlope = -1
+						int weightedMode = 0
+						float inWeight = 0.33333334
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve dissolveEndCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0.008090973
+						float value = 1.0004883
+						float inSlope = -0.9995885
+						float outSlope = -0.9995885
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0.33333334
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 0.008987427
+						float inSlope = -0.9995885
+						float outSlope = -0.9995885
+						int weightedMode = 0
+						float inWeight = 0.33333334
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		EntityVFXCurveData customEndCurves
+			Array Array
+			int size = 0
+		UInt8 useAddictiveProperties = 0
+		UInt8 useAddictivePropertiesUpdate = 0
+		vector addictiveVectorProperties
+			Array Array
+			int size = 0
+
+=== Material Material ID=1466565399686772415 ===
+Material Base
+	string m_Name = "M_fx_common_buff_1249_rimlight_asset"
+	PPtr<Shader> m_Shader
+		int m_FileID = 3
+		SInt64 m_PathID = -1430105248647086886
+	vector m_ValidKeywords
+		Array Array
+		int size = 4
+			[0]
+			string data = "_SAMPLE_TEX0"
+			[1]
+			string data = "_USE_FRESNEL"
+			[2]
+			string data = "_USE_POLARUV"
+			[3]
+			string data = "_USE_SCREENUV"
+	vector m_InvalidKeywords
+		Array Array
+		int size = 0
+	unsigned int m_LightmapFlags = 4
+	bool m_EnableInstancingVariants = False
+	bool m_DoubleSidedGI = False
+	int m_CustomRenderQueue = 3000
+	map stringTagMap
+		Array Array
+		int size = 1
+			[0]
+			pair data
+				string first = "RenderType"
+				string second = "Transparent"
+	vector disabledShaderPasses
+		Array Array
+		int size = 2
+			[0]
+			string data = "DepthOnly"
+			[1]
+			string data = "GBuffer"
+	UnityPropertySheet m_SavedProperties
+		map m_TexEnvs
+			Array Array
+			int size = 19
+				[0]
+				pair data
+					string first = "_BlendTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 2
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[1]
+				pair data
+					string first = "_ColorTexture"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[2]
+				pair data
+					string first = "_DissolveTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 0.2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[3]
+				pair data
+					string first = "_DisturbTex1"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 0.5
+							float y = 0.5
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[4]
+				pair data
+					string first = "_DisturbTex2"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[5]
+				pair data
+					string first = "_LookupTable"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[6]
+				pair data
+					string first = "_MainTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 2
+							SInt64 m_PathID = 6592863930794889663
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[7]
+				pair data
+					string first = "_MaskTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 4
+							SInt64 m_PathID = 6693660679689084118
+						Vector2f m_Scale
+							float x = 2
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[8]
+				pair data
+					string first = "_OffsetMaskTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[9]
+				pair data
+					string first = "_OffsetTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 2
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[10]
+				pair data
+					string first = "_PositionTexture"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[11]
+				pair data
+					string first = "_RotationTexture"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[12]
+				pair data
+					string first = "_SampleTex0"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 4
+							SInt64 m_PathID = 6693660679689084118
+						Vector2f m_Scale
+							float x = 2
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[13]
+				pair data
+					string first = "_SampleTex1"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[14]
+				pair data
+					string first = "_SampleTex2"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 0.2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[15]
+				pair data
+					string first = "_SampleTex3"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[16]
+				pair data
+					string first = "_SampleTex4"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[17]
+				pair data
+					string first = "_SampleTex5"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[18]
+				pair data
+					string first = "_WeightTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = -1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+		map m_Ints
+			Array Array
+			int size = 0
+		map m_Floats
+			Array Array
+			int size = 222
+				[0]
+				pair data
+					string first = "_AdvancedOptions"
+					float second = 0
+				[1]
+				pair data
+					string first = "_AlphaDstBlend"
+					float second = 10
+				[2]
+				pair data
+					string first = "_AlphaSrcBlend"
+					float second = 1
+				[3]
+				pair data
+					string first = "_B_UNLOAD_ROT_TEX"
+					float second = 0
+				[4]
+				pair data
+					string first = "_B_animateFirstFrame"
+					float second = 0
+				[5]
+				pair data
+					string first = "_B_autoPlayback"
+					float second = 0
+				[6]
+				pair data
+					string first = "_B_pscaleAreInPosA"
+					float second = 0
+				[7]
+				pair data
+					string first = "_B_stretchByVel"
+					float second = 0
+				[8]
+				pair data
+					string first = "_B_surfaceNormals"
+					float second = 0
+				[9]
+				pair data
+					string first = "_B_uvFromRG"
+					float second = 0
+				[10]
+				pair data
+					string first = "_Bi_Disturb"
+					float second = 1
+				[11]
+				pair data
+					string first = "_Bi_Offset"
+					float second = 0
+				[12]
+				pair data
+					string first = "_BlendMode"
+					float second = 1
+				[13]
+				pair data
+					string first = "_BlendTexMipmapBias"
+					float second = 0
+				[14]
+				pair data
+					string first = "_BlendTexUVRotate"
+					float second = 0
+				[15]
+				pair data
+					string first = "_BlendTexUseDisturb"
+					float second = 0
+				[16]
+				pair data
+					string first = "_BlendUVSet"
+					float second = 0
+				[17]
+				pair data
+					string first = "_BoxInnerRadius"
+					float second = 1
+				[18]
+				pair data
+					string first = "_BoxOuterRadius"
+					float second = 2
+				[19]
+				pair data
+					string first = "_BreathingMinAlpha"
+					float second = 0
+				[20]
+				pair data
+					string first = "_BreathingPower"
+					float second = 1
+				[21]
+				pair data
+					string first = "_BreathingSpeed"
+					float second = 1
+				[22]
+				pair data
+					string first = "_BrightType"
+					float second = 0
+				[23]
+				pair data
+					string first = "_CharacterHeight"
+					float second = 1.5
+				[24]
+				pair data
+					string first = "_CullMode"
+					float second = 2
+				[25]
+				pair data
+					string first = "_DebugSampleTexUses"
+					float second = 0
+				[26]
+				pair data
+					string first = "_DisableVertColor"
+					float second = 0
+				[27]
+				pair data
+					string first = "_DisableZTest"
+					float second = 0
+				[28]
+				pair data
+					string first = "_DissolveEdgeSharp"
+					float second = 0.55
+				[29]
+				pair data
+					string first = "_DissolveEmissiveEdge"
+					float second = 0
+				[30]
+				pair data
+					string first = "_DissolveScheduleOffset"
+					float second = 0.506
+				[31]
+				pair data
+					string first = "_DissolveTexMipmapBias"
+					float second = 0
+				[32]
+				pair data
+					string first = "_DissolveTexUseDisturb"
+					float second = 0
+				[33]
+				pair data
+					string first = "_DissolveUVRotate"
+					float second = 0
+				[34]
+				pair data
+					string first = "_DissolveUVSet"
+					float second = 1
+				[35]
+				pair data
+					string first = "_DissolveUseWeight"
+					float second = 0
+				[36]
+				pair data
+					string first = "_DistortAlpha"
+					float second = 1
+				[37]
+				pair data
+					string first = "_DistortIntensity"
+					float second = 0
+				[38]
+				pair data
+					string first = "_DistortOnEdge"
+					float second = 0
+				[39]
+				pair data
+					string first = "_DistortScale"
+					float second = 5
+				[40]
+				pair data
+					string first = "_DistortSpeed"
+					float second = 1
+				[41]
+				pair data
+					string first = "_DisturbTex1MipmapBias"
+					float second = 0
+				[42]
+				pair data
+					string first = "_DisturbTex1Normal"
+					float second = 1
+				[43]
+				pair data
+					string first = "_DisturbTex2MipmapBias"
+					float second = 0
+				[44]
+				pair data
+					string first = "_DisturbTex2Normal"
+					float second = 0
+				[45]
+				pair data
+					string first = "_DisturbUIntensity1"
+					float second = 1
+				[46]
+				pair data
+					string first = "_DisturbUIntensity2"
+					float second = 0
+				[47]
+				pair data
+					string first = "_DisturbUVSet"
+					float second = 0
+				[48]
+				pair data
+					string first = "_DisturbUseWeight"
+					float second = 1
+				[49]
+				pair data
+					string first = "_DisturbVIntensity1"
+					float second = 0
+				[50]
+				pair data
+					string first = "_DisturbVIntensity2"
+					float second = 0
+				[51]
+				pair data
+					string first = "_DstBlend"
+					float second = 10
+				[52]
+				pair data
+					string first = "_EdgeColorMode"
+					float second = 0
+				[53]
+				pair data
+					string first = "_EdgeDistance"
+					float second = 0.001
+				[54]
+				pair data
+					string first = "_EdgeDistanceOffset"
+					float second = 0.001
+				[55]
+				pair data
+					string first = "_EnableComposeVolumetric"
+					float second = 0
+				[56]
+				pair data
+					string first = "_EnableHoudiniVAT"
+					float second = 0
+				[57]
+				pair data
+					string first = "_EnableTransparentMV"
+					float second = 0
+				[58]
+				pair data
+					string first = "_EnvLightStrength"
+					float second = 0
+				[59]
+				pair data
+					string first = "_ExpIntensity"
+					float second = 20
+				[60]
+				pair data
+					string first = "_ExpThreshold"
+					float second = 0.5
+				[61]
+				pair data
+					string first = "_FogIntensity"
+					float second = 1
+				[62]
+				pair data
+					string first = "_FogIntensityFadeOutDistance"
+					float second = 2000
+				[63]
+				pair data
+					string first = "_FresnelAffectOpacity"
+					float second = 0
+				[64]
+				pair data
+					string first = "_FresnelBias"
+					float second = 0.455
+				[65]
+				pair data
+					string first = "_FresnelFlip"
+					float second = 0
+				[66]
+				pair data
+					string first = "_FresnelPower"
+					float second = 1
+				[67]
+				pair data
+					string first = "_HoudiniVATType"
+					float second = 0
+				[68]
+				pair data
+					string first = "_IgnorePostExposure"
+					float second = 0
+				[69]
+				pair data
+					string first = "_InParticle"
+					float second = 0
+				[70]
+				pair data
+					string first = "_InnerRadius"
+					float second = 0
+				[71]
+				pair data
+					string first = "_IsSceneEffect"
+					float second = 0
+				[72]
+				pair data
+					string first = "_IsUI"
+					float second = 0
+				[73]
+				pair data
+					string first = "_MVDstColorBlend"
+					float second = 6
+				[74]
+				pair data
+					string first = "_MVSrcColorBlend"
+					float second = 3
+				[75]
+				pair data
+					string first = "_MainProperties"
+					float second = 0
+				[76]
+				pair data
+					string first = "_MainTexMipmapBias"
+					float second = 0
+				[77]
+				pair data
+					string first = "_MainTexUVRotate"
+					float second = 0
+				[78]
+				pair data
+					string first = "_MainTexUseDisturb"
+					float second = 0.1
+				[79]
+				pair data
+					string first = "_MainUVSet"
+					float second = 0
+				[80]
+				pair data
+					string first = "_MaskTexMipmapBias"
+					float second = 0
+				[81]
+				pair data
+					string first = "_MaskTexUVRotate"
+					float second = 0
+				[82]
+				pair data
+					string first = "_MaskTexUseDisturb"
+					float second = 0
+				[83]
+				pair data
+					string first = "_MaskUVSet"
+					float second = 0
+				[84]
+				pair data
+					string first = "_NearCameraFadeDistanceEnd"
+					float second = 25.4
+				[85]
+				pair data
+					string first = "_NearCameraFadeDistanceEnd2"
+					float second = 100
+				[86]
+				pair data
+					string first = "_NearCameraFadeDistanceStart"
+					float second = 6.2
+				[87]
+				pair data
+					string first = "_NearCameraFadeDistanceStart2"
+					float second = 120
+				[88]
+				pair data
+					string first = "_OffsetIntensity"
+					float second = 0.1
+				[89]
+				pair data
+					string first = "_OffsetMaskPower"
+					float second = 5
+				[90]
+				pair data
+					string first = "_OffsetSwitchDir"
+					float second = 2
+				[91]
+				pair data
+					string first = "_OffsetUVSet"
+					float second = 0
+				[92]
+				pair data
+					string first = "_OuterRadius"
+					float second = 2
+				[93]
+				pair data
+					string first = "_PortalStencilSet"
+					float second = 0
+				[94]
+				pair data
+					string first = "_ProcedureAlpha"
+					float second = 1
+				[95]
+				pair data
+					string first = "_RayleighMieLerpFactor"
+					float second = 0
+				[96]
+				pair data
+					string first = "_RenderTransparentAfterDOF"
+					float second = 0
+				[97]
+				pair data
+					string first = "_RenderTransparentAfterDistortion"
+					float second = 0
+				[98]
+				pair data
+					string first = "_Responsive"
+					float second = 1
+				[99]
+				pair data
+					string first = "_SafeFullAbsorpDistance"
+					float second = 0
+				[100]
+				pair data
+					string first = "_SampleTex0MipmapBias"
+					float second = 0
+				[101]
+				pair data
+					string first = "_SampleTex0UVSet"
+					float second = 0
+				[102]
+				pair data
+					string first = "_SampleTex0Use"
+					float second = 3
+				[103]
+				pair data
+					string first = "_SampleTex0UseDisturb"
+					float second = 0
+				[104]
+				pair data
+					string first = "_SampleTex0UseWeight0"
+					float second = 0
+				[105]
+				pair data
+					string first = "_SampleTex0UseWeight2"
+					float second = 0
+				[106]
+				pair data
+					string first = "_SampleTex0UseWeight3"
+					float second = 1
+				[107]
+				pair data
+					string first = "_SampleTex0UseWeight4"
+					float second = 0
+				[108]
+				pair data
+					string first = "_SampleTex0UseWeight5"
+					float second = 0
+				[109]
+				pair data
+					string first = "_SampleTex1MipmapBias"
+					float second = 0
+				[110]
+				pair data
+					string first = "_SampleTex1UVSet"
+					float second = 0
+				[111]
+				pair data
+					string first = "_SampleTex1Use"
+					float second = 3
+				[112]
+				pair data
+					string first = "_SampleTex1UseDisturb"
+					float second = 0
+				[113]
+				pair data
+					string first = "_SampleTex1UseWeight1"
+					float second = 0
+				[114]
+				pair data
+					string first = "_SampleTex1UseWeight2"
+					float second = 0
+				[115]
+				pair data
+					string first = "_SampleTex1UseWeight3"
+					float second = 1
+				[116]
+				pair data
+					string first = "_SampleTex1UseWeight4"
+					float second = 0
+				[117]
+				pair data
+					string first = "_SampleTex1UseWeight5"
+					float second = 0
+				[118]
+				pair data
+					string first = "_SampleTex2MipmapBias"
+					float second = 0
+				[119]
+				pair data
+					string first = "_SampleTex2UVSet"
+					float second = 1
+				[120]
+				pair data
+					string first = "_SampleTex2Use"
+					float second = 5
+				[121]
+				pair data
+					string first = "_SampleTex2UseDisturb"
+					float second = 0
+				[122]
+				pair data
+					string first = "_SampleTex2UseWeight2"
+					float second = 0
+				[123]
+				pair data
+					string first = "_SampleTex2UseWeight3"
+					float second = 0
+				[124]
+				pair data
+					string first = "_SampleTex2UseWeight4"
+					float second = 0
+				[125]
+				pair data
+					string first = "_SampleTex2UseWeight5"
+					float second = 1
+				[126]
+				pair data
+					string first = "_SampleTex3MipmapBias"
+					float second = 0
+				[127]
+				pair data
+					string first = "_SampleTex3UVSet"
+					float second = 0
+				[128]
+				pair data
+					string first = "_SampleTex3Use"
+					float second = 0
+				[129]
+				pair data
+					string first = "_SampleTex3UseDisturb"
+					float second = 0
+				[130]
+				pair data
+					string first = "_SampleTex3UseWeight3"
+					float second = 0
+				[131]
+				pair data
+					string first = "_SampleTex3UseWeight4"
+					float second = 0
+				[132]
+				pair data
+					string first = "_SampleTex3UseWeight5"
+					float second = 0
+				[133]
+				pair data
+					string first = "_SampleTex4MipmapBias"
+					float second = 0
+				[134]
+				pair data
+					string first = "_SampleTex4UVSet"
+					float second = 0
+				[135]
+				pair data
+					string first = "_SampleTex4Use"
+					float second = 0
+				[136]
+				pair data
+					string first = "_SampleTex4UseDisturb"
+					float second = 0
+				[137]
+				pair data
+					string first = "_SampleTex4UseWeight4"
+					float second = 0
+				[138]
+				pair data
+					string first = "_SampleTex4UseWeight5"
+					float second = 0
+				[139]
+				pair data
+					string first = "_SampleTex5MipmapBias"
+					float second = 0
+				[140]
+				pair data
+					string first = "_SampleTex5UVSet"
+					float second = 0
+				[141]
+				pair data
+					string first = "_SampleTex5Use"
+					float second = 0
+				[142]
+				pair data
+					string first = "_SampleTex5UseDisturb"
+					float second = 0
+				[143]
+				pair data
+					string first = "_ScanLineSchedule"
+					float second = 0
+				[144]
+				pair data
+					string first = "_ScanLineWidth"
+					float second = 0
+				[145]
+				pair data
+					string first = "_ScreenUVUseDepth"
+					float second = 0
+				[146]
+				pair data
+					string first = "_SectorAngle"
+					float second = 0
+				[147]
+				pair data
+					string first = "_SectorCenterRadius"
+					float second = 2
+				[148]
+				pair data
+					string first = "_SectorRadius"
+					float second = 2
+				[149]
+				pair data
+					string first = "_SoftBias"
+					float second = 0
+				[150]
+				pair data
+					string first = "_SoftDistance"
+					float second = 0.001
+				[151]
+				pair data
+					string first = "_SrcBlend"
+					float second = 1
+				[152]
+				pair data
+					string first = "_StencilComp"
+					float second = 8
+				[153]
+				pair data
+					string first = "_StencilOp"
+					float second = 0
+				[154]
+				pair data
+					string first = "_StencilReadMask"
+					float second = 255
+				[155]
+				pair data
+					string first = "_StencilRef"
+					float second = 0
+				[156]
+				pair data
+					string first = "_StencilWriteMask"
+					float second = 255
+				[157]
+				pair data
+					string first = "_SubsurfaceIntensity"
+					float second = 0
+				[158]
+				pair data
+					string first = "_SurfaceType"
+					float second = 1
+				[159]
+				pair data
+					string first = "_TextureFormat"
+					float second = 1
+				[160]
+				pair data
+					string first = "_TintColorAlpha"
+					float second = 1
+				[161]
+				pair data
+					string first = "_TintColorIntensity"
+					float second = 35
+				[162]
+				pair data
+					string first = "_TransparentSortPriority"
+					float second = 0
+				[163]
+				pair data
+					string first = "_UseAnimBreathing"
+					float second = 0
+				[164]
+				pair data
+					string first = "_UseBlend"
+					float second = 0
+				[165]
+				pair data
+					string first = "_UseBright"
+					float second = 0
+				[166]
+				pair data
+					string first = "_UseDissolve"
+					float second = 0
+				[167]
+				pair data
+					string first = "_UseDisturb"
+					float second = 0
+				[168]
+				pair data
+					string first = "_UseDisturb2"
+					float second = 0
+				[169]
+				pair data
+					string first = "_UseEdgeColor"
+					float second = 0
+				[170]
+				pair data
+					string first = "_UseFog"
+					float second = 0
+				[171]
+				pair data
+					string first = "_UseForceDynamicLighting"
+					float second = 0
+				[172]
+				pair data
+					string first = "_UseFresnel"
+					float second = 1
+				[173]
+				pair data
+					string first = "_UseLighting"
+					float second = 0
+				[174]
+				pair data
+					string first = "_UseMainTexAsAlpha"
+					float second = 0
+				[175]
+				pair data
+					string first = "_UseMask"
+					float second = 1
+				[176]
+				pair data
+					string first = "_UseMaskTexAsAlpha"
+					float second = 0
+				[177]
+				pair data
+					string first = "_UseNearCameraFade"
+					float second = 0
+				[178]
+				pair data
+					string first = "_UsePolarUV"
+					float second = 0
+				[179]
+				pair data
+					string first = "_UsePosYAsScreenV"
+					float second = 1
+				[180]
+				pair data
+					string first = "_UseSampleTex0"
+					float second = 1
+				[181]
+				pair data
+					string first = "_UseSampleTex0AsAlpha"
+					float second = 0
+				[182]
+				pair data
+					string first = "_UseSampleTex1"
+					float second = 0
+				[183]
+				pair data
+					string first = "_UseSampleTex1AsAlpha"
+					float second = 0
+				[184]
+				pair data
+					string first = "_UseSampleTex2"
+					float second = 0
+				[185]
+				pair data
+					string first = "_UseSampleTex2AsAlpha"
+					float second = 0
+				[186]
+				pair data
+					string first = "_UseSampleTex3"
+					float second = 0
+				[187]
+				pair data
+					string first = "_UseSampleTex3AsAlpha"
+					float second = 1
+				[188]
+				pair data
+					string first = "_UseSampleTex4"
+					float second = 0
+				[189]
+				pair data
+					string first = "_UseSampleTex4AsAlpha"
+					float second = 1
+				[190]
+				pair data
+					string first = "_UseSampleTex5"
+					float second = 0
+				[191]
+				pair data
+					string first = "_UseSampleTex5AsAlpha"
+					float second = 1
+				[192]
+				pair data
+					string first = "_UseScreenUV"
+					float second = 1
+				[193]
+				pair data
+					string first = "_UseSoftBlend"
+					float second = 0
+				[194]
+				pair data
+					string first = "_UseTrail"
+					float second = 0
+				[195]
+				pair data
+					string first = "_UseVATColorTex"
+					float second = 0
+				[196]
+				pair data
+					string first = "_UseVFXPortal"
+					float second = 0
+				[197]
+				pair data
+					string first = "_UseVertexOffset"
+					float second = 0
+				[198]
+				pair data
+					string first = "_UseVertexOffsetMask"
+					float second = 0
+				[199]
+				pair data
+					string first = "_UseWaterBlend"
+					float second = 0
+				[200]
+				pair data
+					string first = "_UseWeightTex"
+					float second = 0
+				[201]
+				pair data
+					string first = "_VertCameraOffset"
+					float second = -0.001
+				[202]
+				pair data
+					string first = "_WaterHeight"
+					float second = -9999
+				[203]
+				pair data
+					string first = "_WeightTexIntensity"
+					float second = 1
+				[204]
+				pair data
+					string first = "_WeightTexMipmapBias"
+					float second = 0
+				[205]
+				pair data
+					string first = "_WeightTexUVRotate"
+					float second = 0
+				[206]
+				pair data
+					string first = "_WeightUVSet"
+					float second = 0
+				[207]
+				pair data
+					string first = "_ZTest"
+					float second = 4
+				[208]
+				pair data
+					string first = "_ZWrite"
+					float second = 0
+				[209]
+				pair data
+					string first = "_boundMaxX"
+					float second = 0
+				[210]
+				pair data
+					string first = "_boundMaxY"
+					float second = 0
+				[211]
+				pair data
+					string first = "_boundMaxZ"
+					float second = 0
+				[212]
+				pair data
+					string first = "_boundMinX"
+					float second = 0
+				[213]
+				pair data
+					string first = "_boundMinY"
+					float second = 0
+				[214]
+				pair data
+					string first = "_boundMinZ"
+					float second = 0
+				[215]
+				pair data
+					string first = "_displayFrame"
+					float second = 0
+				[216]
+				pair data
+					string first = "_frameCount"
+					float second = 0
+				[217]
+				pair data
+					string first = "_gameTimeAtFirstFrame"
+					float second = 0
+				[218]
+				pair data
+					string first = "_globalPscaleMul"
+					float second = 1
+				[219]
+				pair data
+					string first = "_houdiniFPS"
+					float second = 0
+				[220]
+				pair data
+					string first = "_playbackSpeed"
+					float second = 0
+				[221]
+				pair data
+					string first = "_stretchByVelAmount"
+					float second = 0
+		map m_Colors
+			Array Array
+			int size = 41
+				[0]
+				pair data
+					string first = "_BlendTexUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 1
+						float b = 0
+						float a = 0
+				[1]
+				pair data
+					string first = "_BlendTint"
+					ColorRGBA second
+						float r = 14.928529
+						float g = 13.936403
+						float b = 9.886629
+						float a = 1
+				[2]
+				pair data
+					string first = "_BrightCenter"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[3]
+				pair data
+					string first = "_BrightColor"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[4]
+				pair data
+					string first = "_DissolveEmissiveColor"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[5]
+				pair data
+					string first = "_DissolveUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -20
+						float b = 0
+						float a = 0
+				[6]
+				pair data
+					string first = "_DisturbUVSpeed1"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[7]
+				pair data
+					string first = "_DisturbUVSpeed2"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[8]
+				pair data
+					string first = "_EdgeColor"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[9]
+				pair data
+					string first = "_FresnelColor"
+					ColorRGBA second
+						float r = 1
+						float g = 0.88311446
+						float b = 0.41037732
+						float a = 0.69803923
+				[10]
+				pair data
+					string first = "_MainTexUVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = -0
+						float b = 0
+						float a = 1
+				[11]
+				pair data
+					string first = "_MainTexUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -0.2
+						float b = -1.11
+						float a = 0
+				[12]
+				pair data
+					string first = "_MainTexUVWeights"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 0
+				[13]
+				pair data
+					string first = "_MaskTexUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[14]
+				pair data
+					string first = "_OffsetDir"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[15]
+				pair data
+					string first = "_OffsetMaskSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[16]
+				pair data
+					string first = "_OffsetSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -1
+						float b = 0
+						float a = 0
+				[17]
+				pair data
+					string first = "_SampleTex0UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[18]
+				pair data
+					string first = "_SampleTex0UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[19]
+				pair data
+					string first = "_SampleTex0UVWeights"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 0
+				[20]
+				pair data
+					string first = "_SampleTex1UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[21]
+				pair data
+					string first = "_SampleTex1UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0.1
+						float b = 0
+						float a = 0
+				[22]
+				pair data
+					string first = "_SampleTex1UVWeights"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 0
+				[23]
+				pair data
+					string first = "_SampleTex2UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[24]
+				pair data
+					string first = "_SampleTex2UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -20
+						float b = 0
+						float a = 0
+				[25]
+				pair data
+					string first = "_SampleTex2UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 1
+						float b = 0
+						float a = 0
+				[26]
+				pair data
+					string first = "_SampleTex3UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[27]
+				pair data
+					string first = "_SampleTex3UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[28]
+				pair data
+					string first = "_SampleTex3UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[29]
+				pair data
+					string first = "_SampleTex4UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[30]
+				pair data
+					string first = "_SampleTex4UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[31]
+				pair data
+					string first = "_SampleTex4UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[32]
+				pair data
+					string first = "_SampleTex5UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[33]
+				pair data
+					string first = "_SampleTex5UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[34]
+				pair data
+					string first = "_SampleTex5UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[35]
+				pair data
+					string first = "_ScanFillColor"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[36]
+				pair data
+					string first = "_TintColor"
+					ColorRGBA second
+						float r = 1
+						float g = 0.87189037
+						float b = 0.5566037
+						float a = 1
+				[37]
+				pair data
+					string first = "_WaterAbsorption"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[38]
+				pair data
+					string first = "_WaterAbsorption2"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[39]
+				pair data
+					string first = "_WaterScatter"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[40]
+				pair data
+					string first = "_WeightTexUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+	vector m_BuildTextureStacks
+		Array Array
+		int size = 0
+	PPtr<HGSubsurfaceProfile> m_SubsurfaceProfile
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+
+BUNDLE CAB-c92f0b2e32cc1ce5129702fcd5784193
+=== Material Material ID=-7223361232986408039 ===
+Material Base
+	string m_Name = "M_fx_common_buff_1247_rimlight_asset"
+	PPtr<Shader> m_Shader
+		int m_FileID = 2
+		SInt64 m_PathID = -1430105248647086886
+	vector m_ValidKeywords
+		Array Array
+		int size = 3
+			[0]
+			string data = "_SAMPLE_TEX0"
+			[1]
+			string data = "_SAMPLE_TEX1"
+			[2]
+			string data = "_USE_FRESNEL"
+	vector m_InvalidKeywords
+		Array Array
+		int size = 0
+	unsigned int m_LightmapFlags = 4
+	bool m_EnableInstancingVariants = False
+	bool m_DoubleSidedGI = False
+	int m_CustomRenderQueue = 3000
+	map stringTagMap
+		Array Array
+		int size = 1
+			[0]
+			pair data
+				string first = "RenderType"
+				string second = "Transparent"
+	vector disabledShaderPasses
+		Array Array
+		int size = 2
+			[0]
+			string data = "DepthOnly"
+			[1]
+			string data = "GBuffer"
+	UnityPropertySheet m_SavedProperties
+		map m_TexEnvs
+			Array Array
+			int size = 19
+				[0]
+				pair data
+					string first = "_BlendTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 2
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[1]
+				pair data
+					string first = "_ColorTexture"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[2]
+				pair data
+					string first = "_DissolveTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[3]
+				pair data
+					string first = "_DisturbTex1"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 3
+							SInt64 m_PathID = -1283693607459474668
+						Vector2f m_Scale
+							float x = 3
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[4]
+				pair data
+					string first = "_DisturbTex2"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[5]
+				pair data
+					string first = "_LookupTable"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[6]
+				pair data
+					string first = "_MainTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 4
+							SInt64 m_PathID = -9067448324554367542
+						Vector2f m_Scale
+							float x = 2
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[7]
+				pair data
+					string first = "_MaskTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 5
+							SInt64 m_PathID = 6109821355335697003
+						Vector2f m_Scale
+							float x = 2
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[8]
+				pair data
+					string first = "_OffsetMaskTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[9]
+				pair data
+					string first = "_OffsetTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[10]
+				pair data
+					string first = "_PositionTexture"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[11]
+				pair data
+					string first = "_RotationTexture"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[12]
+				pair data
+					string first = "_SampleTex0"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 3
+							SInt64 m_PathID = -1283693607459474668
+						Vector2f m_Scale
+							float x = 3
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[13]
+				pair data
+					string first = "_SampleTex1"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 5
+							SInt64 m_PathID = 6109821355335697003
+						Vector2f m_Scale
+							float x = 2
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[14]
+				pair data
+					string first = "_SampleTex2"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 2
+							float y = 2
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[15]
+				pair data
+					string first = "_SampleTex3"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[16]
+				pair data
+					string first = "_SampleTex4"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[17]
+				pair data
+					string first = "_SampleTex5"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = 1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+				[18]
+				pair data
+					string first = "_WeightTex"
+					UnityTexEnv second
+						PPtr<Texture> m_Texture
+							int m_FileID = 0
+							SInt64 m_PathID = 0
+						Vector2f m_Scale
+							float x = 1
+							float y = -1
+						Vector2f m_Offset
+							float x = 0
+							float y = 0
+						int m_UVSetIndex = 0
+		map m_Ints
+			Array Array
+			int size = 0
+		map m_Floats
+			Array Array
+			int size = 222
+				[0]
+				pair data
+					string first = "_AdvancedOptions"
+					float second = 0
+				[1]
+				pair data
+					string first = "_AlphaDstBlend"
+					float second = 10
+				[2]
+				pair data
+					string first = "_AlphaSrcBlend"
+					float second = 1
+				[3]
+				pair data
+					string first = "_B_UNLOAD_ROT_TEX"
+					float second = 0
+				[4]
+				pair data
+					string first = "_B_animateFirstFrame"
+					float second = 0
+				[5]
+				pair data
+					string first = "_B_autoPlayback"
+					float second = 0
+				[6]
+				pair data
+					string first = "_B_pscaleAreInPosA"
+					float second = 0
+				[7]
+				pair data
+					string first = "_B_stretchByVel"
+					float second = 0
+				[8]
+				pair data
+					string first = "_B_surfaceNormals"
+					float second = 0
+				[9]
+				pair data
+					string first = "_B_uvFromRG"
+					float second = 0
+				[10]
+				pair data
+					string first = "_Bi_Disturb"
+					float second = 1
+				[11]
+				pair data
+					string first = "_Bi_Offset"
+					float second = 0
+				[12]
+				pair data
+					string first = "_BlendMode"
+					float second = 0
+				[13]
+				pair data
+					string first = "_BlendTexMipmapBias"
+					float second = 0
+				[14]
+				pair data
+					string first = "_BlendTexUVRotate"
+					float second = 0
+				[15]
+				pair data
+					string first = "_BlendTexUseDisturb"
+					float second = 0
+				[16]
+				pair data
+					string first = "_BlendUVSet"
+					float second = 0
+				[17]
+				pair data
+					string first = "_BoxInnerRadius"
+					float second = 1
+				[18]
+				pair data
+					string first = "_BoxOuterRadius"
+					float second = 2
+				[19]
+				pair data
+					string first = "_BreathingMinAlpha"
+					float second = 0
+				[20]
+				pair data
+					string first = "_BreathingPower"
+					float second = 1
+				[21]
+				pair data
+					string first = "_BreathingSpeed"
+					float second = 1
+				[22]
+				pair data
+					string first = "_BrightType"
+					float second = 0
+				[23]
+				pair data
+					string first = "_CharacterHeight"
+					float second = 1.5
+				[24]
+				pair data
+					string first = "_CullMode"
+					float second = 2
+				[25]
+				pair data
+					string first = "_DebugSampleTexUses"
+					float second = 0
+				[26]
+				pair data
+					string first = "_DisableVertColor"
+					float second = 0
+				[27]
+				pair data
+					string first = "_DisableZTest"
+					float second = 0
+				[28]
+				pair data
+					string first = "_DissolveEdgeSharp"
+					float second = 1
+				[29]
+				pair data
+					string first = "_DissolveEmissiveEdge"
+					float second = 0
+				[30]
+				pair data
+					string first = "_DissolveScheduleOffset"
+					float second = 0
+				[31]
+				pair data
+					string first = "_DissolveTexMipmapBias"
+					float second = 0
+				[32]
+				pair data
+					string first = "_DissolveTexUseDisturb"
+					float second = 0
+				[33]
+				pair data
+					string first = "_DissolveUVRotate"
+					float second = 0
+				[34]
+				pair data
+					string first = "_DissolveUVSet"
+					float second = 0
+				[35]
+				pair data
+					string first = "_DissolveUseWeight"
+					float second = 0
+				[36]
+				pair data
+					string first = "_DistortAlpha"
+					float second = 1
+				[37]
+				pair data
+					string first = "_DistortIntensity"
+					float second = 0
+				[38]
+				pair data
+					string first = "_DistortOnEdge"
+					float second = 0
+				[39]
+				pair data
+					string first = "_DistortScale"
+					float second = 5
+				[40]
+				pair data
+					string first = "_DistortSpeed"
+					float second = 1
+				[41]
+				pair data
+					string first = "_DisturbTex1MipmapBias"
+					float second = 0
+				[42]
+				pair data
+					string first = "_DisturbTex1Normal"
+					float second = 0
+				[43]
+				pair data
+					string first = "_DisturbTex2MipmapBias"
+					float second = 0
+				[44]
+				pair data
+					string first = "_DisturbTex2Normal"
+					float second = 0
+				[45]
+				pair data
+					string first = "_DisturbUIntensity1"
+					float second = 1
+				[46]
+				pair data
+					string first = "_DisturbUIntensity2"
+					float second = 0
+				[47]
+				pair data
+					string first = "_DisturbUVSet"
+					float second = 0
+				[48]
+				pair data
+					string first = "_DisturbUseWeight"
+					float second = 1
+				[49]
+				pair data
+					string first = "_DisturbVIntensity1"
+					float second = 1
+				[50]
+				pair data
+					string first = "_DisturbVIntensity2"
+					float second = 0
+				[51]
+				pair data
+					string first = "_DstBlend"
+					float second = 10
+				[52]
+				pair data
+					string first = "_EdgeColorMode"
+					float second = 0
+				[53]
+				pair data
+					string first = "_EdgeDistance"
+					float second = 0.001
+				[54]
+				pair data
+					string first = "_EdgeDistanceOffset"
+					float second = 0.001
+				[55]
+				pair data
+					string first = "_EnableComposeVolumetric"
+					float second = 0
+				[56]
+				pair data
+					string first = "_EnableHoudiniVAT"
+					float second = 0
+				[57]
+				pair data
+					string first = "_EnableTransparentMV"
+					float second = 0
+				[58]
+				pair data
+					string first = "_EnvLightStrength"
+					float second = 0
+				[59]
+				pair data
+					string first = "_ExpIntensity"
+					float second = 6.2
+				[60]
+				pair data
+					string first = "_ExpThreshold"
+					float second = 0
+				[61]
+				pair data
+					string first = "_FogIntensity"
+					float second = 1
+				[62]
+				pair data
+					string first = "_FogIntensityFadeOutDistance"
+					float second = 2000
+				[63]
+				pair data
+					string first = "_FresnelAffectOpacity"
+					float second = 0.6
+				[64]
+				pair data
+					string first = "_FresnelBias"
+					float second = 0.455
+				[65]
+				pair data
+					string first = "_FresnelFlip"
+					float second = 0
+				[66]
+				pair data
+					string first = "_FresnelPower"
+					float second = 1
+				[67]
+				pair data
+					string first = "_HoudiniVATType"
+					float second = 0
+				[68]
+				pair data
+					string first = "_IgnorePostExposure"
+					float second = 0
+				[69]
+				pair data
+					string first = "_InParticle"
+					float second = 0
+				[70]
+				pair data
+					string first = "_InnerRadius"
+					float second = 0
+				[71]
+				pair data
+					string first = "_IsSceneEffect"
+					float second = 0
+				[72]
+				pair data
+					string first = "_IsUI"
+					float second = 0
+				[73]
+				pair data
+					string first = "_MVDstColorBlend"
+					float second = 6
+				[74]
+				pair data
+					string first = "_MVSrcColorBlend"
+					float second = 3
+				[75]
+				pair data
+					string first = "_MainProperties"
+					float second = 0
+				[76]
+				pair data
+					string first = "_MainTexMipmapBias"
+					float second = 0
+				[77]
+				pair data
+					string first = "_MainTexUVRotate"
+					float second = 0
+				[78]
+				pair data
+					string first = "_MainTexUseDisturb"
+					float second = 0.214
+				[79]
+				pair data
+					string first = "_MainUVSet"
+					float second = 0
+				[80]
+				pair data
+					string first = "_MaskTexMipmapBias"
+					float second = 0
+				[81]
+				pair data
+					string first = "_MaskTexUVRotate"
+					float second = 0
+				[82]
+				pair data
+					string first = "_MaskTexUseDisturb"
+					float second = 0
+				[83]
+				pair data
+					string first = "_MaskUVSet"
+					float second = 0
+				[84]
+				pair data
+					string first = "_NearCameraFadeDistanceEnd"
+					float second = 25.4
+				[85]
+				pair data
+					string first = "_NearCameraFadeDistanceEnd2"
+					float second = 100
+				[86]
+				pair data
+					string first = "_NearCameraFadeDistanceStart"
+					float second = 6.2
+				[87]
+				pair data
+					string first = "_NearCameraFadeDistanceStart2"
+					float second = 120
+				[88]
+				pair data
+					string first = "_OffsetIntensity"
+					float second = 0.1
+				[89]
+				pair data
+					string first = "_OffsetMaskPower"
+					float second = 5
+				[90]
+				pair data
+					string first = "_OffsetSwitchDir"
+					float second = 2
+				[91]
+				pair data
+					string first = "_OffsetUVSet"
+					float second = 0
+				[92]
+				pair data
+					string first = "_OuterRadius"
+					float second = 2
+				[93]
+				pair data
+					string first = "_PortalStencilSet"
+					float second = 0
+				[94]
+				pair data
+					string first = "_ProcedureAlpha"
+					float second = 1
+				[95]
+				pair data
+					string first = "_RayleighMieLerpFactor"
+					float second = 0
+				[96]
+				pair data
+					string first = "_RenderTransparentAfterDOF"
+					float second = 0
+				[97]
+				pair data
+					string first = "_RenderTransparentAfterDistortion"
+					float second = 0
+				[98]
+				pair data
+					string first = "_Responsive"
+					float second = 0
+				[99]
+				pair data
+					string first = "_SafeFullAbsorpDistance"
+					float second = 0
+				[100]
+				pair data
+					string first = "_SampleTex0MipmapBias"
+					float second = 0
+				[101]
+				pair data
+					string first = "_SampleTex0UVSet"
+					float second = 0
+				[102]
+				pair data
+					string first = "_SampleTex0Use"
+					float second = 0
+				[103]
+				pair data
+					string first = "_SampleTex0UseDisturb"
+					float second = 0
+				[104]
+				pair data
+					string first = "_SampleTex0UseWeight0"
+					float second = 1
+				[105]
+				pair data
+					string first = "_SampleTex0UseWeight2"
+					float second = 0
+				[106]
+				pair data
+					string first = "_SampleTex0UseWeight3"
+					float second = 0
+				[107]
+				pair data
+					string first = "_SampleTex0UseWeight4"
+					float second = 0
+				[108]
+				pair data
+					string first = "_SampleTex0UseWeight5"
+					float second = 0
+				[109]
+				pair data
+					string first = "_SampleTex1MipmapBias"
+					float second = 0
+				[110]
+				pair data
+					string first = "_SampleTex1UVSet"
+					float second = 0
+				[111]
+				pair data
+					string first = "_SampleTex1Use"
+					float second = 3
+				[112]
+				pair data
+					string first = "_SampleTex1UseDisturb"
+					float second = 0
+				[113]
+				pair data
+					string first = "_SampleTex1UseWeight1"
+					float second = 0
+				[114]
+				pair data
+					string first = "_SampleTex1UseWeight2"
+					float second = 0
+				[115]
+				pair data
+					string first = "_SampleTex1UseWeight3"
+					float second = 1
+				[116]
+				pair data
+					string first = "_SampleTex1UseWeight4"
+					float second = 0
+				[117]
+				pair data
+					string first = "_SampleTex1UseWeight5"
+					float second = 0
+				[118]
+				pair data
+					string first = "_SampleTex2MipmapBias"
+					float second = 0
+				[119]
+				pair data
+					string first = "_SampleTex2UVSet"
+					float second = 0
+				[120]
+				pair data
+					string first = "_SampleTex2Use"
+					float second = 4
+				[121]
+				pair data
+					string first = "_SampleTex2UseDisturb"
+					float second = 0
+				[122]
+				pair data
+					string first = "_SampleTex2UseWeight2"
+					float second = 0
+				[123]
+				pair data
+					string first = "_SampleTex2UseWeight3"
+					float second = 0
+				[124]
+				pair data
+					string first = "_SampleTex2UseWeight4"
+					float second = 1
+				[125]
+				pair data
+					string first = "_SampleTex2UseWeight5"
+					float second = 0
+				[126]
+				pair data
+					string first = "_SampleTex3MipmapBias"
+					float second = 0
+				[127]
+				pair data
+					string first = "_SampleTex3UVSet"
+					float second = 0
+				[128]
+				pair data
+					string first = "_SampleTex3Use"
+					float second = 0
+				[129]
+				pair data
+					string first = "_SampleTex3UseDisturb"
+					float second = 0
+				[130]
+				pair data
+					string first = "_SampleTex3UseWeight3"
+					float second = 0
+				[131]
+				pair data
+					string first = "_SampleTex3UseWeight4"
+					float second = 0
+				[132]
+				pair data
+					string first = "_SampleTex3UseWeight5"
+					float second = 0
+				[133]
+				pair data
+					string first = "_SampleTex4MipmapBias"
+					float second = 0
+				[134]
+				pair data
+					string first = "_SampleTex4UVSet"
+					float second = 0
+				[135]
+				pair data
+					string first = "_SampleTex4Use"
+					float second = 0
+				[136]
+				pair data
+					string first = "_SampleTex4UseDisturb"
+					float second = 0
+				[137]
+				pair data
+					string first = "_SampleTex4UseWeight4"
+					float second = 0
+				[138]
+				pair data
+					string first = "_SampleTex4UseWeight5"
+					float second = 0
+				[139]
+				pair data
+					string first = "_SampleTex5MipmapBias"
+					float second = 0
+				[140]
+				pair data
+					string first = "_SampleTex5UVSet"
+					float second = 0
+				[141]
+				pair data
+					string first = "_SampleTex5Use"
+					float second = 0
+				[142]
+				pair data
+					string first = "_SampleTex5UseDisturb"
+					float second = 0
+				[143]
+				pair data
+					string first = "_ScanLineSchedule"
+					float second = 0
+				[144]
+				pair data
+					string first = "_ScanLineWidth"
+					float second = 0
+				[145]
+				pair data
+					string first = "_ScreenUVUseDepth"
+					float second = 1
+				[146]
+				pair data
+					string first = "_SectorAngle"
+					float second = 0
+				[147]
+				pair data
+					string first = "_SectorCenterRadius"
+					float second = 2
+				[148]
+				pair data
+					string first = "_SectorRadius"
+					float second = 2
+				[149]
+				pair data
+					string first = "_SoftBias"
+					float second = 0
+				[150]
+				pair data
+					string first = "_SoftDistance"
+					float second = 0.001
+				[151]
+				pair data
+					string first = "_SrcBlend"
+					float second = 1
+				[152]
+				pair data
+					string first = "_StencilComp"
+					float second = 8
+				[153]
+				pair data
+					string first = "_StencilOp"
+					float second = 0
+				[154]
+				pair data
+					string first = "_StencilReadMask"
+					float second = 255
+				[155]
+				pair data
+					string first = "_StencilRef"
+					float second = 0
+				[156]
+				pair data
+					string first = "_StencilWriteMask"
+					float second = 255
+				[157]
+				pair data
+					string first = "_SubsurfaceIntensity"
+					float second = 0
+				[158]
+				pair data
+					string first = "_SurfaceType"
+					float second = 1
+				[159]
+				pair data
+					string first = "_TextureFormat"
+					float second = 1
+				[160]
+				pair data
+					string first = "_TintColorAlpha"
+					float second = 0.1
+				[161]
+				pair data
+					string first = "_TintColorIntensity"
+					float second = 3.8
+				[162]
+				pair data
+					string first = "_TransparentSortPriority"
+					float second = 0
+				[163]
+				pair data
+					string first = "_UseAnimBreathing"
+					float second = 0
+				[164]
+				pair data
+					string first = "_UseBlend"
+					float second = 0
+				[165]
+				pair data
+					string first = "_UseBright"
+					float second = 0
+				[166]
+				pair data
+					string first = "_UseDissolve"
+					float second = 0
+				[167]
+				pair data
+					string first = "_UseDisturb"
+					float second = 1
+				[168]
+				pair data
+					string first = "_UseDisturb2"
+					float second = 0
+				[169]
+				pair data
+					string first = "_UseEdgeColor"
+					float second = 0
+				[170]
+				pair data
+					string first = "_UseFog"
+					float second = 0
+				[171]
+				pair data
+					string first = "_UseForceDynamicLighting"
+					float second = 0
+				[172]
+				pair data
+					string first = "_UseFresnel"
+					float second = 1
+				[173]
+				pair data
+					string first = "_UseLighting"
+					float second = 0
+				[174]
+				pair data
+					string first = "_UseMainTexAsAlpha"
+					float second = 0
+				[175]
+				pair data
+					string first = "_UseMask"
+					float second = 1
+				[176]
+				pair data
+					string first = "_UseMaskTexAsAlpha"
+					float second = 0
+				[177]
+				pair data
+					string first = "_UseNearCameraFade"
+					float second = 0
+				[178]
+				pair data
+					string first = "_UsePolarUV"
+					float second = 0
+				[179]
+				pair data
+					string first = "_UsePosYAsScreenV"
+					float second = 0
+				[180]
+				pair data
+					string first = "_UseSampleTex0"
+					float second = 1
+				[181]
+				pair data
+					string first = "_UseSampleTex0AsAlpha"
+					float second = 0
+				[182]
+				pair data
+					string first = "_UseSampleTex1"
+					float second = 1
+				[183]
+				pair data
+					string first = "_UseSampleTex1AsAlpha"
+					float second = 0
+				[184]
+				pair data
+					string first = "_UseSampleTex2"
+					float second = 0
+				[185]
+				pair data
+					string first = "_UseSampleTex2AsAlpha"
+					float second = 0
+				[186]
+				pair data
+					string first = "_UseSampleTex3"
+					float second = 0
+				[187]
+				pair data
+					string first = "_UseSampleTex3AsAlpha"
+					float second = 1
+				[188]
+				pair data
+					string first = "_UseSampleTex4"
+					float second = 0
+				[189]
+				pair data
+					string first = "_UseSampleTex4AsAlpha"
+					float second = 1
+				[190]
+				pair data
+					string first = "_UseSampleTex5"
+					float second = 0
+				[191]
+				pair data
+					string first = "_UseSampleTex5AsAlpha"
+					float second = 1
+				[192]
+				pair data
+					string first = "_UseScreenUV"
+					float second = 0
+				[193]
+				pair data
+					string first = "_UseSoftBlend"
+					float second = 0
+				[194]
+				pair data
+					string first = "_UseTrail"
+					float second = 0
+				[195]
+				pair data
+					string first = "_UseVATColorTex"
+					float second = 0
+				[196]
+				pair data
+					string first = "_UseVFXPortal"
+					float second = 0
+				[197]
+				pair data
+					string first = "_UseVertexOffset"
+					float second = 0
+				[198]
+				pair data
+					string first = "_UseVertexOffsetMask"
+					float second = 0
+				[199]
+				pair data
+					string first = "_UseWaterBlend"
+					float second = 0
+				[200]
+				pair data
+					string first = "_UseWeightTex"
+					float second = 0
+				[201]
+				pair data
+					string first = "_VertCameraOffset"
+					float second = -0.001
+				[202]
+				pair data
+					string first = "_WaterHeight"
+					float second = -9999
+				[203]
+				pair data
+					string first = "_WeightTexIntensity"
+					float second = 1
+				[204]
+				pair data
+					string first = "_WeightTexMipmapBias"
+					float second = 0
+				[205]
+				pair data
+					string first = "_WeightTexUVRotate"
+					float second = 0
+				[206]
+				pair data
+					string first = "_WeightUVSet"
+					float second = 0
+				[207]
+				pair data
+					string first = "_ZTest"
+					float second = 4
+				[208]
+				pair data
+					string first = "_ZWrite"
+					float second = 0
+				[209]
+				pair data
+					string first = "_boundMaxX"
+					float second = 0
+				[210]
+				pair data
+					string first = "_boundMaxY"
+					float second = 0
+				[211]
+				pair data
+					string first = "_boundMaxZ"
+					float second = 0
+				[212]
+				pair data
+					string first = "_boundMinX"
+					float second = 0
+				[213]
+				pair data
+					string first = "_boundMinY"
+					float second = 0
+				[214]
+				pair data
+					string first = "_boundMinZ"
+					float second = 0
+				[215]
+				pair data
+					string first = "_displayFrame"
+					float second = 0
+				[216]
+				pair data
+					string first = "_frameCount"
+					float second = 0
+				[217]
+				pair data
+					string first = "_gameTimeAtFirstFrame"
+					float second = 0
+				[218]
+				pair data
+					string first = "_globalPscaleMul"
+					float second = 1
+				[219]
+				pair data
+					string first = "_houdiniFPS"
+					float second = 0
+				[220]
+				pair data
+					string first = "_playbackSpeed"
+					float second = 0
+				[221]
+				pair data
+					string first = "_stretchByVelAmount"
+					float second = 0
+		map m_Colors
+			Array Array
+			int size = 41
+				[0]
+				pair data
+					string first = "_BlendTexUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -0.5
+						float b = 0
+						float a = 0
+				[1]
+				pair data
+					string first = "_BlendTint"
+					ColorRGBA second
+						float r = 2
+						float g = 1.8361855
+						float b = 1.3396226
+						float a = 1
+				[2]
+				pair data
+					string first = "_BrightCenter"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[3]
+				pair data
+					string first = "_BrightColor"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[4]
+				pair data
+					string first = "_DissolveEmissiveColor"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[5]
+				pair data
+					string first = "_DissolveUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[6]
+				pair data
+					string first = "_DisturbUVSpeed1"
+					ColorRGBA second
+						float r = -0.05
+						float g = 0
+						float b = 0
+						float a = 0
+				[7]
+				pair data
+					string first = "_DisturbUVSpeed2"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[8]
+				pair data
+					string first = "_EdgeColor"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[9]
+				pair data
+					string first = "_FresnelColor"
+					ColorRGBA second
+						float r = 0.33490565
+						float g = 1
+						float b = 0.63773906
+						float a = 0.18039216
+				[10]
+				pair data
+					string first = "_MainTexUVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = -0
+						float b = 0
+						float a = 1
+				[11]
+				pair data
+					string first = "_MainTexUVSpeed"
+					ColorRGBA second
+						float r = -0.1
+						float g = 0
+						float b = 0
+						float a = 0
+				[12]
+				pair data
+					string first = "_MainTexUVWeights"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 0
+				[13]
+				pair data
+					string first = "_MaskTexUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[14]
+				pair data
+					string first = "_OffsetDir"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[15]
+				pair data
+					string first = "_OffsetMaskSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[16]
+				pair data
+					string first = "_OffsetSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -0.2
+						float b = 0
+						float a = 0
+				[17]
+				pair data
+					string first = "_SampleTex0UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[18]
+				pair data
+					string first = "_SampleTex0UVSpeed"
+					ColorRGBA second
+						float r = -0.05
+						float g = 0
+						float b = 0
+						float a = 0
+				[19]
+				pair data
+					string first = "_SampleTex0UVWeights"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 0
+				[20]
+				pair data
+					string first = "_SampleTex1UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[21]
+				pair data
+					string first = "_SampleTex1UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[22]
+				pair data
+					string first = "_SampleTex1UVWeights"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 0
+				[23]
+				pair data
+					string first = "_SampleTex2UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[24]
+				pair data
+					string first = "_SampleTex2UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = -0.5
+						float b = 0
+						float a = 0
+				[25]
+				pair data
+					string first = "_SampleTex2UVWeights"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 0
+				[26]
+				pair data
+					string first = "_SampleTex3UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[27]
+				pair data
+					string first = "_SampleTex3UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[28]
+				pair data
+					string first = "_SampleTex3UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[29]
+				pair data
+					string first = "_SampleTex4UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[30]
+				pair data
+					string first = "_SampleTex4UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[31]
+				pair data
+					string first = "_SampleTex4UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[32]
+				pair data
+					string first = "_SampleTex5UVRotateMat"
+					ColorRGBA second
+						float r = 1
+						float g = 0
+						float b = 0
+						float a = 1
+				[33]
+				pair data
+					string first = "_SampleTex5UVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[34]
+				pair data
+					string first = "_SampleTex5UVWeights"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+				[35]
+				pair data
+					string first = "_ScanFillColor"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[36]
+				pair data
+					string first = "_TintColor"
+					ColorRGBA second
+						float r = 0.081573494
+						float g = 0.645283
+						float b = 0.4087842
+						float a = 1
+				[37]
+				pair data
+					string first = "_WaterAbsorption"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[38]
+				pair data
+					string first = "_WaterAbsorption2"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[39]
+				pair data
+					string first = "_WaterScatter"
+					ColorRGBA second
+						float r = 1
+						float g = 1
+						float b = 1
+						float a = 1
+				[40]
+				pair data
+					string first = "_WeightTexUVSpeed"
+					ColorRGBA second
+						float r = 0
+						float g = 0
+						float b = 0
+						float a = 0
+	vector m_BuildTextureStacks
+		Array Array
+		int size = 0
+	PPtr<HGSubsurfaceProfile> m_SubsurfaceProfile
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+
+=== MonoBehaviour MonoBehaviour ID=-6972603189630642955 ===
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 5259139620705394962
+	string m_Name = "P_common_naturalbuff_02_rimlight_asset"
+	UInt8 useECSRenderer = 0
+	int settingLodLevel = 15
+	int platformLayer = 7
+	int targetLayer = 3
+	EntityVFXAddictiveMaterialData data
+		int priorityType = 0
+		int rendererMask = -67108865
+		UInt8 useScaledTime = 1
+		UInt8 enableVertColorIfMeshHasVFXVertColor = 1
+		PPtr<$Material> material
+			int m_FileID = 0
+			SInt64 m_PathID = -7223361232986408039
+		UInt8 loop = 1
+		UInt8 useDissolveCurve = 0
+		UInt8 useScanCurve = 0
+		UInt8 useCutoffPosY = 0
+		UInt8 useCutoffPosYAutoBounds = 0
+		float cutoffPosYAbsoluteBounds = 3
+		UInt8 useCutoffLocalDirection = 0
+		Vector3f cutoffDirection
+			float x = 0
+			float y = 1
+			float z = 0
+		float duration = 0.1
+		UInt8 useStartCurve = 1
+		AnimationCurve opacityCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 0
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 2
+						float outSlope = 2
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve dissolveCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 0
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve scanCurve
+			vector m_Curve
+				Array Array
+				int size = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve cutoffPosYCurve
+			vector m_Curve
+				Array Array
+				int size = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		EntityVFXCurveData customCurves
+			Array Array
+			int size = 0
+		UInt8 useLoopCurve = 1
+		float loopDuration = 1
+		AnimationCurve loopCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve dissolveLoopCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 1
+						float inSlope = 0
+						float outSlope = 0
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		EntityVFXCurveData customLoopCurves
+			Array Array
+			int size = 0
+		UInt8 useEndCurve = 1
+		float endDuration = 0.1
+		AnimationCurve endCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0
+						float value = 1
+						float inSlope = -1
+						float outSlope = -1
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0.33333334
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 0
+						float inSlope = -1
+						float outSlope = -1
+						int weightedMode = 0
+						float inWeight = 0.33333334
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		AnimationCurve dissolveEndCurve
+			vector m_Curve
+				Array Array
+				int size = 2
+					[0]
+					Keyframe data
+						float time = 0.008090973
+						float value = 1.0004883
+						float inSlope = -0.9995885
+						float outSlope = -0.9995885
+						int weightedMode = 0
+						float inWeight = 0
+						float outWeight = 0.33333334
+					[1]
+					Keyframe data
+						float time = 1
+						float value = 0.008987427
+						float inSlope = -0.9995885
+						float outSlope = -0.9995885
+						int weightedMode = 0
+						float inWeight = 0.33333334
+						float outWeight = 0
+			int m_PreInfinity = 2
+			int m_PostInfinity = 2
+			int m_RotationOrder = 4
+		EntityVFXCurveData customEndCurves
+			Array Array
+			int size = 0
+		UInt8 useAddictiveProperties = 0
+		UInt8 useAddictivePropertiesUpdate = 0
+		vector addictiveVectorProperties
+			Array Array
+			int size = 0
+

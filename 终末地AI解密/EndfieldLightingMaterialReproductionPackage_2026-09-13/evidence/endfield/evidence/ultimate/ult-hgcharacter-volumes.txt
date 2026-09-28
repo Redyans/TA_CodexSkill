@@ -1,0 +1,3420 @@
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\196303097450f93eb9262ae0.ab CAB=CAB-c7215d0f6de64b929c2f7c9698ef9469 ID=4913949215722653150
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 3
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 4.371139E-08
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 4.25
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 2
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 0.76199996
+			float g = 0.76199996
+			float b = 0.76199996
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\1d876a82e7b1595d035977d8.ab CAB=CAB-4b934df73be67d3129f2d289607495fb ID=-3055794862275050516
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 0
+			SInt64 m_PathID = -2779676431661066099
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 1
+		int m_Value = 2
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 1
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 4.371139E-08
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 1
+		Vector4f m_Value
+			float x = 0.15
+			float y = 1.5
+			float z = 0.5
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 0.571
+			float g = 1
+			float b = 0.9054448
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\1e411dbfb11b396f124953d1.ab CAB=CAB-babb5aa87fe1205e32ba5cf737d06345 ID=-1857625686929312233
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 3
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0.3
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\297fca3ae5ff2d79bc4542a9.ab CAB=CAB-7826e3ddea40f3c1362f2990228f5ba7 ID=1205912534731785397
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0.25
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\346da1034bc89fc9fd572d23.ab CAB=CAB-2b6e52d4963500155e800b22823a0112 ID=9017692362833061224
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0.5
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\3494583123fabedd2931fca7.ab CAB=CAB-fa9bdb693ed8f78f7e07a8d0d305e5bf ID=-3295462689115049321
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0.11
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\3af82a823719fff421375637.ab CAB=CAB-ae028772dd00efc5bb55f997d5ca6c34 ID=-2222938191685460223
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 1
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 1
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 4.371139E-08
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 1
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 2
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 1
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 1
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\3ba147fdc8f8eefbf1790762.ab CAB=CAB-b7837ceb9797c3307d25d2a0cbb133a3 ID=-7088041432974335620
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0.5
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\53f984bbf4c5cf9885c2398e.ab CAB=CAB-a768b1dea07afc073781e09a9818c91b ID=6120670140714007091
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\6b5ff688d756a4728e028bd0.ab CAB=CAB-222bee4d9715246f50583d3724b85021 ID=6449811758363708547
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 4.371139E-08
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\7be3ef2080721794be175f75.ab CAB=CAB-477f9c9e1607a3f2a032eabf3d1b2116 ID=2174952234897849993
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 1
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\8df1adeea05c68cd6bba23c2.ab CAB=CAB-fa0bec951ec1b5062d046080aeff5268 ID=2287967222287284845
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\a91d36e4eed5623ab1720d43.ab CAB=CAB-7f7a51a568ba6b6f8c103d7706c03fa3 ID=-674438021587494336
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0.3
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\aebc7e491d4eff3b633ffbec.ab CAB=CAB-8868c5d68680e1f9a199b6d86ac604fb ID=3021696590131915070
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 4
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1.5
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 1
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 2
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = -48.3
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 0.735849
+			float g = 0.83921236
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\bca600a5096f3a9c17326c0e.ab CAB=CAB-95b4429b77ab5290198ee84719d941b9 ID=-3506384410065794197
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 1
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\be811420d86e7125af0dc466.ab CAB=CAB-355c74d4056c75321d92c246e10c34c7 ID=7358359682336739883
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0.5
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\ff89ec02a235f3d2fe0f3ad7.ab CAB=CAB-b52d67e2e926a290cba306057450216c ID=6200068421788065175
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 1
+		UInt8 m_Value = 1
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 1
+		float m_Value = 0.5
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+
+### FILE=C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\ffe13396cc172d501bb7d950.ab CAB=CAB-2f5c1246fc1199b5b7c0f0f9a9282296 ID=2178757031017030489
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 643396062690085217
+	string m_Name = "HGCharacterVolume"
+	UInt8 active = 1
+	CubemapParameter charMaxCubemap
+		UInt8 overrideState = 1
+		PPtr<$Texture> m_Value
+			int m_FileID = 2
+			SInt64 m_PathID = -8084913603968714749
+	CharacterAmbientModeParameter charAmbientModeIndex
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ClampedFloatParameter charAmbientLightBaseIntensity
+		UInt8 overrideState = 1
+		float m_Value = 1
+	Vector2Parameter charAmbientLightCustomDir
+		UInt8 overrideState = 1
+		Vector2f m_Value
+			float x = 180
+			float y = 0
+	ClampedFloatParameter charAmbientLightDirIntensity
+		UInt8 overrideState = 1
+		float m_Value = 0.6
+	ClampedFloatParameter charAmbientLightDirParam
+		UInt8 overrideState = 1
+		float m_Value = 0.15
+	Vector4Parameter charGlobalAmbientParam0
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0
+			float y = 1
+			float z = 0
+			float w = 0
+	Vector4Parameter charGlobalAmbientParam1
+		UInt8 overrideState = 0
+		Vector4f m_Value
+			float x = 0.15
+			float y = 0.6
+			float z = 1
+			float w = 0
+	BoolParameter charMainLightControl
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charMainLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEnvLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0.7
+	ClampedFloatParameter charEnvShadowMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charMainLightSpecularMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charEyeBaseLightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeHighlightMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charEyeScatteringMultiplier
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charMainLightRangeBias
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charIgnoreMainLightShadow
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterLightModeParameter charMainLightMode
+		UInt8 overrideState = 0
+		int m_Value = 0
+	Vector2Parameter charCustomMainLightDir
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 150
+	Vector2Parameter charCameraFollowMainLightBias
+		UInt8 overrideState = 0
+		Vector2f m_Value
+			float x = 30
+			float y = 10
+	ColorParameter charMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinMainLightOverrideColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	BoolParameter charLightDialogMode
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterShadowTintModeParameter charShadowTintControl
+		UInt8 overrideState = 0
+		int m_Value = 0
+	ColorParameter charShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ColorParameter charSkinShadowTintColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	CharacterModeParameter charShadowMode
+		UInt8 overrideState = 0
+		int m_Value = 1
+	BoolParameter charAutoRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charAutoRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charAutoRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charAutoRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charAutoRimWidth
+		UInt8 overrideState = 0
+		float m_Value = 0.4
+	ClampedFloatParameter charAutoRimAlbedo
+		UInt8 overrideState = 0
+		float m_Value = 0
+	BoolParameter charFaceRimEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ColorParameter charFaceRimColor
+		UInt8 overrideState = 0
+		ColorRGBA m_Value
+			float r = 1
+			float g = 1
+			float b = 1
+			float a = 1
+	ClampedFloatParameter charFaceRimDir
+		UInt8 overrideState = 0
+		float m_Value = 0
+	ClampedFloatParameter charFaceRimIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	BoolParameter charRainEffectPreviewEnable
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	ClampedFloatParameter charRainEffectPreviewIntensity
+		UInt8 overrideState = 0
+		float m_Value = 1
+	ClampedFloatParameter charWetEffectPreviewWorldHeight
+		UInt8 overrideState = 0
+		float m_Value = -100
+	ClampedFloatParameter charRainEffectTextureTiling
+		UInt8 overrideState = 0
+		float m_Value = 2
+	BoolParameter charIgnoreSceneAdditionalLights
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	BoolParameter charIgnoreSceneEnv
+		UInt8 overrideState = 0
+		UInt8 m_Value = 0
+	CharacterRenderFeatureQualityTierParameter charOutlineQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+	CharacterRenderFeatureQualityTierParameter charSelfShadowQualityMode
+		UInt8 overrideState = 0
+		int m_Value = 20
+

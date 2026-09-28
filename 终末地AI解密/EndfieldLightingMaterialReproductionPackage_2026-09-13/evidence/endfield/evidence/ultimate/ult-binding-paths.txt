@@ -1,0 +1,97 @@
+FILE C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\a91d36e4eed5623ab1720d43.ab
+CLIP P_lighting_laevat_skill_ult id=7118113877772954017 duration=2.017
+ BIND pathHash=1664853108 path=PostProcess/Global Volume type=GameObject attr=m_IsActive script=0
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=MonoBehaviour attr=m_Intensity script=4304420730998755429
+ BIND pathHash=4276131976 path=Lighting/lt_cam001_fill_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=4276131976 path=Lighting/lt_cam001_fill_01 type=Light attr=m_Intensity script=0
+ BIND pathHash=3346853900 path=Lighting/lt_cam001_fill_01 (2) type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3346853900 path=Lighting/lt_cam001_fill_01 (2) type=Light attr=m_Intensity script=0
+ BIND pathHash=3213863536 path=Lighting/lt_cam001_Drim_01 type=MonoBehaviour attr=hash:2532092288 script=-3573736205427809233
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3213863536 path=Lighting/lt_cam001_Drim_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=2824713552 path=Lighting/lt_cam001_rim_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=827647210 path=Lighting/lt_cam001_rim_02 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=2160781869 path=Lighting/lt_cam001_rim_02 (2) type=GameObject attr=m_IsActive script=0
+ BIND pathHash=2884090350 path=Lighting/lt_cam001_rim_02 (1) type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3661520346 path=ENV/Global Env Volume type=GameObject attr=m_IsActive script=0
+FILE C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\6b5ff688d756a4728e028bd0.ab
+CLIP A_fx_lifeng_lighting_skill_ult id=-7341700630172834515 duration=1.933
+ BIND pathHash=561693803 path=Lighting/Point Light_vfx type=Transform attr=hash:1 script=0
+ BIND pathHash=3506386712 path=Lighting/Point Light_vfx (1) type=Transform attr=hash:1 script=0
+ BIND pathHash=2287310642 path=<unresolved> type=Transform attr=hash:1 script=0
+ BIND pathHash=2742600945 path=<unresolved> type=Transform attr=hash:1 script=0
+ BIND pathHash=451608038 path=Lighting/Point Light_mouth(7) type=Transform attr=hash:1 script=0
+ BIND pathHash=4224869595 path=Lighting/Point Light_vfx (2) type=Transform attr=hash:1 script=0
+ BIND pathHash=561693803 path=Lighting/Point Light_vfx type=Light attr=m_Intensity script=0
+ BIND pathHash=3991651006 path=Lighting/lt_cam001_face_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3991651006 path=Lighting/lt_cam001_face_01 type=Light attr=m_Intensity script=0
+ BIND pathHash=561693803 path=Lighting/Point Light_vfx type=MonoBehaviour attr=m_lightNPRRampSDFBias script=4098216658219718577
+ BIND pathHash=3213863536 path=Lighting/lt_cam001_Drim_01 type=MonoBehaviour attr=hash:278515318 script=-3573736205427809233
+ BIND pathHash=3213863536 path=Lighting/lt_cam001_Drim_01 type=MonoBehaviour attr=hash:221175314 script=-3573736205427809233
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=MonoBehaviour attr=hash:2008260498 script=4304420730998755429
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=MonoBehaviour attr=hash:1778683894 script=4304420730998755429
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=MonoBehaviour attr=hash:1542943219 script=4304420730998755429
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=MonoBehaviour attr=hash:1178624407 script=4304420730998755429
+ BIND pathHash=240030682 path=Lighting/lt_cam001_vfx_01 (1) type=Light attr=m_Intensity script=0
+ BIND pathHash=1664853108 path=PostProcess/Global Volume type=GameObject attr=m_IsActive script=0
+ BIND pathHash=561693803 path=Lighting/Point Light_vfx type=GameObject attr=m_IsActive script=0
+ BIND pathHash=240030682 path=Lighting/lt_cam001_vfx_01 (1) type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3213863536 path=Lighting/lt_cam001_Drim_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3370297537 path=Lighting/lt_cam001_glow_01 type=MonoBehaviour attr=hash:985681650 script=887696979524318627
+ BIND pathHash=3370297537 path=Lighting/lt_cam001_glow_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3213863536 path=Lighting/lt_cam001_Drim_01 type=MonoBehaviour attr=hash:2532092288 script=-3573736205427809233
+ BIND pathHash=3661520346 path=ENV/Global Env Volume type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3506386712 path=Lighting/Point Light_vfx (1) type=Light attr=m_Intensity script=0
+ BIND pathHash=451608038 path=Lighting/Point Light_mouth(7) type=Light attr=m_Intensity script=0
+ BIND pathHash=4224869595 path=Lighting/Point Light_vfx (2) type=Light attr=m_Intensity script=0
+ BIND pathHash=3804845466 path=Lighting/Point Light_vfx (3) type=Light attr=m_Intensity script=0
+ BIND pathHash=3804845466 path=Lighting/Point Light_vfx (3) type=Light attr=m_Color.r script=0
+ BIND pathHash=3804845466 path=Lighting/Point Light_vfx (3) type=Light attr=m_Color.b script=0
+ BIND pathHash=451608038 path=Lighting/Point Light_mouth(7) type=GameObject attr=m_IsActive script=0
+ BIND pathHash=2742600945 path=<unresolved> type=GameObject attr=m_IsActive script=0
+ BIND pathHash=2287310642 path=<unresolved> type=GameObject attr=m_IsActive script=0
+ BIND pathHash=2742600945 path=<unresolved> type=Light attr=m_Intensity script=0
+ BIND pathHash=2287310642 path=<unresolved> type=Light attr=m_Intensity script=0
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=MonoBehaviour attr=hash:446919490 script=4304420730998755429
+ BIND pathHash=561693803 path=Lighting/Point Light_vfx type=MonoBehaviour attr=hash:2980608022 script=4098216658219718577
+ BIND pathHash=3213863536 path=Lighting/lt_cam001_Drim_01 type=MonoBehaviour attr=hash:2101619357 script=-3573736205427809233
+ BIND pathHash=3804845466 path=Lighting/Point Light_vfx (3) type=Light attr=m_Color.g script=0
+ BIND pathHash=3370297537 path=Lighting/lt_cam001_glow_01 type=MonoBehaviour attr=hash:1892346887 script=887696979524318627
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=MonoBehaviour attr=hash:1264661531 script=4304420730998755429
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=MonoBehaviour attr=hash:49272690 script=4304420730998755429
+FILE C:\Users\xverse\Documents\工作\HowellWork\EndfieldExtract\bundles\main\ff89ec02a235f3d2fe0f3ad7.ab
+CLIP P_lighting_perlica_skill_ult id=-1813867382231299333 duration=1.65
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=Transform attr=hash:4 script=0
+ BIND pathHash=4276131976 path=Lighting/lt_cam001_fill_01 type=Light attr=m_Intensity script=0
+ BIND pathHash=3716361377 path=Lighting/lt_cam001_back_02 (1) type=Light attr=m_Intensity script=0
+ BIND pathHash=3716361377 path=Lighting/lt_cam001_back_02 (1) type=Light attr=m_Color.r script=0
+ BIND pathHash=3716361377 path=Lighting/lt_cam001_back_02 (1) type=Light attr=m_Color.g script=0
+ BIND pathHash=3716361377 path=Lighting/lt_cam001_back_02 (1) type=Light attr=m_Color.b script=0
+ BIND pathHash=2160781869 path=Lighting/lt_cam001_rim_02 (2) type=Light attr=m_Color.r script=0
+ BIND pathHash=2160781869 path=Lighting/lt_cam001_rim_02 (2) type=Light attr=m_Color.g script=0
+ BIND pathHash=2160781869 path=Lighting/lt_cam001_rim_02 (2) type=Light attr=m_Color.b script=0
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=MonoBehaviour attr=m_Intensity script=4304420730998755429
+ BIND pathHash=3370297537 path=Lighting/lt_cam001_glow_01 type=MonoBehaviour attr=hash:985681650 script=887696979524318627
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3213863536 path=Lighting/lt_cam001_Drim_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=4276131976 path=Lighting/lt_cam001_fill_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3716361377 path=Lighting/lt_cam001_back_02 (1) type=GameObject attr=m_IsActive script=0
+ BIND pathHash=2160781869 path=Lighting/lt_cam001_rim_02 (2) type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3370297537 path=Lighting/lt_cam001_glow_01 type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3346853900 path=Lighting/lt_cam001_fill_01 (2) type=GameObject attr=m_IsActive script=0
+ BIND pathHash=1664853108 path=PostProcess/Global Volume type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3964773327 path=Lighting/lt_cam001_fill_01 (1) type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3964773327 path=Lighting/lt_cam001_fill_01 (1) type=Light attr=m_Intensity script=0
+ BIND pathHash=3213863536 path=Lighting/lt_cam001_Drim_01 type=MonoBehaviour attr=hash:3495761160 script=-3573736205427809233
+ BIND pathHash=2580667244 path=Lighting/lt_cam001_rim_02 (3) type=GameObject attr=m_IsActive script=0
+ BIND pathHash=2580667244 path=Lighting/lt_cam001_rim_02 (3) type=Light attr=m_Intensity script=0
+ BIND pathHash=2178798826 path=Lighting/lt_cam001_Dkey_01 type=MonoBehaviour attr=hash:1432481318 script=4304420730998755429
+ BIND pathHash=2160781869 path=Lighting/lt_cam001_rim_02 (2) type=Light attr=m_Intensity script=0
+ BIND pathHash=2580667244 path=Lighting/lt_cam001_rim_02 (3) type=MonoBehaviour attr=hash:2980608022 script=4098216658219718577
+ BIND pathHash=2580667244 path=Lighting/lt_cam001_rim_02 (3) type=MonoBehaviour attr=m_lightNPRRampSDFBias script=4098216658219718577
+ BIND pathHash=3661520346 path=ENV/Global Env Volume type=GameObject attr=m_IsActive script=0
+ BIND pathHash=3370297537 path=Lighting/lt_cam001_glow_01 type=MonoBehaviour attr=hash:1892346887 script=887696979524318627
+ BIND pathHash=3716361377 path=Lighting/lt_cam001_back_02 (1) type=Light attr=m_Color.a script=0
+ BIND pathHash=4276131976 path=Lighting/lt_cam001_fill_01 type=Light attr=m_Color.r script=0
+ BIND pathHash=4276131976 path=Lighting/lt_cam001_fill_01 type=Light attr=m_Color.g script=0

@@ -1,0 +1,1252 @@
+BUNDLE CAB-1e19b9feb35ed368f28dda87d92b8633 objects=7
+EXTERNAL	FileID=1	File=CAB-5f527d7b7706baccdad9f794cf46420c	Path=archive:/CAB-5f527d7b7706baccdad9f794cf46420c/CAB-5f527d7b7706baccdad9f794cf46420c	Guid=00000000-0000-0000-0000-000000000000	Type=0
+Light	CLR=Object	GO=Point Light (70)	ID=3689533808284589541		UInt8 m_Enabled = 1
+ | 	int m_Type = 2
+ | 	ColorRGBA m_Color
+ | 	float m_Intensity = 4
+ | 	float m_Range = 5
+ | 	float m_SpotAngle = 132.47772
+ | 	float m_CookieSize = 10
+ | 	ShadowSettings m_Shadows
+ | 		float m_ShadowCullDistance = 50
+ | 		float m_ShadowFadeRatio = 0.8
+ | 		float m_ShadowGuardAngle = 0
+ | 	PPtr<Texture> m_Cookie
+ | 	float m_ColorTemperature = 1645
+ | 	bool m_ShadowOnly = False
+ | m_Type=Point(2) | m_Shape=0 | m_Color={r:1,g:0.2358489,b:0.3061694,a:1} | m_Intensity=4 | m_SpecularIntensity=1 | m_Range=5 | m_SpotAngle=132.47772 | m_InnerSpotAngle=57.813705 | m_Shadows={m_PlatformSpecificType:System.Collections.Specialized.OrderedDictionary,m_Resolution:-1,m_CustomResolution:-1,m_Strength:1,m_Bias:0.05,m_NormalBias:3,m_NearPlane:0.2,m_CullingMatrixOverride:System.Collections.Specialized.OrderedDictionary} | m_Cookie={m_FileID:0,m_PathID:0} | m_RenderMode=0 | m_BounceIntensity=1 | m_IsSunSourceLight=False | m_ShadowOnly=False | m_LightPriority=0 | m_Enabled=1
+FULL_NATIVE	TYPE=Light	GO=Point Light (70)	ID=3689533808284589541
+Light Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 2489776897710284261
+	UInt8 m_Enabled = 1
+	int m_Type = 2
+	int m_Shape = 0
+	ColorRGBA m_Color
+		float r = 1
+		float g = 0.2358489
+		float b = 0.3061694
+		float a = 1
+	float m_Intensity = 4
+	float m_SpecularIntensity = 1
+	float m_Range = 5
+	float m_SpotAngle = 132.47772
+	float m_LinearLightLength = -1
+	float m_SoftSourceRadius = 3.42
+	bool m_UseCullingDistance = True
+	float m_CullingDistance = 60
+	float m_FalloffDistance = 60
+	float m_InnerSpotAngle = 57.813705
+	float m_CookieSize = 10
+	ShadowSettings m_Shadows
+		PlatformSpecificParam m_PlatformSpecificType
+			int defaultParam = 0
+		int m_Resolution = -1
+		int m_CustomResolution = -1
+		float m_Strength = 1
+		float m_Bias = 0.05
+		float m_NormalBias = 3
+		float m_NearPlane = 0.2
+		Matrix4x4f m_CullingMatrixOverride
+			float e00 = 1
+			float e01 = 0
+			float e02 = 0
+			float e03 = 0
+			float e10 = 0
+			float e11 = 1
+			float e12 = 0
+			float e13 = 0
+			float e20 = 0
+			float e21 = 0
+			float e22 = 1
+			float e23 = 0
+			float e30 = 0
+			float e31 = 0
+			float e32 = 0
+			float e33 = 1
+		bool m_UseCullingMatrixOverride = False
+		float m_FarPlane = 5
+		float m_ShadowCullDistance = 50
+		float m_ShadowFadeRatio = 0.8
+		float m_ShadowGuardAngle = 0
+		int m_PointLightShadowCasterFaces = 8
+		int m_CasterProperties = 6
+	PPtr<Texture> m_Cookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	bool m_DrawHalo = False
+	LightBakingOutput m_BakingOutput
+		int probeOcclusionLightIndex = -1
+		int occlusionMaskChannel = -1
+		LightmapBakeMode lightmapBakeMode
+			int lightmapBakeType = 4
+			int mixedLightingMode = 2
+		bool isBaked = False
+	PPtr<Flare> m_Flare
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	int m_RenderMode = 0
+	BitField m_CullingMask
+		unsigned int m_Bits = 4294967295
+	unsigned int m_RenderingLayerMask = 1
+	int m_LightShadowCasterMode = 0
+	PlatformSpecificParam m_PlatformSpecificLightmapping
+		int defaultParam = 4
+	Vector2f m_AreaSize
+		float x = 1
+		float y = 1
+	float m_BounceIntensity = 1
+	float m_ColorTemperature = 1645
+	bool m_UseColorTemperature = False
+	bool m_IsSunSourceLight = False
+	bool m_ShadowOnly = False
+	bool m_EnableOBBCullingBox = False
+	bool m_OBBCullingBoxMode = False
+	Vector3f m_CullingBoxRelativePosition
+		float x = -11.356209
+		float y = -5.725647
+		float z = 12.989807
+	Vector3f m_CullingBoxHalfExtents
+		float x = 53.68479
+		float y = 32.470306
+		float z = 38.39511
+	Vector3f m_CullingBoxOrientation
+		float x = -0
+		float y = 0
+		float z = 0
+	float m_CullingBoxFalloffThreshold = 0.8
+	int m_LightPriority = 0
+	Vector4f m_BoundingSphereOverride
+		float x = NaN
+		float y = 1E-45
+		float z = 0
+		float w = 1.0396158E+21
+	bool m_UseBoundingSphereOverride = False
+	bool m_UseViewFrustumForShadowCasterCull = True
+	LightAnimationSetting m_LightAnimationSetting
+		bool enableLightAnimation = False
+		bool enableMultiState = False
+		LightAnimatedData lightAnimatedData
+			LightFlickerData flickerData
+				PPtr<LightFlickerStyle> flickerStyle
+					int m_FileID = 0
+					SInt64 m_PathID = 0
+				float flickerSpeed = 1
+				float flickerTimeDelay = 0
+				bool randomDelay = False
+				bool enableFlicker = False
+			LightSpinData spinData
+				Vector3f spinAxis
+					float x = 1
+					float y = 0
+					float z = 0
+				Vector3f spinAnchor
+					float x = 0
+					float y = 0
+					float z = 0
+				float spinSpeed = 1
+				float spinTimeDelay = 0
+				bool randomDelay = False
+				bool enableSpin = False
+		vector additionalRenderers
+			Array Array
+			int size = 0
+		vector lightState
+			Array Array
+			int size = 0
+		vector lightStateTransition
+			Array Array
+			int size = 0
+		int lightStateEntryIdx = -1
+
+MonoBehaviour	CLR=MonoBehaviour	GO=Point Light (70)	ID=5565586203381325285		UInt8 m_Enabled = 1
+ | 	string m_Name = ""
+ | 	float m_lightNPRRimWidth = 0.4
+ | 	float m_lightNPRRimAlbedoAlpha = 1
+ | 	float m_volumetricScatteringIntensity = 20
+
+FULL_MONO	GO=Point Light (70)	ID=5565586203381325285
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 2489776897710284261
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 4098216658219718577
+	string m_Name = ""
+	UInt8 enableLightMeshForReflectionProbe = 1
+	float sphericalLightRadius = 0.1
+	PPtr<$Texture2D> areaLightCookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 debugLightMesh = 0
+	Vector4f m_lightNPRData
+		float x = 1
+		float y = 1
+		float z = 0
+		float w = 0
+	int m_lightNPRType = 0
+	UInt8 m_lightNPRAdvancedParamMode = 0
+	float m_lightNPRDefaultContrast = 1
+	UInt8 m_lightNPRDefaultAutoLimit = 1
+	float m_lightNPRRampBias = 0
+	float m_lightNPRRampShadowDimmer = 0
+	float m_lightNPRRampSDFBias = 0
+	float m_lightNPRRampSDFDramatic = 0
+	float m_lightNPRSpecMaxRoughness = 0.6
+	float m_lightNPRSpecRoughnessBias = 0.8
+	UInt8 m_lightNPRSpecMetalOnly = 1
+	float m_lightNPRRimWidth = 0.4
+	float m_lightNPRRimAlbedoAlpha = 1
+	float m_lightNPRFogAlpha = 1
+	float m_lightNPRFogFalloffFactor = 1
+	float m_lightNPRFogRampBias = 0
+	UInt8 m_lightNPRFogDirectionalFalloff = 0
+	UInt8 m_LightCharacterOnly = 0
+	float m_volumetricScatteringIntensity = 20
+	float m_falloffExponent = 2
+
+BUNDLE CAB-43154843edd7f519f6a055e4ad359bc8 objects=23
+EXTERNAL	FileID=1	File=CAB-5f527d7b7706baccdad9f794cf46420c	Path=archive:/CAB-5f527d7b7706baccdad9f794cf46420c/CAB-5f527d7b7706baccdad9f794cf46420c	Guid=00000000-0000-0000-0000-000000000000	Type=0
+MonoBehaviour	CLR=MonoBehaviour	GO=Point Light (69)	ID=-7083142404743536291		UInt8 m_Enabled = 1
+ | 	string m_Name = ""
+ | 	float m_lightNPRRimWidth = 0.4
+ | 	float m_lightNPRRimAlbedoAlpha = 1
+ | 	float m_volumetricScatteringIntensity = 1
+
+FULL_MONO	GO=Point Light (69)	ID=-7083142404743536291
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 499365805694607709
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 4098216658219718577
+	string m_Name = ""
+	UInt8 enableLightMeshForReflectionProbe = 1
+	float sphericalLightRadius = 0.1
+	PPtr<$Texture2D> areaLightCookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 debugLightMesh = 0
+	Vector4f m_lightNPRData
+		float x = 1
+		float y = 1
+		float z = 0
+		float w = 0
+	int m_lightNPRType = 0
+	UInt8 m_lightNPRAdvancedParamMode = 0
+	float m_lightNPRDefaultContrast = 1
+	UInt8 m_lightNPRDefaultAutoLimit = 1
+	float m_lightNPRRampBias = 0
+	float m_lightNPRRampShadowDimmer = 0
+	float m_lightNPRRampSDFBias = 0
+	float m_lightNPRRampSDFDramatic = 0
+	float m_lightNPRSpecMaxRoughness = 0.6
+	float m_lightNPRSpecRoughnessBias = 0.8
+	UInt8 m_lightNPRSpecMetalOnly = 1
+	float m_lightNPRRimWidth = 0.4
+	float m_lightNPRRimAlbedoAlpha = 1
+	float m_lightNPRFogAlpha = 1
+	float m_lightNPRFogFalloffFactor = 1
+	float m_lightNPRFogRampBias = 0
+	UInt8 m_lightNPRFogDirectionalFalloff = 0
+	UInt8 m_LightCharacterOnly = 0
+	float m_volumetricScatteringIntensity = 1
+	float m_falloffExponent = 2
+
+Light	CLR=Object	GO=Point Light (68)	ID=-5214278828879879843		UInt8 m_Enabled = 1
+ | 	int m_Type = 2
+ | 	ColorRGBA m_Color
+ | 	float m_Intensity = 15
+ | 	float m_Range = 31.053123
+ | 	float m_SpotAngle = 132.47772
+ | 	float m_CookieSize = 10
+ | 	ShadowSettings m_Shadows
+ | 		float m_ShadowCullDistance = 50
+ | 		float m_ShadowFadeRatio = 0.8
+ | 		float m_ShadowGuardAngle = 0
+ | 	PPtr<Texture> m_Cookie
+ | 	float m_ColorTemperature = 1645
+ | 	bool m_ShadowOnly = False
+ | m_Type=Point(2) | m_Shape=0 | m_Color={r:1,g:0.5264151,b:0.5702735,a:1} | m_Intensity=15 | m_SpecularIntensity=1 | m_Range=31.053123 | m_SpotAngle=132.47772 | m_InnerSpotAngle=57.813705 | m_Shadows={m_PlatformSpecificType:System.Collections.Specialized.OrderedDictionary,m_Resolution:-1,m_CustomResolution:-1,m_Strength:1,m_Bias:0.05,m_NormalBias:3,m_NearPlane:0.2,m_CullingMatrixOverride:System.Collections.Specialized.OrderedDictionary} | m_Cookie={m_FileID:0,m_PathID:0} | m_RenderMode=0 | m_BounceIntensity=1 | m_IsSunSourceLight=False | m_ShadowOnly=False | m_LightPriority=0 | m_Enabled=1
+FULL_NATIVE	TYPE=Light	GO=Point Light (68)	ID=-5214278828879879843
+Light Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = -3945108473350954659
+	UInt8 m_Enabled = 1
+	int m_Type = 2
+	int m_Shape = 0
+	ColorRGBA m_Color
+		float r = 1
+		float g = 0.5264151
+		float b = 0.5702735
+		float a = 1
+	float m_Intensity = 15
+	float m_SpecularIntensity = 1
+	float m_Range = 31.053123
+	float m_SpotAngle = 132.47772
+	float m_LinearLightLength = -1
+	float m_SoftSourceRadius = 3.2
+	bool m_UseCullingDistance = True
+	float m_CullingDistance = 200
+	float m_FalloffDistance = 150
+	float m_InnerSpotAngle = 57.813705
+	float m_CookieSize = 10
+	ShadowSettings m_Shadows
+		PlatformSpecificParam m_PlatformSpecificType
+			int defaultParam = 0
+		int m_Resolution = -1
+		int m_CustomResolution = -1
+		float m_Strength = 1
+		float m_Bias = 0.05
+		float m_NormalBias = 3
+		float m_NearPlane = 0.2
+		Matrix4x4f m_CullingMatrixOverride
+			float e00 = 1
+			float e01 = 0
+			float e02 = 0
+			float e03 = 0
+			float e10 = 0
+			float e11 = 1
+			float e12 = 0
+			float e13 = 0
+			float e20 = 0
+			float e21 = 0
+			float e22 = 1
+			float e23 = 0
+			float e30 = 0
+			float e31 = 0
+			float e32 = 0
+			float e33 = 1
+		bool m_UseCullingMatrixOverride = False
+		float m_FarPlane = 43.907486
+		float m_ShadowCullDistance = 50
+		float m_ShadowFadeRatio = 0.8
+		float m_ShadowGuardAngle = 0
+		int m_PointLightShadowCasterFaces = -1
+		int m_CasterProperties = 6
+	PPtr<Texture> m_Cookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	bool m_DrawHalo = False
+	LightBakingOutput m_BakingOutput
+		int probeOcclusionLightIndex = -1
+		int occlusionMaskChannel = -1
+		LightmapBakeMode lightmapBakeMode
+			int lightmapBakeType = 4
+			int mixedLightingMode = 2
+		bool isBaked = False
+	PPtr<Flare> m_Flare
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	int m_RenderMode = 0
+	BitField m_CullingMask
+		unsigned int m_Bits = 4294967295
+	unsigned int m_RenderingLayerMask = 1
+	int m_LightShadowCasterMode = 0
+	PlatformSpecificParam m_PlatformSpecificLightmapping
+		int defaultParam = 4
+	Vector2f m_AreaSize
+		float x = 1
+		float y = 1
+	float m_BounceIntensity = 1
+	float m_ColorTemperature = 1645
+	bool m_UseColorTemperature = False
+	bool m_IsSunSourceLight = False
+	bool m_ShadowOnly = False
+	bool m_EnableOBBCullingBox = False
+	bool m_OBBCullingBoxMode = False
+	Vector3f m_CullingBoxRelativePosition
+		float x = -11.356209
+		float y = -5.725647
+		float z = 12.989807
+	Vector3f m_CullingBoxHalfExtents
+		float x = 53.68479
+		float y = 32.470306
+		float z = 38.39511
+	Vector3f m_CullingBoxOrientation
+		float x = -0
+		float y = 0
+		float z = 0
+	float m_CullingBoxFalloffThreshold = 0.8
+	int m_LightPriority = 0
+	Vector4f m_BoundingSphereOverride
+		float x = NaN
+		float y = 1E-45
+		float z = 0
+		float w = 1.0396158E+21
+	bool m_UseBoundingSphereOverride = False
+	bool m_UseViewFrustumForShadowCasterCull = True
+	LightAnimationSetting m_LightAnimationSetting
+		bool enableLightAnimation = False
+		bool enableMultiState = False
+		LightAnimatedData lightAnimatedData
+			LightFlickerData flickerData
+				PPtr<LightFlickerStyle> flickerStyle
+					int m_FileID = 0
+					SInt64 m_PathID = 0
+				float flickerSpeed = 1
+				float flickerTimeDelay = 0
+				bool randomDelay = False
+				bool enableFlicker = False
+			LightSpinData spinData
+				Vector3f spinAxis
+					float x = 1
+					float y = 0
+					float z = 0
+				Vector3f spinAnchor
+					float x = 0
+					float y = 0
+					float z = 0
+				float spinSpeed = 1
+				float spinTimeDelay = 0
+				bool randomDelay = False
+				bool enableSpin = False
+		vector additionalRenderers
+			Array Array
+			int size = 0
+		vector lightState
+			Array Array
+			int size = 0
+		vector lightStateTransition
+			Array Array
+			int size = 0
+		int lightStateEntryIdx = -1
+
+Light	CLR=Object	GO=Point Light (66)	ID=-5171231044039384739		UInt8 m_Enabled = 1
+ | 	int m_Type = 2
+ | 	ColorRGBA m_Color
+ | 	float m_Intensity = 15
+ | 	float m_Range = 15
+ | 	float m_SpotAngle = 130.11543
+ | 	float m_CookieSize = 10
+ | 	ShadowSettings m_Shadows
+ | 		float m_ShadowCullDistance = 69.4
+ | 		float m_ShadowFadeRatio = 0.8
+ | 		float m_ShadowGuardAngle = 0
+ | 	PPtr<Texture> m_Cookie
+ | 	float m_ColorTemperature = 1645
+ | 	bool m_ShadowOnly = False
+ | m_Type=Point(2) | m_Shape=0 | m_Color={r:1,g:0.43324766,b:0.40599996,a:1} | m_Intensity=15 | m_SpecularIntensity=1 | m_Range=15 | m_SpotAngle=130.11543 | m_InnerSpotAngle=57.813705 | m_Shadows={m_PlatformSpecificType:System.Collections.Specialized.OrderedDictionary,m_Resolution:-1,m_CustomResolution:-1,m_Strength:1,m_Bias:0.05,m_NormalBias:5.24,m_NearPlane:0.2,m_CullingMatrixOverride:System.Collections.Specialized.OrderedDictionary} | m_Cookie={m_FileID:0,m_PathID:0} | m_RenderMode=0 | m_BounceIntensity=1 | m_IsSunSourceLight=False | m_ShadowOnly=False | m_LightPriority=0 | m_Enabled=1
+FULL_NATIVE	TYPE=Light	GO=Point Light (66)	ID=-5171231044039384739
+Light Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = -7618192375349747363
+	UInt8 m_Enabled = 1
+	int m_Type = 2
+	int m_Shape = 0
+	ColorRGBA m_Color
+		float r = 1
+		float g = 0.43324766
+		float b = 0.40599996
+		float a = 1
+	float m_Intensity = 15
+	float m_SpecularIntensity = 1
+	float m_Range = 15
+	float m_SpotAngle = 130.11543
+	float m_LinearLightLength = -1
+	float m_SoftSourceRadius = 10
+	bool m_UseCullingDistance = True
+	float m_CullingDistance = 100
+	float m_FalloffDistance = 80
+	float m_InnerSpotAngle = 57.813705
+	float m_CookieSize = 10
+	ShadowSettings m_Shadows
+		PlatformSpecificParam m_PlatformSpecificType
+			int defaultParam = 0
+		int m_Resolution = -1
+		int m_CustomResolution = -1
+		float m_Strength = 1
+		float m_Bias = 0.05
+		float m_NormalBias = 5.24
+		float m_NearPlane = 0.2
+		Matrix4x4f m_CullingMatrixOverride
+			float e00 = 1
+			float e01 = 0
+			float e02 = 0
+			float e03 = 0
+			float e10 = 0
+			float e11 = 1
+			float e12 = 0
+			float e13 = 0
+			float e20 = 0
+			float e21 = 0
+			float e22 = 1
+			float e23 = 0
+			float e30 = 0
+			float e31 = 0
+			float e32 = 0
+			float e33 = 1
+		bool m_UseCullingMatrixOverride = False
+		float m_FarPlane = 15
+		float m_ShadowCullDistance = 69.4
+		float m_ShadowFadeRatio = 0.8
+		float m_ShadowGuardAngle = 0
+		int m_PointLightShadowCasterFaces = -1
+		int m_CasterProperties = 6
+	PPtr<Texture> m_Cookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	bool m_DrawHalo = False
+	LightBakingOutput m_BakingOutput
+		int probeOcclusionLightIndex = -1
+		int occlusionMaskChannel = -1
+		LightmapBakeMode lightmapBakeMode
+			int lightmapBakeType = 4
+			int mixedLightingMode = 2
+		bool isBaked = False
+	PPtr<Flare> m_Flare
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	int m_RenderMode = 0
+	BitField m_CullingMask
+		unsigned int m_Bits = 4294967295
+	unsigned int m_RenderingLayerMask = 1
+	int m_LightShadowCasterMode = 0
+	PlatformSpecificParam m_PlatformSpecificLightmapping
+		int defaultParam = 4
+	Vector2f m_AreaSize
+		float x = 1
+		float y = 1
+	float m_BounceIntensity = 1
+	float m_ColorTemperature = 1645
+	bool m_UseColorTemperature = False
+	bool m_IsSunSourceLight = False
+	bool m_ShadowOnly = False
+	bool m_EnableOBBCullingBox = True
+	bool m_OBBCullingBoxMode = True
+	Vector3f m_CullingBoxRelativePosition
+		float x = 0.015571594
+		float y = -2.6601334
+		float z = 1.3659668
+	Vector3f m_CullingBoxHalfExtents
+		float x = 17.948792
+		float y = 7.676857
+		float z = 14.956314
+	Vector3f m_CullingBoxOrientation
+		float x = -0
+		float y = 0
+		float z = 0
+	float m_CullingBoxFalloffThreshold = 0.8
+	int m_LightPriority = 0
+	Vector4f m_BoundingSphereOverride
+		float x = 0
+		float y = 0
+		float z = 0
+		float w = 0
+	bool m_UseBoundingSphereOverride = False
+	bool m_UseViewFrustumForShadowCasterCull = True
+	LightAnimationSetting m_LightAnimationSetting
+		bool enableLightAnimation = False
+		bool enableMultiState = False
+		LightAnimatedData lightAnimatedData
+			LightFlickerData flickerData
+				PPtr<LightFlickerStyle> flickerStyle
+					int m_FileID = 0
+					SInt64 m_PathID = 0
+				float flickerSpeed = 1
+				float flickerTimeDelay = 0
+				bool randomDelay = False
+				bool enableFlicker = False
+			LightSpinData spinData
+				Vector3f spinAxis
+					float x = 1
+					float y = 0
+					float z = 0
+				Vector3f spinAnchor
+					float x = 0
+					float y = 0
+					float z = 0
+				float spinSpeed = 1
+				float spinTimeDelay = 0
+				bool randomDelay = False
+				bool enableSpin = False
+		vector additionalRenderers
+			Array Array
+			int size = 0
+		vector lightState
+			Array Array
+			int size = 0
+		vector lightStateTransition
+			Array Array
+			int size = 0
+		int lightStateEntryIdx = -1
+
+MonoBehaviour	CLR=MonoBehaviour	GO=Point Light (68)	ID=-3456541673537773219		UInt8 m_Enabled = 1
+ | 	string m_Name = ""
+ | 	float m_lightNPRRimWidth = 0.4
+ | 	float m_lightNPRRimAlbedoAlpha = 1
+ | 	float m_volumetricScatteringIntensity = 4
+
+FULL_MONO	GO=Point Light (68)	ID=-3456541673537773219
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = -3945108473350954659
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 4098216658219718577
+	string m_Name = ""
+	UInt8 enableLightMeshForReflectionProbe = 1
+	float sphericalLightRadius = 0.1
+	PPtr<$Texture2D> areaLightCookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 debugLightMesh = 0
+	Vector4f m_lightNPRData
+		float x = 1
+		float y = 1
+		float z = 0
+		float w = 0
+	int m_lightNPRType = 0
+	UInt8 m_lightNPRAdvancedParamMode = 0
+	float m_lightNPRDefaultContrast = 1
+	UInt8 m_lightNPRDefaultAutoLimit = 1
+	float m_lightNPRRampBias = 0
+	float m_lightNPRRampShadowDimmer = 0
+	float m_lightNPRRampSDFBias = 0
+	float m_lightNPRRampSDFDramatic = 0
+	float m_lightNPRSpecMaxRoughness = 0.6
+	float m_lightNPRSpecRoughnessBias = 0.8
+	UInt8 m_lightNPRSpecMetalOnly = 1
+	float m_lightNPRRimWidth = 0.4
+	float m_lightNPRRimAlbedoAlpha = 1
+	float m_lightNPRFogAlpha = 1
+	float m_lightNPRFogFalloffFactor = 1
+	float m_lightNPRFogRampBias = 0
+	UInt8 m_lightNPRFogDirectionalFalloff = 0
+	UInt8 m_LightCharacterOnly = 0
+	float m_volumetricScatteringIntensity = 4
+	float m_falloffExponent = 2
+
+MonoBehaviour	CLR=MonoBehaviour	GO=Point Light (63)	ID=4557342517036147037		UInt8 m_Enabled = 1
+ | 	string m_Name = ""
+ | 	float m_lightNPRRimWidth = 0.4
+ | 	float m_lightNPRRimAlbedoAlpha = 1
+ | 	float m_volumetricScatteringIntensity = 0
+
+FULL_MONO	GO=Point Light (63)	ID=4557342517036147037
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = -3555663632794099363
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 4098216658219718577
+	string m_Name = ""
+	UInt8 enableLightMeshForReflectionProbe = 1
+	float sphericalLightRadius = 0.1
+	PPtr<$Texture2D> areaLightCookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 debugLightMesh = 0
+	Vector4f m_lightNPRData
+		float x = 1
+		float y = 1
+		float z = 0
+		float w = 0
+	int m_lightNPRType = 0
+	UInt8 m_lightNPRAdvancedParamMode = 0
+	float m_lightNPRDefaultContrast = 1
+	UInt8 m_lightNPRDefaultAutoLimit = 1
+	float m_lightNPRRampBias = 0
+	float m_lightNPRRampShadowDimmer = 0
+	float m_lightNPRRampSDFBias = 0
+	float m_lightNPRRampSDFDramatic = 0
+	float m_lightNPRSpecMaxRoughness = 0.6
+	float m_lightNPRSpecRoughnessBias = 0.8
+	UInt8 m_lightNPRSpecMetalOnly = 1
+	float m_lightNPRRimWidth = 0.4
+	float m_lightNPRRimAlbedoAlpha = 1
+	float m_lightNPRFogAlpha = 1
+	float m_lightNPRFogFalloffFactor = 1
+	float m_lightNPRFogRampBias = 0
+	UInt8 m_lightNPRFogDirectionalFalloff = 0
+	UInt8 m_LightCharacterOnly = 0
+	float m_volumetricScatteringIntensity = 0
+	float m_falloffExponent = 2
+
+Light	CLR=Object	GO=Point Light (63)	ID=4745306084511080797		UInt8 m_Enabled = 1
+ | 	int m_Type = 0
+ | 	ColorRGBA m_Color
+ | 	float m_Intensity = 5
+ | 	float m_Range = 23
+ | 	float m_SpotAngle = 130.11543
+ | 	float m_CookieSize = 10
+ | 	ShadowSettings m_Shadows
+ | 		float m_ShadowCullDistance = 30
+ | 		float m_ShadowFadeRatio = 0.8
+ | 		float m_ShadowGuardAngle = 0
+ | 	PPtr<Texture> m_Cookie
+ | 	float m_ColorTemperature = 1645
+ | 	bool m_ShadowOnly = False
+ | m_Type=Spot(0) | m_Shape=0 | m_Color={r:1,g:0.27307948,b:0.24300003,a:1} | m_Intensity=5 | m_SpecularIntensity=1 | m_Range=23 | m_SpotAngle=130.11543 | m_InnerSpotAngle=57.813705 | m_Shadows={m_PlatformSpecificType:System.Collections.Specialized.OrderedDictionary,m_Resolution:-1,m_CustomResolution:-1,m_Strength:1,m_Bias:0.05,m_NormalBias:5.24,m_NearPlane:0.2,m_CullingMatrixOverride:System.Collections.Specialized.OrderedDictionary} | m_Cookie={m_FileID:0,m_PathID:0} | m_RenderMode=0 | m_BounceIntensity=1 | m_IsSunSourceLight=False | m_ShadowOnly=False | m_LightPriority=0 | m_Enabled=1
+FULL_NATIVE	TYPE=Light	GO=Point Light (63)	ID=4745306084511080797
+Light Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = -3555663632794099363
+	UInt8 m_Enabled = 1
+	int m_Type = 0
+	int m_Shape = 0
+	ColorRGBA m_Color
+		float r = 1
+		float g = 0.27307948
+		float b = 0.24300003
+		float a = 1
+	float m_Intensity = 5
+	float m_SpecularIntensity = 1
+	float m_Range = 23
+	float m_SpotAngle = 130.11543
+	float m_LinearLightLength = -1
+	float m_SoftSourceRadius = 5
+	bool m_UseCullingDistance = True
+	float m_CullingDistance = 100
+	float m_FalloffDistance = 80
+	float m_InnerSpotAngle = 57.813705
+	float m_CookieSize = 10
+	ShadowSettings m_Shadows
+		PlatformSpecificParam m_PlatformSpecificType
+			int defaultParam = 2
+		int m_Resolution = -1
+		int m_CustomResolution = -1
+		float m_Strength = 1
+		float m_Bias = 0.05
+		float m_NormalBias = 5.24
+		float m_NearPlane = 0.2
+		Matrix4x4f m_CullingMatrixOverride
+			float e00 = 1
+			float e01 = 0
+			float e02 = 0
+			float e03 = 0
+			float e10 = 0
+			float e11 = 1
+			float e12 = 0
+			float e13 = 0
+			float e20 = 0
+			float e21 = 0
+			float e22 = 1
+			float e23 = 0
+			float e30 = 0
+			float e31 = 0
+			float e32 = 0
+			float e33 = 1
+		bool m_UseCullingMatrixOverride = False
+		float m_FarPlane = 23
+		float m_ShadowCullDistance = 30
+		float m_ShadowFadeRatio = 0.8
+		float m_ShadowGuardAngle = 0
+		int m_PointLightShadowCasterFaces = -1
+		int m_CasterProperties = 6
+	PPtr<Texture> m_Cookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	bool m_DrawHalo = False
+	LightBakingOutput m_BakingOutput
+		int probeOcclusionLightIndex = -1
+		int occlusionMaskChannel = -1
+		LightmapBakeMode lightmapBakeMode
+			int lightmapBakeType = 4
+			int mixedLightingMode = 2
+		bool isBaked = False
+	PPtr<Flare> m_Flare
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	int m_RenderMode = 0
+	BitField m_CullingMask
+		unsigned int m_Bits = 4294967295
+	unsigned int m_RenderingLayerMask = 1
+	int m_LightShadowCasterMode = 0
+	PlatformSpecificParam m_PlatformSpecificLightmapping
+		int defaultParam = 4
+	Vector2f m_AreaSize
+		float x = 1
+		float y = 1
+	float m_BounceIntensity = 1
+	float m_ColorTemperature = 1645
+	bool m_UseColorTemperature = False
+	bool m_IsSunSourceLight = False
+	bool m_ShadowOnly = False
+	bool m_EnableOBBCullingBox = True
+	bool m_OBBCullingBoxMode = True
+	Vector3f m_CullingBoxRelativePosition
+		float x = -0.8863449
+		float y = -2.4337387
+		float z = -9.370117
+	Vector3f m_CullingBoxHalfExtents
+		float x = 17.407997
+		float y = 7.1351624
+		float z = 11.51001
+	Vector3f m_CullingBoxOrientation
+		float x = -0
+		float y = 0
+		float z = 0
+	float m_CullingBoxFalloffThreshold = 0.8
+	int m_LightPriority = 0
+	Vector4f m_BoundingSphereOverride
+		float x = 0
+		float y = 0
+		float z = 0
+		float w = 0
+	bool m_UseBoundingSphereOverride = False
+	bool m_UseViewFrustumForShadowCasterCull = True
+	LightAnimationSetting m_LightAnimationSetting
+		bool enableLightAnimation = False
+		bool enableMultiState = False
+		LightAnimatedData lightAnimatedData
+			LightFlickerData flickerData
+				PPtr<LightFlickerStyle> flickerStyle
+					int m_FileID = 0
+					SInt64 m_PathID = 0
+				float flickerSpeed = 1
+				float flickerTimeDelay = 0
+				bool randomDelay = False
+				bool enableFlicker = False
+			LightSpinData spinData
+				Vector3f spinAxis
+					float x = 1
+					float y = 0
+					float z = 0
+				Vector3f spinAnchor
+					float x = 0
+					float y = 0
+					float z = 0
+				float spinSpeed = 1
+				float spinTimeDelay = 0
+				bool randomDelay = False
+				bool enableSpin = False
+		vector additionalRenderers
+			Array Array
+			int size = 0
+		vector lightState
+			Array Array
+			int size = 0
+		vector lightStateTransition
+			Array Array
+			int size = 0
+		int lightStateEntryIdx = -1
+
+MonoBehaviour	CLR=MonoBehaviour	GO=Point Light (62)	ID=4862644486625059165		UInt8 m_Enabled = 1
+ | 	string m_Name = ""
+ | 	float m_lightNPRRimWidth = 0.4
+ | 	float m_lightNPRRimAlbedoAlpha = 1
+ | 	float m_volumetricScatteringIntensity = 0
+
+FULL_MONO	GO=Point Light (62)	ID=4862644486625059165
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = -8789554296842198691
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 4098216658219718577
+	string m_Name = ""
+	UInt8 enableLightMeshForReflectionProbe = 1
+	float sphericalLightRadius = 0.1
+	PPtr<$Texture2D> areaLightCookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 debugLightMesh = 0
+	Vector4f m_lightNPRData
+		float x = 1
+		float y = 1
+		float z = 0
+		float w = 0
+	int m_lightNPRType = 0
+	UInt8 m_lightNPRAdvancedParamMode = 0
+	float m_lightNPRDefaultContrast = 1
+	UInt8 m_lightNPRDefaultAutoLimit = 1
+	float m_lightNPRRampBias = 0
+	float m_lightNPRRampShadowDimmer = 0
+	float m_lightNPRRampSDFBias = 0
+	float m_lightNPRRampSDFDramatic = 0
+	float m_lightNPRSpecMaxRoughness = 0.6
+	float m_lightNPRSpecRoughnessBias = 0.8
+	UInt8 m_lightNPRSpecMetalOnly = 1
+	float m_lightNPRRimWidth = 0.4
+	float m_lightNPRRimAlbedoAlpha = 1
+	float m_lightNPRFogAlpha = 1
+	float m_lightNPRFogFalloffFactor = 1
+	float m_lightNPRFogRampBias = 0
+	UInt8 m_lightNPRFogDirectionalFalloff = 0
+	UInt8 m_LightCharacterOnly = 0
+	float m_volumetricScatteringIntensity = 0
+	float m_falloffExponent = 2
+
+Light	CLR=Object	GO=Point Light (62)	ID=5528468813013082461		UInt8 m_Enabled = 1
+ | 	int m_Type = 0
+ | 	ColorRGBA m_Color
+ | 	float m_Intensity = 10
+ | 	float m_Range = 43
+ | 	float m_SpotAngle = 90
+ | 	float m_CookieSize = 10
+ | 	ShadowSettings m_Shadows
+ | 		float m_ShadowCullDistance = 65
+ | 		float m_ShadowFadeRatio = 0.8
+ | 		float m_ShadowGuardAngle = 0
+ | 	PPtr<Texture> m_Cookie
+ | 	float m_ColorTemperature = 1645
+ | 	bool m_ShadowOnly = False
+ | m_Type=Spot(0) | m_Shape=0 | m_Color={r:1,g:0.43324766,b:0.40599996,a:1} | m_Intensity=10 | m_SpecularIntensity=0.1 | m_Range=43 | m_SpotAngle=90 | m_InnerSpotAngle=57.813705 | m_Shadows={m_PlatformSpecificType:System.Collections.Specialized.OrderedDictionary,m_Resolution:-1,m_CustomResolution:-1,m_Strength:1,m_Bias:0.05,m_NormalBias:6.56,m_NearPlane:1.91,m_CullingMatrixOverride:System.Collections.Specialized.OrderedDictionary} | m_Cookie={m_FileID:0,m_PathID:0} | m_RenderMode=0 | m_BounceIntensity=1 | m_IsSunSourceLight=False | m_ShadowOnly=False | m_LightPriority=0 | m_Enabled=1
+FULL_NATIVE	TYPE=Light	GO=Point Light (62)	ID=5528468813013082461
+Light Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = -8789554296842198691
+	UInt8 m_Enabled = 1
+	int m_Type = 0
+	int m_Shape = 0
+	ColorRGBA m_Color
+		float r = 1
+		float g = 0.43324766
+		float b = 0.40599996
+		float a = 1
+	float m_Intensity = 10
+	float m_SpecularIntensity = 0.1
+	float m_Range = 43
+	float m_SpotAngle = 90
+	float m_LinearLightLength = -1
+	float m_SoftSourceRadius = 7
+	bool m_UseCullingDistance = True
+	float m_CullingDistance = 100
+	float m_FalloffDistance = 80
+	float m_InnerSpotAngle = 57.813705
+	float m_CookieSize = 10
+	ShadowSettings m_Shadows
+		PlatformSpecificParam m_PlatformSpecificType
+			int defaultParam = 2
+		int m_Resolution = -1
+		int m_CustomResolution = -1
+		float m_Strength = 1
+		float m_Bias = 0.05
+		float m_NormalBias = 6.56
+		float m_NearPlane = 1.91
+		Matrix4x4f m_CullingMatrixOverride
+			float e00 = 1
+			float e01 = 0
+			float e02 = 0
+			float e03 = 0
+			float e10 = 0
+			float e11 = 1
+			float e12 = 0
+			float e13 = 0
+			float e20 = 0
+			float e21 = 0
+			float e22 = 1
+			float e23 = 0
+			float e30 = 0
+			float e31 = 0
+			float e32 = 0
+			float e33 = 1
+		bool m_UseCullingMatrixOverride = False
+		float m_FarPlane = 43
+		float m_ShadowCullDistance = 65
+		float m_ShadowFadeRatio = 0.8
+		float m_ShadowGuardAngle = 0
+		int m_PointLightShadowCasterFaces = -1
+		int m_CasterProperties = 6
+	PPtr<Texture> m_Cookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	bool m_DrawHalo = False
+	LightBakingOutput m_BakingOutput
+		int probeOcclusionLightIndex = -1
+		int occlusionMaskChannel = -1
+		LightmapBakeMode lightmapBakeMode
+			int lightmapBakeType = 4
+			int mixedLightingMode = 2
+		bool isBaked = False
+	PPtr<Flare> m_Flare
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	int m_RenderMode = 0
+	BitField m_CullingMask
+		unsigned int m_Bits = 4294967295
+	unsigned int m_RenderingLayerMask = 1
+	int m_LightShadowCasterMode = 0
+	PlatformSpecificParam m_PlatformSpecificLightmapping
+		int defaultParam = 4
+	Vector2f m_AreaSize
+		float x = 1
+		float y = 1
+	float m_BounceIntensity = 1
+	float m_ColorTemperature = 1645
+	bool m_UseColorTemperature = False
+	bool m_IsSunSourceLight = False
+	bool m_ShadowOnly = False
+	bool m_EnableOBBCullingBox = True
+	bool m_OBBCullingBoxMode = True
+	Vector3f m_CullingBoxRelativePosition
+		float x = -4.3028336
+		float y = -4.75898
+		float z = 21.366821
+	Vector3f m_CullingBoxHalfExtents
+		float x = 18.784927
+		float y = 5.454422
+		float z = 23.815094
+	Vector3f m_CullingBoxOrientation
+		float x = -0
+		float y = 0
+		float z = 0
+	float m_CullingBoxFalloffThreshold = 0.8
+	int m_LightPriority = 0
+	Vector4f m_BoundingSphereOverride
+		float x = 0
+		float y = 0
+		float z = 0
+		float w = 0
+	bool m_UseBoundingSphereOverride = False
+	bool m_UseViewFrustumForShadowCasterCull = True
+	LightAnimationSetting m_LightAnimationSetting
+		bool enableLightAnimation = False
+		bool enableMultiState = False
+		LightAnimatedData lightAnimatedData
+			LightFlickerData flickerData
+				PPtr<LightFlickerStyle> flickerStyle
+					int m_FileID = 0
+					SInt64 m_PathID = 0
+				float flickerSpeed = 1
+				float flickerTimeDelay = 0
+				bool randomDelay = False
+				bool enableFlicker = False
+			LightSpinData spinData
+				Vector3f spinAxis
+					float x = 1
+					float y = 0
+					float z = 0
+				Vector3f spinAnchor
+					float x = 0
+					float y = 0
+					float z = 0
+				float spinSpeed = 1
+				float spinTimeDelay = 0
+				bool randomDelay = False
+				bool enableSpin = False
+		vector additionalRenderers
+			Array Array
+			int size = 0
+		vector lightState
+			Array Array
+			int size = 0
+		vector lightStateTransition
+			Array Array
+			int size = 0
+		int lightStateEntryIdx = -1
+
+Light	CLR=Object	GO=Point Light (69)	ID=7835295817603637597		UInt8 m_Enabled = 1
+ | 	int m_Type = 2
+ | 	ColorRGBA m_Color
+ | 	float m_Intensity = 7
+ | 	float m_Range = 13.44
+ | 	float m_SpotAngle = 132.47772
+ | 	float m_CookieSize = 10
+ | 	ShadowSettings m_Shadows
+ | 		float m_ShadowCullDistance = 50
+ | 		float m_ShadowFadeRatio = 0.8
+ | 		float m_ShadowGuardAngle = 0
+ | 	PPtr<Texture> m_Cookie
+ | 	float m_ColorTemperature = 1645
+ | 	bool m_ShadowOnly = False
+ | m_Type=Point(2) | m_Shape=0 | m_Color={r:1,g:0.5264151,b:0.5702735,a:1} | m_Intensity=7 | m_SpecularIntensity=1 | m_Range=13.44 | m_SpotAngle=132.47772 | m_InnerSpotAngle=57.813705 | m_Shadows={m_PlatformSpecificType:System.Collections.Specialized.OrderedDictionary,m_Resolution:-1,m_CustomResolution:-1,m_Strength:1,m_Bias:0.05,m_NormalBias:3,m_NearPlane:0.2,m_CullingMatrixOverride:System.Collections.Specialized.OrderedDictionary} | m_Cookie={m_FileID:0,m_PathID:0} | m_RenderMode=0 | m_BounceIntensity=1 | m_IsSunSourceLight=False | m_ShadowOnly=False | m_LightPriority=0 | m_Enabled=1
+FULL_NATIVE	TYPE=Light	GO=Point Light (69)	ID=7835295817603637597
+Light Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = 499365805694607709
+	UInt8 m_Enabled = 1
+	int m_Type = 2
+	int m_Shape = 0
+	ColorRGBA m_Color
+		float r = 1
+		float g = 0.5264151
+		float b = 0.5702735
+		float a = 1
+	float m_Intensity = 7
+	float m_SpecularIntensity = 1
+	float m_Range = 13.44
+	float m_SpotAngle = 132.47772
+	float m_LinearLightLength = -1
+	float m_SoftSourceRadius = 3.42
+	bool m_UseCullingDistance = True
+	float m_CullingDistance = 200
+	float m_FalloffDistance = 150
+	float m_InnerSpotAngle = 57.813705
+	float m_CookieSize = 10
+	ShadowSettings m_Shadows
+		PlatformSpecificParam m_PlatformSpecificType
+			int defaultParam = 0
+		int m_Resolution = -1
+		int m_CustomResolution = -1
+		float m_Strength = 1
+		float m_Bias = 0.05
+		float m_NormalBias = 3
+		float m_NearPlane = 0.2
+		Matrix4x4f m_CullingMatrixOverride
+			float e00 = 1
+			float e01 = 0
+			float e02 = 0
+			float e03 = 0
+			float e10 = 0
+			float e11 = 1
+			float e12 = 0
+			float e13 = 0
+			float e20 = 0
+			float e21 = 0
+			float e22 = 1
+			float e23 = 0
+			float e30 = 0
+			float e31 = 0
+			float e32 = 0
+			float e33 = 1
+		bool m_UseCullingMatrixOverride = False
+		float m_FarPlane = 13.44
+		float m_ShadowCullDistance = 50
+		float m_ShadowFadeRatio = 0.8
+		float m_ShadowGuardAngle = 0
+		int m_PointLightShadowCasterFaces = -1
+		int m_CasterProperties = 6
+	PPtr<Texture> m_Cookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	bool m_DrawHalo = False
+	LightBakingOutput m_BakingOutput
+		int probeOcclusionLightIndex = -1
+		int occlusionMaskChannel = -1
+		LightmapBakeMode lightmapBakeMode
+			int lightmapBakeType = 4
+			int mixedLightingMode = 2
+		bool isBaked = False
+	PPtr<Flare> m_Flare
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	int m_RenderMode = 0
+	BitField m_CullingMask
+		unsigned int m_Bits = 4294967295
+	unsigned int m_RenderingLayerMask = 1
+	int m_LightShadowCasterMode = 0
+	PlatformSpecificParam m_PlatformSpecificLightmapping
+		int defaultParam = 4
+	Vector2f m_AreaSize
+		float x = 1
+		float y = 1
+	float m_BounceIntensity = 1
+	float m_ColorTemperature = 1645
+	bool m_UseColorTemperature = False
+	bool m_IsSunSourceLight = False
+	bool m_ShadowOnly = False
+	bool m_EnableOBBCullingBox = False
+	bool m_OBBCullingBoxMode = False
+	Vector3f m_CullingBoxRelativePosition
+		float x = -11.356209
+		float y = -5.725647
+		float z = 12.989807
+	Vector3f m_CullingBoxHalfExtents
+		float x = 53.68479
+		float y = 32.470306
+		float z = 38.39511
+	Vector3f m_CullingBoxOrientation
+		float x = -0
+		float y = 0
+		float z = 0
+	float m_CullingBoxFalloffThreshold = 0.8
+	int m_LightPriority = 0
+	Vector4f m_BoundingSphereOverride
+		float x = NaN
+		float y = 1E-45
+		float z = 0
+		float w = 1.0396158E+21
+	bool m_UseBoundingSphereOverride = False
+	bool m_UseViewFrustumForShadowCasterCull = True
+	LightAnimationSetting m_LightAnimationSetting
+		bool enableLightAnimation = False
+		bool enableMultiState = False
+		LightAnimatedData lightAnimatedData
+			LightFlickerData flickerData
+				PPtr<LightFlickerStyle> flickerStyle
+					int m_FileID = 0
+					SInt64 m_PathID = 0
+				float flickerSpeed = 1
+				float flickerTimeDelay = 0
+				bool randomDelay = False
+				bool enableFlicker = False
+			LightSpinData spinData
+				Vector3f spinAxis
+					float x = 1
+					float y = 0
+					float z = 0
+				Vector3f spinAnchor
+					float x = 0
+					float y = 0
+					float z = 0
+				float spinSpeed = 1
+				float spinTimeDelay = 0
+				bool randomDelay = False
+				bool enableSpin = False
+		vector additionalRenderers
+			Array Array
+			int size = 0
+		vector lightState
+			Array Array
+			int size = 0
+		vector lightStateTransition
+			Array Array
+			int size = 0
+		int lightStateEntryIdx = -1
+
+MonoBehaviour	CLR=MonoBehaviour	GO=Point Light (66)	ID=8736078754723422557		UInt8 m_Enabled = 1
+ | 	string m_Name = ""
+ | 	float m_lightNPRRimWidth = 0.4
+ | 	float m_lightNPRRimAlbedoAlpha = 1
+ | 	float m_volumetricScatteringIntensity = 0
+
+FULL_MONO	GO=Point Light (66)	ID=8736078754723422557
+MonoBehaviour Base
+	PPtr<GameObject> m_GameObject
+		int m_FileID = 0
+		SInt64 m_PathID = -7618192375349747363
+	UInt8 m_Enabled = 1
+	PPtr<MonoScript> m_Script
+		int m_FileID = 1
+		SInt64 m_PathID = 4098216658219718577
+	string m_Name = ""
+	UInt8 enableLightMeshForReflectionProbe = 1
+	float sphericalLightRadius = 0.1
+	PPtr<$Texture2D> areaLightCookie
+		int m_FileID = 0
+		SInt64 m_PathID = 0
+	UInt8 debugLightMesh = 0
+	Vector4f m_lightNPRData
+		float x = 1
+		float y = 1
+		float z = 0
+		float w = 0
+	int m_lightNPRType = 0
+	UInt8 m_lightNPRAdvancedParamMode = 0
+	float m_lightNPRDefaultContrast = 1
+	UInt8 m_lightNPRDefaultAutoLimit = 1
+	float m_lightNPRRampBias = 0
+	float m_lightNPRRampShadowDimmer = 0
+	float m_lightNPRRampSDFBias = 0
+	float m_lightNPRRampSDFDramatic = 0
+	float m_lightNPRSpecMaxRoughness = 0.6
+	float m_lightNPRSpecRoughnessBias = 0.8
+	UInt8 m_lightNPRSpecMetalOnly = 1
+	float m_lightNPRRimWidth = 0.4
+	float m_lightNPRRimAlbedoAlpha = 1
+	float m_lightNPRFogAlpha = 1
+	float m_lightNPRFogFalloffFactor = 1
+	float m_lightNPRFogRampBias = 0
+	UInt8 m_lightNPRFogDirectionalFalloff = 0
+	UInt8 m_LightCharacterOnly = 0
+	float m_volumetricScatteringIntensity = 0
+	float m_falloffExponent = 2
+

@@ -1,0 +1,7 @@
+Package: EndfieldLightingMaterialReproductionPackage_2026-09-13
+Purpose: Forwardable evidence and implementation plan for strict Endfield lighting/material reproduction in ProjectACG.
+Runtime code/shader/scene changes: none.
+Endfield evidence source: C:\Users\xverse\Documents\工作\HowellWork\EndfieldInspector
+ProjectACG snapshot source: F:\UnityProject2\ProjectACG-master-Base
+Snapshot date: 2026-09-14 (Asia/Shanghai)
+Important boundary: static evidence only; Unity, RenderDoc, and device visual acceptance were not run.

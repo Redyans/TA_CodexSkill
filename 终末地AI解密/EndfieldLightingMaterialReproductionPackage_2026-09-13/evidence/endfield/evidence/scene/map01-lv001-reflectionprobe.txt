@@ -1,0 +1,70 @@
+BUNDLE CAB-f1b17e551b45d7de2f56a9f9d07957e1 objects=2
+Cubemap	CLR=Object	GO=	ID=6713726329873727732		string m_Name = "ReflectionProbe-1443706896"
+ | 	int m_ColorSpace = 0
+
+FULL_NATIVE	TYPE=Cubemap	GO=	ID=6713726329873727732
+Cubemap Base
+	string m_Name = "ReflectionProbe-1443706896"
+	int m_ForcedFallbackFormat = 4
+	bool m_DownscaleFallback = False
+	bool m_IsAlphaChannelOptional = True
+	int m_Width = 128
+	int m_Height = 128
+	unsigned int m_CompleteImageSize = 21872
+	int m_MipsStripped = 0
+	int m_TextureFormat = 24
+	int m_MipCount = 8
+	bool m_IsReadable = False
+	bool m_IsPreProcessed = False
+	bool m_IgnoreMasterTextureLimit = False
+	bool m_StreamingMipmaps = False
+	int m_StreamingMipmapsPriority = 0
+	int m_ImageCount = 6
+	int m_TextureDimension = 2
+	GLTextureSettings m_TextureSettings
+		int m_FilterMode = 2
+		int m_Aniso = 0
+		float m_MipBias = 0
+		int m_WrapU = 1
+		int m_WrapV = 1
+		int m_WrapW = 1
+		unsigned int m_TextureGroup = 0
+	int m_LightmapFormat = 0
+	int m_ColorSpace = 0
+	vector m_PlatformBlob
+		Array Array
+		int size = 0
+	TypelessData image data
+	int size = 0
+	StreamingInfo m_StreamData
+		UInt64 offset = 0
+		unsigned int size = 131232
+		string path = "archive:/CAB-f1b17e551b45d7de2f56a9f9d07957e1/CAB-f1b17e551b45d7de2f56a9f9d07957e1.resS"
+	vector m_SourceTextures
+		Array Array
+		int size = 6
+			[0]
+			PPtr<Texture2D> data
+				int m_FileID = 0
+				SInt64 m_PathID = 0
+			[1]
+			PPtr<Texture2D> data
+				int m_FileID = 0
+				SInt64 m_PathID = 0
+			[2]
+			PPtr<Texture2D> data
+				int m_FileID = 0
+				SInt64 m_PathID = 0
+			[3]
+			PPtr<Texture2D> data
+				int m_FileID = 0
+				SInt64 m_PathID = 0
+			[4]
+			PPtr<Texture2D> data
+				int m_FileID = 0
+				SInt64 m_PathID = 0
+			[5]
+			PPtr<Texture2D> data
+				int m_FileID = 0
+				SInt64 m_PathID = 0
+

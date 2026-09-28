@@ -1,0 +1,10 @@
+env	lightConfig.m_active	lightConfig.directLux	lightConfig.directSpecularIntensity	lightConfig.indirectDiffuseFactor	lightConfig.indirectSpecularFactor	skyConfig.m_active	skyConfig.skyMaterialType	skyConfig.skyBakedIndirectIntensity	skyConfig.skyDirectIntensity	skyConfig.reflectionType	skyConfig.reflectionMap.m_FileID	fogConfig.m_active	heightFogConfig.m_active	heightFogConfig.enableVolumetricFog	volumetricFogConfig.m_active	volumetricFogConfig.volumetricFogDistance	volumetricFogConfig.volumetricFogDirectLightingScatteringIntensity	volumetricFogConfig.volumetricFogSkyLightingScatteringIntensity	colorGradingConfig.m_active	colorGradingConfig.colorAdjustmentsEnabled	colorGradingConfig.colorAdjustmentsPostExposure	autoExposureConfig.m_active	autoExposureConfig.autoExposureMode	autoExposureConfig.autoExposureEv100HistogramRange.x	autoExposureConfig.autoExposureEv100HistogramRange.y	lightShaftConfig.m_active	lightShaftConfig.enable	shadowConfig.m_active
+Env_map01_lv006_art_01	1	40000	1	1	1	1	0	2	1	0	2	1	1	1	1	90	1	0	1	1	0	1	0	-6.5	4	1	1	1
+Env_map01_lv006_art_entry_overview_01	1	20000	1	1	1	0	1	1	1	0	0	1	1	1	1	100	1	0	0	0	0	0	0	-8	4	1	1	0
+Env_map01_lv006_art_mining_area_01	0	25000	1	2	1	0	1	2	1	0	6	1	1	1	1	150	0	1	0	0	0	0	0	-8	4	1	0	0
+Env_map01_lv006_art_mining_area_cave_01	0	25000	1	2	1	0	1	2	1	0	6	1	1	1	1	80	0	0	0	0	0	0	0	-8	4	0	0	0
+Env_map01_lv006_art_boss_area_01	1	60000	0	1	1	1	1	2	10	0	7	1	1	1	1	200	1	0	0	0	0	1	0	-3	-2	1	1	0
+Env_map01_lv006_art_boss_tunnel	0	60000	0	1	1	0	1	2	10	0	7	0	1	1	1	200	1	1	0	0	0	1	0	-2.5	-2	0	1	0
+Env_map01_lv006_art_erosion_area_01	1	20000	1	1	1	0	1	1	1	0	5	1	1	1	1	90	5	2	0	0	0	0	0	-8	4	1	1	0
+Env_map01_lv006_art_ruins_01	1	40000	1	1.5	1	0	1	2	1	0	2	1	1	1	1	200	1	2	0	0	0	0	0	-8	4	1	1	0
+Env_map01_lv006_art_tunnel_01	1	40000	1	1.5	1	0	0	1	2	0	2	1	1	1	1	157	1	0	0	0	0	1	0	-6.5	4	0	0	0
