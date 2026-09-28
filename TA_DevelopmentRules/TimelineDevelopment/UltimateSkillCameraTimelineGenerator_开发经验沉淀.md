@@ -512,14 +512,14 @@ PresetPropertySnapshot
 
 ~~~text
 tl_<角色编号>_<技能名称>.playable
-tPre_<角色编号>_<技能名称去掉 bigskill 前导零>.prefab
+tPre_<角色编号>_<技能名称>.prefab
 ~~~
 
 例如：
 
 ~~~text
 tl_100601_bigskill02.playable
-tPre_100601_bigskill2.prefab
+tPre_100601_bigskill02.prefab
 ~~~
 
 这里去掉的是主 Timeline 和主 Prefab 名称中的类别层，不是删除目录层，也不是修改角色资源根目录。模块资源仍按职责保留明确前缀：
@@ -808,3 +808,249 @@ Windows 下修改中文文档时，使用显式 UTF-8 文件 API 或仓库提供
 - [ ] 预设只保存参数，放在本机 `Library`，引用使用 GUID + localFileId，带 Schema 版本。
 - [ ] 取消的旧需求、旧组件和旧命名不要因历史资产或旧文档重新带回。
 - [ ] 最终交付写清修改、验证、未验证项和剩余风险。
+
+---
+
+# 2026-09-28 回退恢复与最终命名规则
+
+> 类型：`PROFILE + REFERENCE`；适用范围：ProjectACG Unity 2022.3.62f3 的大招 Timeline 生成器，以及需要在多人协作、合并或误回滚后恢复 Editor 工具功能的 Unity 项目。迁移到其他项目时，保留方法，重新核对路径、Prefab 结构、Timeline 类型和构建规则。
+
+## 1. 本轮最终合同
+
+本轮核对发现，功能并非全部丢失，而是部分修改被暂存区中的回退内容覆盖。最终保留以下口径：
+
+| 功能 | 最终行为 |
+| --- | --- |
+| 主 Timeline 名称 | `tl_<角色编号>_<完整技能名称>.playable` |
+| 主 Prefab 名称 | `tPre_<角色编号>_<完整技能名称>.prefab`，技能名称保留前导零 |
+| 后处理资源 | `pp_fx_<角色编号>_<特效名称>.asset` |
+| 主资源输出目录 | 优先使用窗口中选择的有效 `Assets/` 目录 |
+| 默认输出目录 | 未选择有效目录时，回退到 `hero/<角色编号>/timeline/New` 或已有 `timeline` |
+| 类别词处理 | 只影响主资源文件名，不改变用户选择的目录 |
+| 道具 Animator | 只有配置了有效动画且层级缺少 Animator 时，才在源 Prefab 根节点补一个无 Controller 的 Animator |
+| 本地预设 | 保存到本机 `Library`，打开窗口自动加载上次使用的预设 |
+| 相机同步组件 | 不重新添加已取消的 `UltimateTimelineCameraTransformSync` 需求 |
+
+示例：填写角色编号 `100601`、技能名称 `bigskill01` 时，主资源应为：
+
+```text
+tl_100601_bigskill01.playable
+tPre_100601_bigskill01.prefab
+```
+
+这里的“去掉 `hero / weapon / monster / boss`”只表示主资源名称不带这些类别词；不表示删除目录层级，也不表示把用户指定目录迁移到其它角色目录。
+
+## 2. 如何识别误回退
+
+### 2.1 先看当前工作树，再看历史
+
+多人协作或连续修改时，不能只看当前源码，也不能直接执行回退命令。建议按以下顺序审计：
+
+1. 查看目标目录的 `git status --short`，区分工作区修改、暂存修改和已提交内容。
+2. 查看目标工具的最近提交，确认功能分别在哪些提交中加入。
+3. 对比 `HEAD`、暂存区和指定历史提交，找出“删除了实现但保留了部分校验或文档”的半回退状态。
+4. 逐项建立功能表，标记“保留、误回退、明确取消、需要人工验证”，不要把所有差异都当成需要恢复的内容。
+
+### 2.2 必须区分误回退和需求取消
+
+本次有一项需求曾经提出但后来明确取消：生成主 Timeline Prefab 时不再自动添加 `UltimateTimelineCameraTransformSync`，也不自动把 `cameraAnimationSource` 指向 `Battle_CameraPos`。因此，恢复功能时不能因为旧代码、旧文档或历史资产中仍能搜到类型名，就把这条需求重新加入。
+
+可迁移判断表：
+
+| 证据 | 处理方式 |
+| --- | --- |
+| 用户仍明确要求，且当前调用链缺实现 | 恢复实现并补验证 |
+| 用户明确说取消，历史代码仍存在 | 保持取消，必要时清理新生成路径中的旧引用 |
+| 代码存在、校验存在、文档缺失 | 以当前代码为准补文档 |
+| 文档存在、实现和校验都消失 | 回到 Git 历史确认是否误回退 |
+| 只有旧资源有该组件，当前生成逻辑已删除 | 不因历史资源反向恢复已取消需求 |
+
+## 3. 功能恢复的实现方式
+
+### 3.1 道具 Animator：校验和修复不能放在同一层
+
+之前的回退版本在校验阶段直接因为缺少 Animator 失败，这与“工具自动补 Animator”的需求冲突。正确边界是：
+
+- 校验只确认 Prefab 路径、挂点和动画资源是否合法。
+- 收集道具时判断动画列表是否存在有效 `AnimationClip`。
+- 有动画时调用幂等的 `EnsurePropAnimator`。
+- `EnsurePropAnimator` 使用 `PrefabUtility.LoadPrefabContents` 打开源 Prefab，先用 `GetComponentInChildren<Animator>(true)` 查整个层级。
+- 层级已有 Animator 时不新增、不替换、不改 Controller。
+- 层级没有 Animator 时，只对源 Prefab 根节点执行 `AddComponent<Animator>()`，Controller 保持为空，然后保存并卸载 Prefab 内容。
+- 没有配置动画的道具完全不修改。
+
+关键伪代码：
+
+```csharp
+List<AnimationClip> animations = GetValidAnimations(entry.animations);
+EnsurePropAnimator(prefab, animations);
+
+private static void EnsurePropAnimator(GameObject prefab, List<AnimationClip> animations)
+{
+    if (prefab == null || animations == null || animations.Count == 0)
+    {
+        return;
+    }
+
+    string path = AssetDatabase.GetAssetPath(prefab);
+    GameObject contents = PrefabUtility.LoadPrefabContents(path);
+    try
+    {
+        if (contents.GetComponentInChildren<Animator>(true) == null)
+        {
+            contents.AddComponent<Animator>();
+            PrefabUtility.SaveAsPrefabAsset(contents, path);
+        }
+    }
+    finally
+    {
+        PrefabUtility.UnloadPrefabContents(contents);
+    }
+}
+```
+
+这条经验的核心不是“缺组件就自动补”，而是“功能输入触发最小补丁，且补丁必须幂等”。如果把校验提前写成“缺组件即失败”，就会阻断后续修复逻辑。
+
+### 3.2 主资源命名：只保留一个技能名称来源
+
+主 Timeline 和主 Prefab 都使用 `GenerationSettings.EffectiveSkillName`：
+
+```csharp
+internal string MainTimelineName => "tl_" + EffectiveHeroId + "_" + EffectiveSkillName;
+internal string MainPrefabName => "tPre_" + EffectiveHeroId + "_" + EffectiveSkillName;
+```
+
+不要为主 Prefab 再创建一个把 `bigskill01` 转成 `bigskill1` 的二次 token。技能名有前导零时，二次压缩会造成以下问题：
+
+- Timeline 和 Prefab 失去同名契约。
+- 覆盖更新时命中错误路径，旧资源和新资源并存。
+- 预设、日志、文档示例和美术查找路径不一致。
+- 角色技能编号的排序和外部配置关联变得不稳定。
+
+模块资源可以有自己的职责前缀，但也应使用同一份 `EffectiveHeroId`、`EffectiveSkillName` 和特效名归一化结果：
+
+```text
+tPre_fx_<角色编号>_<特效名称>.prefab
+tl_fx_<角色编号>_<特效名称>.playable
+pp_fx_<角色编号>_<特效名称>.asset
+```
+
+### 3.3 后处理资源：生成、校验和输出摘要必须共用解析函数
+
+后处理路径不能在生成逻辑里拼成 `pp_fx_<特效名>.asset`，而在校验或文档里使用另一种规则。应集中为一个方法：
+
+```csharp
+internal static string ResolvePostProcessProfilePath(
+    GenerationSettings settings,
+    string effectName)
+{
+    return CombineAssetPath(
+        GetPostProcessFolder(settings),
+        "pp_fx_" + settings.EffectiveHeroId + "_" + effectName + ".asset");
+}
+```
+
+生成、输入输出冲突检查、生成后资产检查、输出摘要和文档示例都必须围绕同一命名契约。任何一个调用点自行拼接字符串，都可能产生“生成成功但校验找不到”或“覆盖了错误 Profile”的问题。
+
+### 3.4 输出目录：用户目录优先，默认目录只做回退
+
+输出目录解析应保持如下顺序：
+
+1. `outputFolder` 非空且对应有效 `Assets/` 文件夹，直接使用它。
+2. `outputFolder` 为空或失效时，查找角色目录下已有的 `timeline/New` 或 `timeline`。
+3. 默认目录也不存在时，返回默认资产路径，后续由生成流程创建。
+
+命名规则不能反向改写路径。特别是用户选择 `Assets/AssetRaw/character/100101` 时，该目录本身就是有效输出目录；不能因为缺少 `hero`，就把结果搬到 `Assets/AssetRaw/character/hero/100101/timeline/New`。
+
+## 4. 本地预设的完整边界
+
+### 4.1 存什么、不存什么
+
+本地预设保存编辑参数，不保存生成资产。当前实现的边界是：
+
+- JSON 位于 `Library/TA_Tools/UltimateSkillCameraTimelineGenerator/Presets/`。
+- 不写入 `Assets/`，不产生 `.meta`，不进入 AssetBundle、Player 或安装包。
+- 记录窗口设置、列表顺序、输出目录、资源引用和生成选项。
+- Unity 资源引用使用 GUID + localFileId，避免使用绝对路径。
+- 预设带 Schema 版本，字段增加或删除时按版本容错。
+- 资源被移动或删除时提示缺失，不能静默引用其它同名资源。
+
+### 4.2 自动加载时序
+
+窗口 `OnEnable` 中应先创建设置对象、补默认值，再调用 `TryAutoLoadLastPreset`。顺序错误会造成两类问题：
+
+- 预设加载后又被默认值初始化覆盖。
+- 预设中缺失的新字段没有得到合理默认值。
+
+保存或加载成功后，将当前预设名写入 `EditorPrefs`；下次打开时读取该名称并从本地 JSON 恢复。预设文件不存在时删除失效的 `EditorPrefs` key，并在状态区给出提示。
+
+### 4.3 默认名称与界面
+
+大招模式默认预设名称为：
+
+```text
+<角色编号>_<技能名称>
+```
+
+例如 `100601_bigskill02`。保存、加载、删除和打开预设目录四个操作放在底部同一操作组，便于用户形成固定操作路径。预设名称是本地管理名，不应参与资源文件名拼接，也不应覆盖技能名称字段。
+例如 `100601_bigskill02`。保存、加载、删除和打开预设目录四个操作放在底部同一操作组，便于用户形成固定操作路径。预设名称是本地管理名，不应参与资源文件名拼接，也不应覆盖技能名称字段。
+
+## 5. 恢复修改时的最小变更流程
+
+适用于任何 Unity Editor 工具被误回滚、合并冲突或暂存区覆盖的情况：
+
+1. **冻结当前状态**：记录当前分支、工作树、暂存区和用户未提交修改，不做 `reset --hard` 或 `checkout --`。
+2. **按功能建立清单**：命名、路径、组件补齐、预设、嵌套保存、旧需求取消分别核对。
+3. **找事实来源**：优先查看当前源码、最近功能提交、目标 README 和用户最新口径。
+4. **修正调用链闭环**：恢复实现时同步恢复校验、输出路径、生成后检查、文档和测试，不只补一行生成代码。
+5. **保持未回退修改**：只对明确被删的代码做最小补丁，不替换整文件，不覆盖用户在同文件中的其它工作。
+6. **先编译后验证行为**：先做编辑器程序集编译和 `git diff --check`，再做 Unity 内实际生成、预览、保存和重启验证。
+7. **记录未恢复项**：明确哪些是用户取消的旧需求，哪些因环境限制没有完成验证。
+
+恢复时最危险的做法是“拿某个旧提交整文件覆盖当前文件”。旧提交可能包含已取消的相机同步逻辑、旧命名、旧路径迁移或已经修复的 Prefab 保存问题；应恢复功能意图，而不是盲目恢复历史代码形态。
+
+## 6. 证据与验证记录
+
+### 6.1 本轮已完成
+
+- 对比当前工作树、暂存区和工具相关历史提交，确认是部分回退而非全量丢失。
+- 恢复道具 Animator 最小补齐逻辑，并移除会阻断该逻辑的提前校验。
+- 恢复后处理资源的角色编号命名，并统一生成与校验路径函数。
+- 恢复主资源去类别词命名，同时修正主 Prefab 不应删除技能序号前导零的问题。
+- 恢复窗口打开时自动加载上次本地预设。
+- 保留用户选择输出目录优先的逻辑。
+- 保留嵌套 Prefab 快照保存、源 Prefab 更新和实例重复内容清理逻辑。
+- 保持 `UltimateTimelineCameraTransformSync` 自动添加需求取消。
+- 使用 Unity 2022.3.62f3 的 Roslyn 编译 6 个生成器编辑器脚本，编译通过，仅有既存字段未赋值警告。
+- `git diff --check` 通过。
+
+### 6.2 必须在 Unity 内确认
+
+```text
+1. 用角色 100601、技能 bigskill01 生成，确认主资源为 tl_100601_bigskill01.playable 和 tPre_100601_bigskill01.prefab。
+2. 指定 Assets/AssetRaw/character/100101 作为输出目录，确认主资源和 cam/fx/pp 全部留在该目录。
+3. 配置带动画但无 Animator 的道具，确认源 Prefab 根节点只新增 Animator，且无 Controller、无其它新增组件。
+4. 配置已有 Animator 或未配置动画的道具，确认工具不重建、不替换、不额外增加组件。
+5. 保存预设、关闭并重开窗口，确认参数和资源引用自动恢复。
+6. 保存嵌套 FX Prefab，确认源 Prefab 更新、外层 Prefab 未被覆盖、Hierarchy 不再出现重复对象。
+7. 生成并预览 Timeline，检查轨道绑定、镜头、道具动画、特效、音效和停止后的状态恢复。
+8. 执行目标 AssetBundle/Player 构建，确认 Library 下本地预设不进入构建，Assets 下实际生成资源按正常引用链被收集。
+```
+
+### 6.3 当前验证缺口
+
+本轮没有替用户操作 Unity 窗口，也没有替用户完成真实资源生成、Prefab 保存、Timeline 播放或目标平台构建。仓库级 harness 当前还存在规则入口、skill 路径、文档链接和已有 UI 治理检查失败项；这些不是本轮工具源码修改的目标，不能用“harness 失败”替代 Unity 功能验证，也不应被记录为本工具功能已失败。
+
+## 7. 可迁移清单
+
+- [ ] 先冻结当前工作树和暂存区，再判断是否误回退。
+- [ ] 把需求分为“仍有效”“明确取消”“历史遗留”三类。
+- [ ] 主资源 Timeline 和 Prefab 使用同一个标准化技能名，保留有意义的前导零。
+- [ ] 输出目录解析独立于资源命名，用户目录优先。
+- [ ] 生成、校验、摘要和文档共用资源路径解析函数。
+- [ ] 组件补齐由功能输入触发，先查全层级，幂等地只补缺失组件。
+- [ ] 本地预设只保存参数和可解析的资源引用，不保存生成资产。
+- [ ] `OnEnable` 先初始化默认值，再自动加载预设。
+- [ ] 嵌套 Prefab 保存使用快照和实例状态同步，不能覆盖外层 owner。
+- [ ] 代码、README、测试示例和人工验收用例使用同一命名口径。
+- [ ] 最终交付同时写明已验证项、Unity 人工复验项和剩余风险。
