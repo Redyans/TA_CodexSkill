@@ -5,6 +5,8 @@
 
 ## 1. 文档适用范围
 
+动画解包、ACL 解码、Avatar/TOS 绑定、Generic/Humanoid `.anim` 与 AnimatorController 的完整沉淀已拆分到 [AnimationDevelopment/README_Tech_TAAnimationDevelopmentRules.md](AnimationDevelopment/README_Tech_TAAnimationDevelopmentRules.md)，其中当前终末地路径、工具、产物统计和已知限制见 [Endfield 角色页动画重建 Profile](AnimationDevelopment/Profiles/Endfield/role-page-animation-reconstruction.md)。本文件继续作为角色渲染、RenderDoc、URP、材质和后处理 Profile 的入口，避免把动画导入事实与渲染规则混写。
+
 本规则适用于经授权的本地客户端资产分析、Unity 角色模型与材质效果还原、RenderDoc 帧分析、后处理还原、动画导出和工程化验证。目标是让每个结论都能追溯到原始证据，并让后续工程可以重复执行，而不是依赖一次性的手工调参。
 
 ### 1.1 证据等级

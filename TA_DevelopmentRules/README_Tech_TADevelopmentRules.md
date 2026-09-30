@@ -89,6 +89,7 @@ description: 面向 Unity 与 DCC 技术美术的可迁移开发规则入口。�
 - Shader 开发：场景、角色、URP PBR、Toon、Custom Lighting、RendererFeature、材质 Inspector 与变体。
 - 工具开发：Unity Editor 窗口、资产扫描/批处理、预览、导入辅助、资源生成与维护工具。
 - Timeline 开发：Track、Clip、Mixer、Layer、绑定、材质/渲染状态、Inspector 与 Scene Handle。
+- 动画解包与 Unity 导入：AnimationClip/ACL 解码、Avatar/TOS 绑定、Generic/Humanoid `.anim`、AnimatorController 与可复现验证。
 - DCC 开发：3ds Max、Maya、Blender、Substance 3D Painter 等宿主内的脚本、场景状态、求值、模拟、Bake、导入导出与恢复工具。
 
 规则以可迁移性为优先目标。跨项目稳定的工程约束写入模块 CORE；Unity/DCC 版本、URP、插件、目录、菜单、ShaderGUI、Controller/节点结构、已有资产、第三方库和团队约定写入对应 PROJECT PROFILE。迁移到其他工程时，保留 CORE 与参考文档，删除或重建 Profile；禁止把当前工程路径、枚举、Pass、Controller、包版本或历史工具目录当成通用事实。
@@ -131,6 +132,9 @@ description: 面向 Unity 与 DCC 技术美术的可迁移开发规则入口。�
 | Timeline 开发 | [TimelineDevelopment/README_Tech_TimelineDevelopmentRules.md](TimelineDevelopment/README_Tech_TimelineDevelopmentRules.md) | Track、Clip、Mixer、Layer、绑定、材质参数混合、相机级渲染状态、Inspector、Scene Handle 与 Timeline 验证。 |
 | 当前工程 CharacterRender Timeline Profile | [TimelineDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGCharacterRenderTimelineProfile.md](TimelineDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGCharacterRenderTimelineProfile.md) | ProjectACG 的 CharacterRenderController、CharacterRender Timeline、PerObjectShadow、Shader 接口和当前验证边界。 |
 | 当前工程 Timeline Volume Profile | [TimelineDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGTimelineVolumeProfile.md](TimelineDevelopment/Profiles/ProjectACG/README_Tech_ProjectACGTimelineVolumeProfile.md) | ProjectACG 的 URP/Timeline 版本、Global Volume Track、Clip 本地 Profile、生成式单效果、菜单和当前限制。 |
+| 动画解包与 Unity 导入 | [AnimationDevelopment/README_Tech_TAAnimationDevelopmentRules.md](AnimationDevelopment/README_Tech_TAAnimationDevelopmentRules.md) | 压缩动画/ACL 解码、绑定哈希与 Avatar/TOS、Generic/Humanoid `.anim`、AnimatorController、单位校准、批量生成和验证。 |
+| 动画解包与 Unity 导入参考 | [AnimationDevelopment/references/endfield-animation-extraction-and-unity-import.md](AnimationDevelopment/references/endfield-animation-extraction-and-unity-import.md) | 可迁移的解包、解码、绑定、生成、排错、回退和验收步骤。 |
+| Endfield 角色页动画 Profile | [AnimationDevelopment/Profiles/Endfield/role-page-animation-reconstruction.md](AnimationDevelopment/Profiles/Endfield/role-page-animation-reconstruction.md) | 当前终末地工作区、工具路径、49 个 clip、17 个角色、98 个 `.anim`、34 个控制器、Avatar 限制和已验证问题修复。 |
 | Timeline 预览刷新与运行时数值同步 | [TimelineDevelopment/references/timeline-preview-refresh-and-live-value-sync.md](TimelineDevelopment/references/timeline-preview-refresh-and-live-value-sync.md) | `RefreshReason` 三分支、重建图导致预览退出与 Game 视图闪动、两级刷新派发、数值字段每帧读片段、暂停态即时生效、销毁还原与验证矩阵。 |
 | Timeline 目标解析与嵌套挂点跟随 | [TimelineDevelopment/references/timeline-object-attachment-resolution.md](TimelineDevelopment/references/timeline-object-attachment-resolution.md) | 绑定优先、歧义报错、路径消歧、候选根自身可作目标、父 Director 的层级与 Control Track 双规则反查、缓存限流、编辑器提前校验与候选诊断输出。 |
 | Timeline 相对位姿、偏移倍率与 Scene Handle | [TimelineDevelopment/references/timeline-relative-pose-authoring.md](TimelineDevelopment/references/timeline-relative-pose-authoring.md) | 相对位姿公式、动态捕获与编辑器烘焙、原始/有效偏移倍率、Scene Handle 反算、轴掩码、动画后校正、生命周期、问题定位和最小验证矩阵。 |
