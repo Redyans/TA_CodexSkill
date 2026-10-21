@@ -1,5 +1,7 @@
 # Ultimate Skill Camera Timeline Generator 开发经验沉淀
 
+> 后续复用入口：通用方法见 [重复生成、手工内容保护与收尾镜头参考](references/timeline-regeneration-preservation-and-tail-camera.md)；`2026-10-20` 当前源码、末尾 0.3 秒方案和验证边界见 [ProjectACG 案例](../ToolDevelopment/Profiles/ProjectACG/ultimate-skill-timeline-regeneration.md)。本页保留历史经验记录；旧实现和旧验证结果不能直接作为当前分支能力证明。
+
 > 本文记录 `UltimateSkillCameraTimelineGenerator` 在 Prefab 保存、嵌套 Prefab、本地预设、Odin 工具界面和验证过程中的工程经验。后续开发 Unity Editor 工具、Timeline 生成器或 Prefab 批量编辑器时，可把本文当作排查与实现参考。
 
 ## 先看结论

@@ -11,6 +11,8 @@ description: ProjectACG 当前工程的 TA_Tools 定制规则。该文件依赖�
 
 新项目迁移时必须删除或重建本 Profile。不得把本文件中的 Assets 路径、类别、菜单、窗口参考、历史目录或程序集名称提升为 CORE。
 
+资源表格性能专项见 [Scene Explorer 资源表格性能 Profile](scene-explorer-resource-table-performance.md)：记录当前 Materials/Textures 的可见行绘制、筛选/平台信息缓存、刷新请求、悬空 else 修正、共享材质解析、源码证据和未完成的 Unity 实测。可迁移方法见 [资源表格性能与缓存参考](../../references/unity-editor-resource-table-performance.md)，规范仍引用 TOOL-CMP、TOOL-ARC、TOOL-OPS、TOOL-VAL。
+
 ## 2. 新工具位置与历史目录
 
 ### PRJ-TOOL-01｜新工具目录
@@ -193,6 +195,12 @@ Runtime、Editor、RendererFeature、VolumeComponent、ShaderGUI/旧式 Material
 三种制作类型都支持 Virtual Camera、直接驱动现有渲染 Camera、Prefab 自带实体 Camera。镜头只产出 AnimationClip 与纯层级 Prefab，不生成 Animator Controller 或镜头子 Timeline；主 Prefab 内一个无 Controller Animator 驱动共享镜头层级。所有镜头按列表顺序放在一条 `CameraAnimation`，每个 Clip 同时保存 Transform 与 `Camera.fieldOfView`，不再生成每镜头 FOV Track。Prop、FX 与 Cinemachine Shot 的 ExposedReference 必须绑定主 Prefab 内持久对象，并在 Prefab 保存后执行二次绑定与回读自检。
 
 剧情/抽卡当前只保证 Unity Editor 制作预览：虚拟模式用 `EditorCameraPreview` 自动绑定有效 Camera/Brain，直接模式用 `DirectCameraSync` 且 `editorPreviewOnly=true`，实体模式直接启用 Prefab Camera；正式 Player 加载、绑定和播放由程序侧另行接入，不修改现有 Presentation 业务模块。大招既有运行时 FOV 同步保留。固定命名、目录、Track/层级、`Battle_CameraPos` FOV `50`、已解决问题和未验证边界见 [Timeline 基础资产生成器 Profile](ultimate-skill-timeline-generator.md)；跨项目方法见 [Timeline 资产生成、Prefab 绑定与增量组装参考](../../../TimelineDevelopment/references/timeline-asset-generation-and-prefab-binding.md) 与 [Timeline 镜头制作、Editor 预览与运行时边界参考](../../../TimelineDevelopment/references/timeline-camera-authoring-editor-preview-and-runtime-boundary.md)。
+
+### PRJ-TOOL-25｜SubmeshSplitter 分离来源清理、资产输出与场景撤销边界
+
+当前 `SubmeshSplitterWindow` 位于历史 `Assets/Editor/TA_Tools/LYJ_Tool/Model_type/SubmeshSplitter/`，菜单为 `TA_Tools/TA/子网格拆分与合并`。拆分支持默认关闭的源渲染组件清理开关、逐来源自动目录或自定义 Assets 目录；完整结果持久化后再清理，失败只回滚当前 Renderer，成功 Mesh 资产保留以支持场景 Redo。
+
+自动引用替换范围是祖先 LODGroup，不包含任意脚本和动画绑定。实现导航、一次 Undo 的修正、33 项历史自检、证据归档及未验证项见 [子网格拆分工具开发 Profile](submesh-splitter-cleanup-and-output.md)；可迁移方法见 [Unity 网格拆分、清理与撤销参考](../../references/unity-mesh-split-cleanup-and-undo.md)。
 
 ## 7. 项目交付检查
 

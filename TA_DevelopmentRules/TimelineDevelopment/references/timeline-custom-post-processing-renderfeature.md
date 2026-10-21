@@ -11,12 +11,14 @@ description: Timeline 驱动 URP 自定义后处理的实现、排查与性能�
 >
 > 使用前提：必须按目标项目的 Unity、URP、Timeline 版本、渲染器配置和现有资源重新验证。本文案例来自 Unity 2022.3、URP 14、Timeline 1.7 的实现经验，具体 API 和执行时序不能直接套用到其他版本。
 
+控制器的曲线乘数值、Toggle/Keyword 与暂停预览见 [材质属性控制器参考](timeline-material-property-controller.md)；搜索、折叠摘要与按需参数见 [Inspector 参考](../../ToolDevelopment/references/progressive-inspector-and-searchable-property-picker.md)；项目代码、问题和验证状态见 [ProjectACG Profile](../Profiles/ProjectACG/custom-post-processing-timeline.md)。
+
 ## 1. 先记住的结论
 
 1. **Timeline 不应直接绑定某一台 Camera。** 后处理属于当前 Renderer 执行的相机级状态，Pass 在执行时使用当前相机的 `cameraColorTargetHandle`。Timeline 只负责注册当前帧的效果请求。
 2. **Track/Clip/Mixer、RendererFeature 和 Shader 是一条完整链路。** Inspector 能看到参数，只能证明序列化字段存在，不能证明效果已经进入正确相机、Pass、材质和合成阶段。
 3. **场景对象引用不能直接依赖 Timeline 资产保存。** 需要从 Hierarchy 选择对象时，使用 `ExposedReference<GameObject>`，由当前 `PlayableDirector` 解析。
-4. **数值编辑和图结构修改要分开刷新。** 只改颜色、权重、曲线等运行时数值时使用轻量刷新；改变 Clip 类型、引用或结构时才重建 PlayableGraph。
+4. **按消费者决定刷新代价。** 当前图能在求值时重新读取和解析的数据使用轻量刷新；改变节点结构或无法就地更新的建图缓存时重建 PlayableGraph，引用类型本身不是判据。
 5. **排除对象不是“关闭后处理”。** 它通常是把对象重绘到屏幕空间 Mask，再在最终合成阶段把原画面恢复回来；因此需要 Renderer、相机可见性、Layer/Culling Mask、深度和合成 Pass 全部正确。
 6. **性能优化优先消除重复工作。** 先处理每帧全场景扫描、每个效果重复绘制 Mask、临时数组/List 和无必要的全屏 RT 拷贝，再考虑更复杂的 GPU 优化。
 
@@ -59,7 +61,7 @@ flowchart LR
 
 | 数据类型 | 示例 | 处理方式 |
 | --- | --- | --- |
-| 结构数据 | 效果列表、材质引用、RenderPassEvent、对象引用数组 | 改变后允许重建图 |
+| 可能影响结构或缓存的数据 | 效果列表、材质引用、RenderPassEvent、对象引用数组 | 追踪实际消费者；建图缓存需要重建，就地重读/解析完整时可轻量求值 |
 | 运行时数值 | 权重、颜色、曲线、强度 | 每帧从 Clip 读取并写入运行时材质 |
 | 恢复相关数据 | 原始材质、原始全局状态、是否已经写入 | 在 Mixer/协调器中明确保存和恢复 |
 
@@ -129,7 +131,13 @@ OnPlayableDestroy
     移除 owner、销毁运行时材质、清理临时缓存
 ```
 
-`OnPlayablePause` 不等于 Clip 已经结束。图暂停、Director 停止、Clip 离开有效区间和图销毁可能触发不同回调。恢复场景状态时必须根据 `FrameData` 和实际生命周期判断，不能在每次 Pause 都无条件恢复。
+`OnBehaviourPause` 或 `OnGraphStop` 不等于 Clip 已经结束。图暂停、Director 停止、Clip 离开有效区间和图销毁可能触发不同回调。恢复场景状态时根据 `FrameData` 和实际生命周期判断，不能在每次 Pause 都无条件恢复。需要暂停保留画面的 owner 帧替换方式见 [材质控制器参考](timeline-material-property-controller.md)。
+
+### 3.4 控制器与面板各有独立合同
+
+曲线描述时间形状，数值描述幅度；是否相乘及如何与源材质混合先写成公式。开关属性除数值外还可能依赖 Keyword，编辑器识别和运行时写入使用一致的元数据合同。具体步骤见 [材质属性控制器参考](timeline-material-property-controller.md)。
+
+面板简化先整理字段的能力、模式、作用域与前置条件，再用搜索、条件显示和折叠摘要减少负担；隐藏只改变可见性，旧配置与诊断仍可访问。实现与风险见 [按需 Inspector 参考](../../ToolDevelopment/references/progressive-inspector-and-searchable-property-picker.md)。
 
 ## 4. 对象引用：为什么要使用 ExposedReference
 
@@ -336,6 +344,10 @@ Properties
 
 “Scene 有变化、Game 没变化”通常优先检查 `cameraColorTargetHandle` 和 Renderer Data，而不是给 Timeline 绑定 Camera。
 
+### 8.3 整体显隐与系统权重的职责
+
+给已有效果增加总控前，先查系统是否每帧覆写同名属性。整体覆盖淡出、发光强度和播放权重的职责、最终合成公式、曲线与 Clip 权重叠加、材质实例和性能边界，统一见 [后处理整体显隐与 Timeline 权重参考](../../ShaderDevelopment/references/post-effect-visibility-and-timeline-weight.md)。具体工程字段与当前证据保留在 [ProjectACG Profile 第 9 节](../Profiles/ProjectACG/custom-post-processing-timeline.md#9-整体显隐参数与-timeline-控制2026-10-20)，不将该项目的权重公式视为所有 Mixer 的默认行为。
+
 ## 9. 编辑器预览和 Game 闪烁问题
 
 ### 9.1 根因
@@ -357,12 +369,13 @@ Timeline 可能重建整个 PlayableGraph。重建会让预览状态暂时退出
 
 | 修改内容 | 推荐刷新 |
 | --- | --- |
-| 颜色、强度、权重、曲线值 | `SceneNeedsUpdate` 或等价轻量刷新 |
-| 目标对象、材质引用、Clip 结构 | `ContentsModified` |
-| 新增/删除 Clip、改变 Track 类型 | 允许重建 PlayableGraph |
-| 暂停时修改当前值 | 必须保证 `ProcessFrame` 仍会重新取值 |
+| 当前 `ProcessFrame` 会重新读取的颜色、强度、权重、曲线 | `SceneNeedsUpdate` 或等价轻量刷新 |
+| 建图时解析并缓存，且没有就地更新路径的引用或状态 | `ContentsModified` |
+| 当前求值会重新解析的对象、源材质或列表数据 | 可轻量求值；同时验证缓存失效、资源切换和旧状态清理 |
+| 新增/删除 Clip、改变 Track 类型或节点连接 | 对应内容增删/结构刷新，允许重建 PlayableGraph |
+| 暂停时修改当前值或源资产 | 保证触发求值，且 `ProcessFrame` 会重新取值；源材质监听见控制器参考 |
 
-编辑器必须实现 `IInspectorChangeHandler` 或项目等价机制，把“图结构变化”和“只改数值”分开。不能为了避免闪烁而完全不刷新，否则 Timeline 暂停时修改的值可能不生效。
+编辑器通过 `IInspectorChangeHandler` 或项目等价机制，区分“需重建图”和“当前图可重新求值”。不能为了避免闪烁而完全不刷新，否则 Timeline 暂停时修改的值可能不生效。完整判据与缓存边界见 [预览刷新参考](timeline-preview-refresh-and-live-value-sync.md)。
 
 ## 10. 性能优化模式
 

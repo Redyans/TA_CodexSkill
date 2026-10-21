@@ -9,6 +9,8 @@ description: ProjectACG Timeline 基础资产生成器的产品合同、Odin UI�
 >
 > 最后整理：`2026-09-19`（Asia/Shanghai）。
 
+> 版本说明（`2026-10-20`）：本文件主体保留早期实现快照。当前主资源命名、镜头 Prefab 自带 Camera、道具/场景容器、手工 Shot 的有限快照和 Battle 收尾需求已在 [重复生成与收尾镜头案例](ultimate-skill-timeline-regeneration.md) 重新核对。发生冲突时以该案例对应的当前源码证据为准；本页旧编译结果不代表当前分支验证通过。
+
 ## 1. 工具定位与当前入口
 
 该工具面向美术，产出的是可继续编辑的基础 Timeline、Prefab 和模块资源，不负责自动完成最终演出。设计目标按优先级排列为：
@@ -355,6 +357,8 @@ Timeline Asset 上“有 Clip”和 Prefab 内 PlayableDirector“引用已保�
 剧情/抽卡的相机预览不要求美术再点击该大招绑定按钮。对应 Timeline Track 会在 Editor 求值时解析当前有效 Camera：虚拟模式临时设置 Cinemachine Generic Binding，直接模式同步源 Camera 到有效渲染 Camera。所有临时绑定、Brain、Camera 位姿、FOV 和启用状态都必须在 Graph Stop、Playable Destroy 或 Dispose 时幂等恢复。
 
 ## 11. 重复生成与美术内容保护边界
+
+精确的当前保护矩阵、旧 `_battle_camera` 引用清理风险、局部组装回退和用户自定义控制/显隐轨案例见 [重复生成案例第 3 节](ultimate-skill-timeline-regeneration.md#3-重复生成时到底保留什么)。下文“保留手工 Shot”只代表有限字段恢复，不代表混合曲线、变速、外推、Prefab 实例覆盖或播放总长度完整保留。
 
 ### 11.1 应当保留
 

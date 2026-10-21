@@ -9,9 +9,11 @@ description: Unity Timeline 开发的可迁移规则。以跨项目 CORE、通�
 
 > 文档模式：`ta-development-rules/timeline/v1`
 > 语言与编码：中文，UTF-8
-> 模块入口：TA 规则总入口见 [../README_Tech_TADevelopmentRules.md](../README_Tech_TADevelopmentRules.md)；通用实现模式见 [references/timeline-development-patterns.md](references/timeline-development-patterns.md)；Timeline 自定义后处理与 RendererFeature 见 [references/timeline-custom-post-processing-renderfeature.md](references/timeline-custom-post-processing-renderfeature.md)；相对位姿、偏移倍率与 Scene Handle 见 [references/timeline-relative-pose-authoring.md](references/timeline-relative-pose-authoring.md)；URP Volume 通用规则见 [references/timeline-volume-post-processing.md](references/timeline-volume-post-processing.md)；编辑期预览刷新与实时取值见 [references/timeline-preview-refresh-and-live-value-sync.md](references/timeline-preview-refresh-and-live-value-sync.md)；动画后跟随与 Playable 生命周期见 [references/timeline-post-animation-follow-and-playable-lifecycle.md](references/timeline-post-animation-follow-and-playable-lifecycle.md)；按名称/路径解析目标与嵌套挂点跟随见 [references/timeline-object-attachment-resolution.md](references/timeline-object-attachment-resolution.md)；自动创建 Timeline/Prefab、持久绑定与增量组装见 [references/timeline-asset-generation-and-prefab-binding.md](references/timeline-asset-generation-and-prefab-binding.md)；嵌套 Prefab 独立保存与生成器绑定见 [references/timeline-nested-prefab-save-and-generated-binding.md](references/timeline-nested-prefab-save-and-generated-binding.md)；DCC 镜头单轨组装、三种相机输出、Editor 预览与 Player 边界见 [references/timeline-camera-authoring-editor-preview-and-runtime-boundary.md](references/timeline-camera-authoring-editor-preview-and-runtime-boundary.md)；BlendShape 多目标制作、动态绑定、混合与恢复见 [references/timeline-blendshape-track-authoring-and-runtime-binding.md](references/timeline-blendshape-track-authoring-and-runtime-binding.md)；ProjectACG 定制事实分别见 [CharacterRender Timeline Profile](Profiles/ProjectACG/README_Tech_ProjectACGCharacterRenderTimelineProfile.md)、[Timeline Volume Profile](Profiles/ProjectACG/README_Tech_ProjectACGTimelineVolumeProfile.md)、[Custom Post Processing Timeline Profile](Profiles/ProjectACG/custom-post-processing-timeline.md)、[Mount Follow Track Profile](Profiles/ProjectACG/mount-follow-track.md) 与 [BlendShape Control Track Profile](Profiles/ProjectACG/blendshape-control-track.md)。
+> 模块入口：TA 规则总入口见 [../README_Tech_TADevelopmentRules.md](../README_Tech_TADevelopmentRules.md)；通用实现模式见 [references/timeline-development-patterns.md](references/timeline-development-patterns.md)；Profile 导入 Clip 与二次调整见 [references/timeline-profile-to-clip-import-and-safe-override.md](references/timeline-profile-to-clip-import-and-safe-override.md)；Timeline 自定义后处理与 RendererFeature 见 [references/timeline-custom-post-processing-renderfeature.md](references/timeline-custom-post-processing-renderfeature.md)；相对位姿、偏移倍率与 Scene Handle 见 [references/timeline-relative-pose-authoring.md](references/timeline-relative-pose-authoring.md)；URP Volume 通用规则见 [references/timeline-volume-post-processing.md](references/timeline-volume-post-processing.md)；编辑期预览刷新与实时取值见 [references/timeline-preview-refresh-and-live-value-sync.md](references/timeline-preview-refresh-and-live-value-sync.md)；动画后跟随与 Playable 生命周期见 [references/timeline-post-animation-follow-and-playable-lifecycle.md](references/timeline-post-animation-follow-and-playable-lifecycle.md)；按名称/路径解析目标与嵌套挂点跟随见 [references/timeline-object-attachment-resolution.md](references/timeline-object-attachment-resolution.md)；自动创建 Timeline/Prefab、持久绑定与增量组装见 [references/timeline-asset-generation-and-prefab-binding.md](references/timeline-asset-generation-and-prefab-binding.md)；嵌套 Prefab 独立保存与生成器绑定见 [references/timeline-nested-prefab-save-and-generated-binding.md](references/timeline-nested-prefab-save-and-generated-binding.md)；DCC 镜头单轨组装、三种相机输出、Editor 预览与 Player 边界见 [references/timeline-camera-authoring-editor-preview-and-runtime-boundary.md](references/timeline-camera-authoring-editor-preview-and-runtime-boundary.md)；BlendShape 多目标制作、动态绑定、混合与恢复见 [references/timeline-blendshape-track-authoring-and-runtime-binding.md](references/timeline-blendshape-track-authoring-and-runtime-binding.md)；ProjectACG 定制事实分别见 [CharacterRender Timeline Profile](Profiles/ProjectACG/README_Tech_ProjectACGCharacterRenderTimelineProfile.md)、[CharacterRender Profile 导入](Profiles/ProjectACG/character-render-profile-import.md)、[Timeline Volume Profile](Profiles/ProjectACG/README_Tech_ProjectACGTimelineVolumeProfile.md)、[Custom Post Processing Timeline Profile](Profiles/ProjectACG/custom-post-processing-timeline.md)、[Mount Follow Track Profile](Profiles/ProjectACG/mount-follow-track.md) 与 [BlendShape Control Track Profile](Profiles/ProjectACG/blendshape-control-track.md)。
 
 本模块适用于 Unity Timeline 的 `TrackAsset`、`PlayableAsset`/Clip、`PlayableBehaviour`、Mixer、`ILayerable`、绑定、Inspector、Scene Handle，以及由 Timeline 驱动的材质与渲染状态。
+
+材质控制器的曲线乘数值、Toggle/Keyword 与暂停改材质链路见 [材质属性控制器参考](references/timeline-material-property-controller.md)；搜索、按需显示、折叠摘要与序列化安全见 [Inspector 参考](../ToolDevelopment/references/progressive-inspector-and-searchable-property-picker.md)。ProjectACG 的本轮决策、实现、问题根因和验证清单见 [后处理 Timeline Profile 第 10～14 节](Profiles/ProjectACG/custom-post-processing-timeline.md)。
 
 它不把 Timeline 当作“任意脚本每帧写值”的入口。先确定状态的真正所有者和作用域：角色/Renderer、材质槽、相机、场景、Volume 或渲染管线。只有 Timeline 负责的状态才由 Mixer 聚合；已有系统的默认值、资源生命周期与优先级仍由原有所有者维护。
 
@@ -170,16 +172,16 @@ Timeline 上"按名称或路径找目标"（挂点、插槽、特效点、音效
 - 黄色图标或黄色标题首先按真实资产错误处理：检查 `PlayableAsset` 的 `MonoScript`、导入错误、`m_Script` GUID 与脚本类型；只在错误消除后再定义正常视觉样式。
 - `OnCreate` 只影响新建 Clip。已有 Timeline 资产的名称或脚本迁移必须单独处理，并在播放前逐项确认。
 
-#### TML-EDT-03｜区分图结构变更与仅数值变更的预览刷新
+#### TML-EDT-03｜区分图重建与就地求值的预览刷新
 
-`TimelineEditor.Refresh(RefreshReason.ContentsModified)` 会重建整张 playable 图；重建过程会先退出预览模式（`AnimationMode` 把记录过的属性还原到进入前的值），相机轨与动画轨驱动的对象因此可见回跳。连续拖动数值时表现为 Game 视图整幅闪动、位移。
+刷新策略取决于字段的消费方式：能在现有图中生效的参数请求重新求值；需要重建节点、绑定解析或实例的变更请求重建。判定依据是建图与取值合同，不是字段属于数值、文本还是对象引用。相关实现与诊断见 [预览刷新与实时取值参考](references/timeline-preview-refresh-and-live-value-sync.md)。
 
-- **必须（MUST）**：把片段字段分成"影响图结构"（目标对象引用、`ExposedReference`、绑定对象、需要重新实例化的 Prefab、片段与轨道类型）与"只影响数值"两类；前者用 `ContentsModified`，后者用 `SceneNeedsUpdate`。刷新请求在 `IInspectorChangeHandler.OnPlayableAssetChangedInInspector` 中按类别派发。
-- **应当（SHOULD）**：只影响数值的字段由运行时 Behaviour 从片段资产读取（建图时把片段资产交给 Behaviour，每帧同步），使修改数值不依赖重建图。
-- **禁止（MUST NOT）**：仅数值变更也走 `ContentsModified`；也禁止为了"完全不闪"而不做刷新——Timeline 暂停时不会重跑 `PlayableBehaviour.ProcessFrame`，不刷新会让新值不生效。
-- **必须（MUST）**：预览期间写过的场景状态必须有“Clip 真正退出”和 `OnPlayableDestroy` 两条幂等清理路径；`OnBehaviourPause` 中先按 `FrameData` 区分图暂停与 Clip 出界，不能一进入回调就无条件还原。只依赖 Pause 或 Destroy 任一路径，都会在暂停预览、图重建或重新求值时留下消失、漂移或错误基准。
-- **验证**：在含相机轨或动画轨的 Timeline 上连续拖动数值，Game 视图不得闪动或位移；暂停状态改数值时目标必须立刻更新；换目标对象允许一次重建；反复编辑后停手，位姿不得漂移。
-- **例外与回退**：目标 Timeline 版本的 `RefreshReason` 语义变化时，回退到 `ContentsModified`，并在交付说明中写明"编辑期会有一次预览重建"；解析结果带缓存时，编辑器校验必须强制刷新。
+- **必须（MUST）**：逐类确认字段是否只在建图时复制、解析或创建实例。现有图能读取新值时使用 `SceneNeedsUpdate`；需要重建图时使用对应结构刷新。核对宿主 Inspector 的默认刷新分支，支持 `IInspectorChangeHandler` 的版本通过该入口按类别派发，不能只搜索自定义 Inspector 的显式调用。
+- **应当（SHOULD）**：频繁调节的参数通过保留 Clip 引用直接读取，或由明确的 live 同步入口更新；已有实时读取链路时不再冗余复制同一组字段。
+- **必须（MUST）**：以序列化数据的实际变化记录待刷新状态，避免折叠、显示开关等纯 GUI 状态触发整图重建；Inspector、Scene Handle 和独立工具等数据编辑入口都要覆盖求值、Undo 与持久化职责。
+- **禁止（MUST NOT）**：已支持实时取值的普通调参仍无条件重建整图；也不能用仅重绘窗口替代暂停状态下的重新求值，或删除生命周期清理来掩盖重建闪烁。清理语义遵循 `TML-LIF-02`。
+- **验证**：在含相机轨或动画轨的 Timeline 上连续拖动参数，确认没有编辑触发的画面回跳；暂停后 Inspector、Scene Handle 和 Undo/Redo 均能更新当前帧；结构变更生效，Clip 出界、Stop 与图销毁正确恢复且不漂移。
+- **例外与回退**：目标版本或消费者暂不支持实时更新时，保留必要重建并记录限制，再独立评估 live 同步改造；不得以轻量刷新换取旧值或错误绑定。缓存失效策略与版本源码核查方法见上述参考。
 
 ### TML-VAL｜验证门槛
 
@@ -200,7 +202,9 @@ Timeline 上"按名称或路径找目标"（挂点、插槽、特效点、音效
 - 缓存目标 Renderer、材质槽和 `MaterialPropertyBlock`；不在每帧反复做全层级搜索、反射或资源扫描。
 - 全局状态只在最终仲裁后写出；不要在每个 Clip 或每个 Renderer 循环中重复写相同的全局参数。
 - Editor 工具批量创建/更新 Timeline、Prefab、AnimationClip、Cinemachine Shot 或 `PlayableDirector` 引用时，读取 [Timeline 资产生成、Prefab 绑定与增量组装参考](references/timeline-asset-generation-and-prefab-binding.md)，并分别验证 Timeline 子资产落盘、Prefab 持久对象绑定、重复生成与单模块组装。
+- 处理“重新生成是否保留手工轨道”、末尾返回镜头或旧自动片段迁移时，读取 [重复生成、手工内容保护与收尾镜头参考](references/timeline-regeneration-preservation-and-tail-camera.md)，按结构、参数、绑定和播放范围分别确认保留边界；当前 ProjectACG 源码与历史方案的差异见 [大招重复生成案例](../ToolDevelopment/Profiles/ProjectACG/ultimate-skill-timeline-regeneration.md)。
 - 主 Timeline Prefab 内的嵌套 Prefab 需要只保存源资源，或生成器需要写入主 Prefab 绑定组件时，读取 [嵌套 Prefab 保存与生成器绑定参考](references/timeline-nested-prefab-save-and-generated-binding.md)，并分别验证外层 Prefab 未被保存、活动实例覆盖已清理、序列化引用已落盘且运行时消费者有效。
 - DCC 相机动画、多镜头、FOV、Cinemachine、直接驱动或实体 Camera 的工具实现，读取 [Timeline 镜头制作、Editor 预览与运行时边界参考](references/timeline-camera-authoring-editor-preview-and-runtime-boundary.md)，明确制作预览与正式运行的控制权、恢复和 Player 空操作边界。
+- 后处理整体显隐、属性曲线与 Clip 淡入淡出叠加，读取 [整体显隐与 Timeline 权重参考](../ShaderDevelopment/references/post-effect-visibility-and-timeline-weight.md)，先推导源值插值和最终播放权重；ProjectACG 的字段、属性枚举、材质实例与预览证据见 [后处理 Profile 第 9 节](Profiles/ProjectACG/custom-post-processing-timeline.md#9-整体显隐参数与-timeline-控制2026-10-20)。
 - Timeline 渲染功能的最终说明必须包含：修改入口、混合与优先级合同、验证证据、未验证的 Unity 行为，以及多角色/多相机/共享材质等剩余风险。
 - Project 路径、具体 Track 名、枚举数值、Shader 参数名和 RendererFeature 实现细节只进入项目 Profile 或功能 README，不写入本模块 CORE。

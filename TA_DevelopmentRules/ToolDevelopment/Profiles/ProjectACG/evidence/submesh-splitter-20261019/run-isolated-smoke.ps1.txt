@@ -1,0 +1,78 @@
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $true)][string]$UnityExe,
+    [Parameter(Mandatory = $true)][string]$SourceFile,
+    [Parameter(Mandatory = $true)][string]$HarnessFile,
+    [string]$SmokeProjectPath = (Join-Path ([System.IO.Path]::GetTempPath()) ('SubmeshSplitterSmoke-' + [Guid]::NewGuid().ToString('N'))),
+    [ValidateRange(30, 3600)][int]$TimeoutSeconds = 600
+)
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+$utf8 = [System.Text.UTF8Encoding]::new($false, $true)
+foreach ($inputFile in @($UnityExe, $SourceFile, $HarnessFile)) {
+    if (-not (Test-Path -LiteralPath $inputFile -PathType Leaf)) {
+        throw ('Input file not found: ' + $inputFile)
+    }
+}
+$UnityExe = (Resolve-Path -LiteralPath $UnityExe).ProviderPath
+$SourceFile = (Resolve-Path -LiteralPath $SourceFile).ProviderPath
+$HarnessFile = (Resolve-Path -LiteralPath $HarnessFile).ProviderPath
+$SmokeProjectPath = [System.IO.Path]::GetFullPath($SmokeProjectPath)
+if (Test-Path -LiteralPath $SmokeProjectPath) {
+    throw ('Use a new, nonexistent isolated project directory: ' + $SmokeProjectPath)
+}
+
+# No deletion of existing directories; the harness writes only in this fresh project.
+$editorDir = Join-Path $SmokeProjectPath 'Assets\Editor'
+$packagesDir = Join-Path $SmokeProjectPath 'Packages'
+$settingsDir = Join-Path $SmokeProjectPath 'ProjectSettings'
+foreach ($directory in @($editorDir, $packagesDir, $settingsDir)) {
+    [System.IO.Directory]::CreateDirectory($directory) | Out-Null
+}
+Copy-Item -LiteralPath $SourceFile -Destination (Join-Path $editorDir 'SubmeshSplitter.cs')
+Copy-Item -LiteralPath $HarnessFile -Destination (Join-Path $editorDir 'SplitSmoke.cs')
+[System.IO.File]::WriteAllText((Join-Path $packagesDir 'manifest.json'), '{"dependencies":{}}' + "`n", $utf8)
+[System.IO.File]::WriteAllText((Join-Path $settingsDir 'ProjectVersion.txt'), "m_EditorVersion: 2022.3.62f3`nm_EditorVersionWithRevision: 2022.3.62f3 (96770f904ca7)`n", $utf8)
+$sourceHash = (Get-FileHash -LiteralPath $SourceFile -Algorithm SHA256).Hash
+$harnessHash = (Get-FileHash -LiteralPath $HarnessFile -Algorithm SHA256).Hash
+[System.IO.File]::WriteAllText((Join-Path $SmokeProjectPath 'run-inputs.txt'), "Source=$SourceFile`nSourceSHA256=$sourceHash`nHarness=$HarnessFile`nHarnessSHA256=$harnessHash`nUnity=$UnityExe`n", $utf8)
+
+$logPath = Join-Path $SmokeProjectPath 'unity-smoke.log'
+$resultPath = Join-Path $SmokeProjectPath 'smoke-result.txt'
+$launchArguments = @(
+    '-batchmode', '-nographics',
+    '-projectPath', ('"{0}"' -f $SmokeProjectPath),
+    '-executeMethod', 'SplitSmoke.Run',
+    '-logFile', ('"{0}"' -f $logPath)
+)
+# SplitSmoke.Run uses delayCall and exits after its assertions. Do not add -quit.
+Write-Output ('Isolated project: ' + $SmokeProjectPath)
+Write-Output ('Source SHA256: ' + $sourceHash)
+$process = Start-Process -FilePath $UnityExe -ArgumentList $launchArguments -WorkingDirectory $SmokeProjectPath -WindowStyle Hidden -PassThru
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+while (-not $process.WaitForExit(1000)) {
+    if ($timer.Elapsed.TotalSeconds -ge $TimeoutSeconds) {
+        # Leave the owned process for diagnosis; do not kill any existing Unity session.
+        throw ('Timed out. Inspect owned Unity PID ' + $process.Id + ' and log: ' + $logPath)
+    }
+}
+$process.Refresh()
+if ($process.ExitCode -ne 0) {
+    throw ('Unity exit code ' + $process.ExitCode + '. Inspect: ' + $logPath)
+}
+if (-not (Test-Path -LiteralPath $resultPath -PathType Leaf)) {
+    throw ('No result file. Inspect compilation/startup log: ' + $logPath)
+}
+$resultText = [System.IO.File]::ReadAllText($resultPath, $utf8)
+# Native Unity logs can contain non-UTF-8 bytes; only ASCII assertion markers are inspected.
+$logText = [System.IO.File]::ReadAllText($logPath, [System.Text.Encoding]::UTF8)
+$assertionCount = [regex]::Matches($logText, '(?m)^CHECK PASS:').Count
+if ($resultText -notmatch '^PASS: 33 assertions;' -or
+    $logText -notmatch '(?m)^SPLIT_SMOKE_PASS 33\s*$' -or
+    $assertionCount -ne 33) {
+    throw ('Expected 33 completed assertions; inspect result and log: ' + $SmokeProjectPath)
+}
+Write-Output $resultText
+Write-Output ('Log: ' + $logPath)
+Write-Output 'This checks isolated object/asset behavior, not production scene rendering.'

@@ -1,0 +1,34 @@
+CHECK PASS: baseline Unity Undo works
+CHECK PASS: static cleanup
+CHECK PASS: preserve other components and child; dedup
+CHECK PASS: visible children and materials
+CHECK PASS: local transform
+CHECK PASS: static flags
+CHECK PASS: default source directory
+CHECK PASS: LOD replacement
+CHECK PASS: select scene results
+CHECK PASS: single Undo restores source
+CHECK PASS: Undo restores LOD
+CHECK PASS: Redo restores split
+CHECK PASS: Redo retains saved meshes
+CHECK PASS: retain source components
+CHECK PASS: custom path children
+CHECK PASS: custom output path
+CHECK PASS: unique paths without overwrite
+CHECK PASS: invalid custom path rejected
+CHECK PASS: skin cleanup
+CHECK PASS: skin bones
+CHECK PASS: blend shape weight
+CHECK PASS: prefab cleanup
+CHECK PASS: prefab asset preserved
+CHECK PASS: prefab Undo
+CHECK PASS: dependency rollback restores source
+CHECK PASS: dependency rollback removes partial objects and assets
+CHECK PASS: partial extraction preserves source
+CHECK PASS: batch preserves earlier success
+CHECK PASS: batch rollback confined to failed renderer
+CHECK PASS: batch continues to skinned renderer
+CHECK PASS: batch LOD retains successful and failed references
+CHECK PASS: one Undo restores mixed batch
+CHECK PASS: one Undo restores mixed batch LOD
+SPLIT_SMOKE_PASS 33

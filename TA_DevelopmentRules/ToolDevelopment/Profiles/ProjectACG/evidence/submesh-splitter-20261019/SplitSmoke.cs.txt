@@ -1,0 +1,227 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using TA_Tools.TA.SubmeshSplitter;
+
+[RequireComponent(typeof(MeshFilter))]
+public sealed class SplitFilterDependency : MonoBehaviour { }
+
+public static class SplitSmoke
+{
+    private static int checks;
+    private static SubmeshSplitterWindow window;
+    private static readonly BindingFlags Private = BindingFlags.Instance | BindingFlags.NonPublic;
+
+    public static void Run()
+    {
+        EditorApplication.delayCall += RunAfterStartup;
+    }
+
+    private static void RunAfterStartup()
+    {
+        try
+        {
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            Undo.IncrementCurrentGroup();
+            var undoProbe = new GameObject("UndoProbe");
+            Undo.RegisterCreatedObjectUndo(undoProbe, "UndoProbe");
+            Undo.FlushUndoRecordObjects();
+            Undo.IncrementCurrentGroup();
+            Undo.PerformUndo();
+            Check(undoProbe == null, "baseline Unity Undo works");
+            Undo.ClearAll();
+            AssetDatabase.DeleteAsset("Assets/Source");
+            AssetDatabase.DeleteAsset("Assets/Output");
+            AssetDatabase.CreateFolder("Assets", "Source");
+            AssetDatabase.CreateFolder("Assets", "Output");
+            window = ScriptableObject.CreateInstance<SubmeshSplitterWindow>();
+            Set("_frameSplitObjects", false);
+            TestStaticCleanupUndo();
+            TestRetainAndCustomPath();
+            TestSkinned();
+            TestPrefab();
+            TestFailureRollback();
+            TestMixedBatchRollback();
+            File.WriteAllText("smoke-result.txt", "PASS: " + checks + " assertions; static, skin, path, LOD, prefab, Undo/Redo, rollback.");
+            Debug.Log("SPLIT_SMOKE_PASS " + checks);
+            EditorApplication.Exit(0);
+        }
+        catch (Exception e)
+        {
+            File.WriteAllText("smoke-result.txt", "FAIL: " + e);
+            Debug.LogException(e);
+            EditorApplication.Exit(1);
+        }
+    }
+
+    private static Mesh Mesh(string name, bool skin = false)
+    {
+        var mesh = new Mesh { name = name };
+        mesh.vertices = new[] { Vector3.zero, Vector3.right, Vector3.up, Vector3.one };
+        mesh.uv = new[] { Vector2.zero, Vector2.right, Vector2.up, Vector2.one };
+        mesh.subMeshCount = 2;
+        mesh.SetTriangles(new[] { 0, 1, 2 }, 0);
+        mesh.SetTriangles(new[] { 2, 1, 3 }, 1);
+        mesh.RecalculateNormals();
+        if (skin)
+        {
+            mesh.bindposes = new[] { Matrix4x4.identity };
+            mesh.boneWeights = Enumerable.Repeat(new BoneWeight { boneIndex0 = 0, weight0 = 1 }, 4).ToArray();
+            mesh.AddBlendShapeFrame("Smile", 100, Enumerable.Repeat(Vector3.up, 4).ToArray(), new Vector3[4], new Vector3[4]);
+        }
+        AssetDatabase.CreateAsset(mesh, "Assets/Source/" + name + ".asset");
+        return mesh;
+    }
+
+    private static GameObject Static(string name)
+    {
+        var go = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer));
+        go.GetComponent<MeshFilter>().sharedMesh = Mesh(name);
+        return go;
+    }
+
+    private static void TestStaticCleanupUndo()
+    {
+        Set("_removeSourceRendererAfterSplit", true);
+        var root = new GameObject("LOD", typeof(LODGroup));
+        var go = Static("Static");
+        go.transform.SetParent(root.transform, false);
+        go.transform.localPosition = new Vector3(3, 4, 5);
+        go.transform.localScale = new Vector3(2, 3, 4);
+        go.AddComponent<BoxCollider>();
+        new GameObject("ExistingChild").transform.SetParent(go.transform, false);
+        var material = new Material(Shader.Find("Hidden/InternalErrorShader"));
+        go.GetComponent<MeshRenderer>().sharedMaterials = new[] { material, material };
+        GameObjectUtility.SetStaticEditorFlags(go, StaticEditorFlags.OccludeeStatic);
+        var lod = root.GetComponent<LODGroup>();
+        lod.SetLODs(new[] { new LOD(0.3f, new Renderer[] { go.GetComponent<MeshRenderer>() }) });
+        Selection.objects = new UnityEngine.Object[] { root, go };
+        Execute();
+        Check(go.GetComponent<MeshRenderer>() == null && go.GetComponent<MeshFilter>() == null, "static cleanup");
+        Check(go.GetComponent<BoxCollider>() != null && go.transform.childCount == 3, "preserve other components and child; dedup");
+        var children = go.GetComponentsInChildren<MeshRenderer>();
+        Check(children.Length == 2 && children.All(r => r.enabled && r.sharedMaterial == material), "visible children and materials");
+        Check(children.All(r => r.transform.localPosition == Vector3.zero && r.transform.localScale == Vector3.one), "local transform");
+        Check(children.All(r => GameObjectUtility.GetStaticEditorFlags(r.gameObject) == StaticEditorFlags.OccludeeStatic), "static flags");
+        Check(children.All(r => AssetDatabase.GetAssetPath(r.GetComponent<MeshFilter>().sharedMesh).StartsWith("Assets/Source/")), "default source directory");
+        Check(lod.GetLODs()[0].renderers.Length == 2 && lod.GetLODs()[0].renderers.All(r => r != null), "LOD replacement");
+        Check(Selection.gameObjects.Length == 2 && Selection.gameObjects.All(g => g.transform.parent == go.transform), "select scene results");
+        Undo.FlushUndoRecordObjects();
+        foreach (var m in typeof(Undo).GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).Where(m => m.Name == "GetRecords" && m.GetParameters()[1].ParameterType.IsByRef))
+        {
+            Debug.Log("UNDO RECORD METHOD " + m);
+            var undoRecords = new System.Collections.Generic.List<string>();
+            var redoRecords = new System.Collections.Generic.List<string>();
+            m.Invoke(null, new object[] { undoRecords, 0 });
+            Debug.Log("UNDO RECORDS " + string.Join(" | ", undoRecords));
+        }
+        Undo.PerformUndo();
+        Debug.Log("UNDO STATE renderer=" + (go.GetComponent<MeshRenderer>() != null) + " filter=" + (go.GetComponent<MeshFilter>() != null) + " children=" + go.transform.childCount + " group=" + Undo.GetCurrentGroup());
+        Check(go.GetComponent<MeshRenderer>() != null && go.GetComponent<MeshFilter>() != null && go.transform.childCount == 1, "single Undo restores source");
+        Check(lod.GetLODs()[0].renderers.Length == 1 && lod.GetLODs()[0].renderers[0] == go.GetComponent<MeshRenderer>(), "Undo restores LOD");
+        Undo.PerformRedo();
+        Check(go.GetComponent<MeshRenderer>() == null && go.transform.childCount == 3, "Redo restores split");
+        Check(go.GetComponentsInChildren<MeshFilter>().All(f => f.sharedMesh != null && AssetDatabase.Contains(f.sharedMesh)), "Redo retains saved meshes");
+    }
+
+    private static void TestRetainAndCustomPath()
+    {
+        Set("_removeSourceRendererAfterSplit", false);
+        Set("_useCustomSplitOutputFolder", true);
+        Set("_splitOutputFolderAsset", AssetDatabase.LoadAssetAtPath<DefaultAsset>("Assets/Output"));
+        var go = Static("Retain");
+        Split(go);
+        Check(go.GetComponent<MeshRenderer>() != null && go.GetComponent<MeshFilter>() != null, "retain source components");
+        Check(go.transform.childCount == 2, "custom path children");
+        Check(go.GetComponentsInChildren<MeshFilter>().Skip(1).All(f => AssetDatabase.GetAssetPath(f.sharedMesh).StartsWith("Assets/Output/")), "custom output path");
+        Split(go);
+        Check(go.transform.childCount == 4 && AssetDatabase.FindAssets("t:Mesh", new[] { "Assets/Output" }).Length == 4, "unique paths without overwrite");
+        Set("_splitOutputFolderAsset", null);
+        var invalid = Static("InvalidPath");
+        Split(invalid);
+        Check(invalid.transform.childCount == 0 && invalid.GetComponent<MeshRenderer>() != null, "invalid custom path rejected");
+        Set("_useCustomSplitOutputFolder", false);
+    }
+
+    private static void TestSkinned()
+    {
+        Set("_removeSourceRendererAfterSplit", true);
+        var go = new GameObject("Skin", typeof(SkinnedMeshRenderer));
+        var source = go.GetComponent<SkinnedMeshRenderer>();
+        source.sharedMesh = Mesh("Skin", true);
+        source.bones = new[] { go.transform };
+        source.rootBone = go.transform;
+        source.SetBlendShapeWeight(0, 37);
+        Split(go);
+        var children = go.GetComponentsInChildren<SkinnedMeshRenderer>();
+        Check(go.GetComponent<SkinnedMeshRenderer>() == null && children.Length == 2, "skin cleanup");
+        Check(children.All(r => r.rootBone == go.transform && r.bones.Length == 1 && r.bones[0] == go.transform), "skin bones");
+        Check(children.All(r => r.sharedMesh.blendShapeCount == 1 && Math.Abs(r.GetBlendShapeWeight(0) - 37) < 0.001), "blend shape weight");
+    }
+
+    private static void TestPrefab()
+    {
+        var original = Static("Prefab");
+        var asset = PrefabUtility.SaveAsPrefabAsset(original, "Assets/Source/Test.prefab");
+        UnityEngine.Object.DestroyImmediate(original);
+        var instance = (GameObject)PrefabUtility.InstantiatePrefab(asset);
+        Split(instance);
+        Check(instance.GetComponent<MeshRenderer>() == null && instance.GetComponent<MeshFilter>() == null && instance.transform.childCount == 2, "prefab cleanup");
+        Check(asset.GetComponent<MeshRenderer>() != null && asset.transform.childCount == 0, "prefab asset preserved");
+        Undo.PerformUndo();
+        Check(instance.GetComponent<MeshRenderer>() != null && instance.transform.childCount == 0, "prefab Undo");
+    }
+
+    private static void TestFailureRollback()
+    {
+        var go = Static("Dependency");
+        go.AddComponent<SplitFilterDependency>();
+        var before = AssetDatabase.FindAssets("t:Mesh", new[] { "Assets/Source" }).Length;
+        Split(go);
+        Check(go.GetComponent<MeshRenderer>() != null && go.GetComponent<MeshFilter>() != null, "dependency rollback restores source");
+        Check(go.transform.childCount == 0 && AssetDatabase.FindAssets("t:Mesh", new[] { "Assets/Source" }).Length == before, "dependency rollback removes partial objects and assets");
+        var empty = Static("EmptySubmesh");
+        empty.GetComponent<MeshFilter>().sharedMesh.SetTriangles(Array.Empty<int>(), 1);
+        Split(empty);
+        Check(empty.transform.childCount == 0 && empty.GetComponent<MeshRenderer>() != null, "partial extraction preserves source");
+    }
+
+    private static void TestMixedBatchRollback()
+    {
+        var root = new GameObject("MixedBatch", typeof(LODGroup));
+        var ok = Static("BatchGood");
+        ok.transform.SetParent(root.transform, false);
+        var blocked = Static("BatchBlocked");
+        blocked.transform.SetParent(root.transform, false);
+        blocked.AddComponent<SplitFilterDependency>();
+        var skin = new GameObject("BatchSkin", typeof(SkinnedMeshRenderer));
+        skin.transform.SetParent(root.transform, false);
+        skin.GetComponent<SkinnedMeshRenderer>().sharedMesh = Mesh("BatchSkin", true);
+        skin.GetComponent<SkinnedMeshRenderer>().bones = new[] { skin.transform };
+        skin.GetComponent<SkinnedMeshRenderer>().rootBone = skin.transform;
+        var lod = root.GetComponent<LODGroup>();
+        lod.SetLODs(new[] { new LOD(0.3f, new Renderer[] { ok.GetComponent<MeshRenderer>(), blocked.GetComponent<MeshRenderer>(), skin.GetComponent<SkinnedMeshRenderer>() }) });
+        Split(root);
+        Check(ok.GetComponent<MeshRenderer>() == null && ok.transform.childCount == 2, "batch preserves earlier success");
+        Check(blocked.GetComponent<MeshRenderer>() != null && blocked.transform.childCount == 0, "batch rollback confined to failed renderer");
+        Check(skin.GetComponent<SkinnedMeshRenderer>() == null && skin.transform.childCount == 2, "batch continues to skinned renderer");
+        Check(lod.GetLODs()[0].renderers.Length == 5 && lod.GetLODs()[0].renderers.All(r => r != null), "batch LOD retains successful and failed references");
+        Undo.PerformUndo();
+        Check(ok.GetComponent<MeshRenderer>() != null && skin.GetComponent<SkinnedMeshRenderer>() != null && root.GetComponentsInChildren<Renderer>().Length == 3, "one Undo restores mixed batch");
+        Check(lod.GetLODs()[0].renderers.Length == 3 && lod.GetLODs()[0].renderers.All(r => r != null), "one Undo restores mixed batch LOD");
+    }
+
+    private static void Split(GameObject go) { Selection.activeGameObject = go; Execute(); }
+    private static void Execute() { typeof(SubmeshSplitterWindow).GetMethod("SplitSelectedObjects", Private).Invoke(window, null); }
+    private static void Set(string name, object value) { typeof(SubmeshSplitterWindow).GetField(name, Private).SetValue(window, value); }
+    private static void Check(bool success, string name)
+    {
+        if (!success) throw new Exception("Assertion failed: " + name);
+        checks++;
+        Debug.Log("CHECK PASS: " + name);
+    }
+}
