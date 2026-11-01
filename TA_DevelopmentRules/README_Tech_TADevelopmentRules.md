@@ -84,12 +84,13 @@ description: 面向 Unity 与 DCC 技术美术的可迁移开发规则入口。�
 
 ## 1. 目的与使用边界
 
-本目录是 TA 开发规范的单一入口，覆盖四类工作：
+本目录是 TA 开发规范的单一入口，覆盖以下工作：
 
 - Shader 开发：场景、角色、URP PBR、Toon、Custom Lighting、RendererFeature、材质 Inspector 与变体。
 - 工具开发：Unity Editor 窗口、资产扫描/批处理、预览、导入辅助、资源生成与维护工具。
 - Timeline 开发：Track、Clip、Mixer、Layer、绑定、材质/渲染状态、Inspector 与 Scene Handle。
 - 动画解包与 Unity 导入：AnimationClip/ACL 解码、Avatar/TOS 绑定、Generic/Humanoid `.anim`、AnimatorController 与可复现验证。
+- Unity 客户端与抓帧复刻：标准 UnityFS 资产、RenderDoc 实际渲染链、目标 Unity/URP 适配与分层画面验证。
 - DCC 开发：3ds Max、Maya、Blender、Substance 3D Painter 等宿主内的脚本、场景状态、求值、模拟、Bake、导入导出与恢复工具。
 
 规则以可迁移性为优先目标。跨项目稳定的工程约束写入模块 CORE；Unity/DCC 版本、URP、插件、目录、菜单、ShaderGUI、Controller/节点结构、已有资产、第三方库和团队约定写入对应 PROJECT PROFILE。迁移到其他工程时，保留 CORE 与参考文档，删除或重建 Profile；禁止把当前工程路径、枚举、Pass、Controller、包版本或历史工具目录当成通用事实。
@@ -100,6 +101,10 @@ description: 面向 Unity 与 DCC 技术美术的可迁移开发规则入口。�
 
 | 模块 | 入口 | 适用内容 |
 | --- | --- | --- |
+| Unity 客户端与抓帧复刻 | [GamePack/UnityReconstruction/README_Tech_UnityCaptureReconstructionRules.md](GamePack/UnityReconstruction/README_Tech_UnityCaptureReconstructionRules.md) | 资源与动作依赖闭包、GPU draw/Pass 取证、Shader/光照/背景/后处理复刻、分层验证。 |
+| Unity 资源和渲染复刻工作流 | [GamePack/UnityReconstruction/references/unity-asset-and-render-reconstruction-workflow.md](GamePack/UnityReconstruction/references/unity-asset-and-render-reconstruction-workflow.md) | 工具选择、解包/动画、DXBC 到 URP、环境、反射、AO、TAA 和交付顺序。 |
+| RenderDoc 验证与故障排查 | [GamePack/UnityReconstruction/references/renderdoc-validation-and-troubleshooting.md](GamePack/UnityReconstruction/references/renderdoc-validation-and-troubleshooting.md) | 同输入 GPU、实时场景和整图指标分层；动作、贴图、管线、阴影及后处理问题定位。 |
+| 依盖之书玲珑展示场景 Profile | [GamePack/UnityReconstruction/Profiles/BookOfYog/linglong-showcase-reconstruction.md](GamePack/UnityReconstruction/Profiles/BookOfYog/linglong-showcase-reconstruction.md) | 实际版本、路径、资源、实现、修复、验证结果和未验证边界。 |
 | Shader 开发 | [ShaderDevelopment/README_Tech_URPShaderDevelopmentRules.md](ShaderDevelopment/README_Tech_URPShaderDevelopmentRules.md) | Shader 分类、URP 复用、Pass、变体、ShaderGUI、角色/场景 Profile、行为保真重构。 |
 | 2D 条带式 3D 颜色 LUT 参考 | [ShaderDevelopment/references/packed-3d-color-lut-sampling-and-debugging.md](ShaderDevelopment/references/packed-3d-color-lut-sampling-and-debugging.md) | `N³ → N²×N` 布局、颜色域、半 texel、第三轴插值、黑白圈层 Debug、Importer、生成器与暗部职责划分。 |
 | 当前工程肤色颜色 LUT Profile | [ShaderDevelopment/Profiles/ProjectACG/skin-color-lut.md](ShaderDevelopment/Profiles/ProjectACG/skin-color-lut.md) | ProjectACG Skin/Face 的 LUT 路径、暗部合成、生成器、代表性色块、历史 G 半 texel 偏移、A/B 与回退边界。 |
