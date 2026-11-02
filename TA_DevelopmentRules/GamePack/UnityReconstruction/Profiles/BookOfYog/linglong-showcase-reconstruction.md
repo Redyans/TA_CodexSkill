@@ -131,6 +131,22 @@ DynamicBone/CameraDriven 的实现来自原 `GameAssembly.dll` 与 metadata 的�
 
 当前未验证项：`5` 号尾部主要可见偏差、`26` 号气球 Domain 位移、`3`/`11`/`16`/`27` 号静态对象与特效及 `32` 号 E2113 后侧剑体在动态播放下的挂点、`13`/`14` 号可动画武器模块的动态对齐、`32` 号剑体当前偏暗的 Shader/光照差异、其他组原 GPU 纹理字节，以及附属件挂点和独立骨架动作相位、阴影与描边变体、逐角色 HDR 和环境/后处理常量。上述区域 MAE 是诊断，不等于逐像素一致。损坏 RDC 的四组只能标为候选，获得可回放抓帧后再提升验证级别。复刻根 `README.md` 给出场景和阶段入口；这些批量数字不可回填到玲珑 `1` 号场景的既有逐像素结论。
 
+## 批量附件增量验证（2026-11-02）
+
+本节仅记录《依盖之书》当前工程的具体状态，沿用 `UCR-EVD-02`、`UCR-AST-01`、`UCR-VAL-01` 的证据与验证边界。`Tools~/Batch/audit_unbound_showcase_draws.py` 从主颜色 RT、Mesh 名和源 bundle 贴图交集生成候选，不能直接把候选判定为缺失几何；已恢复绘制和 `Plane001` 环境绘制过滤后仍有 25 条叠加/特效候选。每个补入附件先核对 RDC 事件、实际 IA 通道、PS 贴图和源 prefab，再由 `export_accessory_draws.py` 导出网格/纹理及 SHA-256，`extract_accessory_bundles.py` 保存源 bundle 递归依赖和副本哈希。两脚本分别在 `Tools~/Batch` 与各组 `Evidence/BatchCaptures/<编号>` 留痕。
+
+| 场景 | 补入的当帧主颜色 draw | 整图 MAE（补入前 → 最新） | 当前边界 |
+| --- | --- | --- | --- |
+| `9_frame55743` | E1111 `SM_Wep_BowSKbl01` | 0.03362 → 0.03356 | E1300 叠加层和原游戏动态姿态未验收。 |
+| `10_frame56195` | E1083 `SM_Hat02`、E1799 `SM_Hat01` | 0.03041 → 0.02797 | 帽沿/花饰已可见；E1217/E1818 其他绘制及法杖动作姿态待核实。 |
+| `32_frame9114` | E2129 `SM_ZXY_Hat01` | 0.03624 → 0.03605 | 发带可见；E1983 剑刃仍显著偏暗，E2305 叠加层未验收。 |
+| `33_frame9805` | E1585 `SM_Hat01` | 0.02476 → 0.02458 | 花饰可见；E1739 叠加层及动作相位未验收。 |
+| `34_frame10152` | E1491 `SM_Hat01` | 0.02374 → 0.02354 | 花饰可见；E1675 叠加层及动作相位未验收。 |
+
+32 组完整回归为 `Validation/Batch/BatchSceneComparison26.json`：1024×576 显示 sRGB、无配准/曝光拟合，整图 MAE 范围 0.02310–0.06104、均值 0.03167；32/32 预览非空。Unity 2022.3.62f3 / D3D11 的 `Validation/shader-compilation.json` 为 548 个 Pass/变体、0 错误。上述数值只是同帧阶段指标，不能称作完整效果对齐。32 号剑刃分层重拍确认 E1983 贡献偏暗长刃；原生贴图槽 0/1/2/5/6/7 的预览在 `Validation/Batch/32_frame9114_blade_texture*.png`，对象矩阵行列式为正值，尚未定位着色差异。临时全亮阴影诊断图 `32_frame9114_sword_force_lit.png` 相对当前正式预览只改变 11,341 像素，整图 MAE 0.03605 → 0.03579，剑刃仍偏暗；实验用 Shader 开关已移除，正式场景未保留强制全亮设置。分层诊断的每张图必须独立重开场景；连续重拍曾使第二张图异常变黑，不能据此推断原 Shader 输出。
+
+增量复现：隐藏 `qrenderdoc.exe --python` 运行 `export_case26_balloon_inputs.py`，设置 `YOG_EFFECT_CASE`、`YOG_EFFECT_EVENTS`、`YOG_EFFECT_LABEL=accessory` 与明确的 `YOG_EFFECT_CAPTURE`；用同一事件集合运行 `export_accessory_draws.py`。32 号 E2129 另运行 `generate_case32_hat_shader.py`。然后 Worker `refresh` → `YogShaderValidation.Validate` → `YogBatchCapturedMaterials.BuildCase9CapturedBow`、`BuildCase10CapturedHat`、`BuildCase32CapturedHat`、`BuildCase33CapturedHat`、`BuildCase34CapturedHat` → `YogBatchSceneValidator.Run` → `compare_batch_scenes.py --prefix BatchSceneComparison26`。源副本用 `extract_accessory_bundles.py` 复核；报告重跑时使用新前缀保留旧证据。`19`–`22` 仍需新的可回放 RDC，其他组的阴影、描边、材质叠加、动作相位与逐场景后处理常量继续按实际事件核验。
+
 ## 复现入口与维护
 
 在目标工程根可执行以下已存在的入口；命令会更新项目内产物，先核对输入清单与当前编辑器状态。后台 Worker 使用隐藏窗口，不依赖鼠标；异步检查需等待最终 JSON。
