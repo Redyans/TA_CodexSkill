@@ -90,7 +90,7 @@ description: 面向 Unity 与 DCC 技术美术的可迁移开发规则入口。�
 - 工具开发：Unity Editor 窗口、资产扫描/批处理、预览、导入辅助、资源生成与维护工具。
 - Timeline 开发：Track、Clip、Mixer、Layer、绑定、材质/渲染状态、Inspector 与 Scene Handle。
 - 动画解包与 Unity 导入：AnimationClip/ACL 解码、Avatar/TOS 绑定、Generic/Humanoid `.anim`、AnimatorController 与可复现验证。
-- Unity 客户端与抓帧复刻：标准 UnityFS 资产、RenderDoc 实际渲染链、目标 Unity/URP 适配与分层画面验证。
+- 客户端到 Unity 渲染还原：Unity/Unreal 资源、展示动作与次级运动、RenderDoc 实际渲染链、目标 Unity/URP 适配与分层画面验证。
 - DCC 开发：3ds Max、Maya、Blender、Substance 3D Painter 等宿主内的脚本、场景状态、求值、模拟、Bake、导入导出与恢复工具。
 
 规则以可迁移性为优先目标。跨项目稳定的工程约束写入模块 CORE；Unity/DCC 版本、URP、插件、目录、菜单、ShaderGUI、Controller/节点结构、已有资产、第三方库和团队约定写入对应 PROJECT PROFILE。迁移到其他工程时，保留 CORE 与参考文档，删除或重建 Profile；禁止把当前工程路径、枚举、Pass、Controller、包版本或历史工具目录当成通用事实。
@@ -101,10 +101,15 @@ description: 面向 Unity 与 DCC 技术美术的可迁移开发规则入口。�
 
 | 模块 | 入口 | 适用内容 |
 | --- | --- | --- |
-| Unity 客户端与抓帧复刻 | [GamePack/UnityReconstruction/README_Tech_UnityCaptureReconstructionRules.md](GamePack/UnityReconstruction/README_Tech_UnityCaptureReconstructionRules.md) | 资源与动作依赖闭包、GPU draw/Pass 取证、Shader/光照/背景/后处理复刻、分层验证。 |
+| 客户端到 Unity 渲染还原 | [GamePack/UnityReconstruction/README_Tech_UnityCaptureReconstructionRules.md](GamePack/UnityReconstruction/README_Tech_UnityCaptureReconstructionRules.md) | Unity/UE 资源与动作依赖闭包、实际状态求值、GPU draw/Pass、渲染还原、并行隔离和分层验证。 |
 | Unity 资源和渲染复刻工作流 | [GamePack/UnityReconstruction/references/unity-asset-and-render-reconstruction-workflow.md](GamePack/UnityReconstruction/references/unity-asset-and-render-reconstruction-workflow.md) | 工具选择、解包/动画、DXBC 到 URP、环境、反射、AO、TAA 和交付顺序。 |
 | RenderDoc 验证与故障排查 | [GamePack/UnityReconstruction/references/renderdoc-validation-and-troubleshooting.md](GamePack/UnityReconstruction/references/renderdoc-validation-and-troubleshooting.md) | 同输入 GPU、实时场景和整图指标分层；动作、贴图、管线、阴影及后处理问题定位。 |
 | 依盖之书玲珑展示场景 Profile | [GamePack/UnityReconstruction/Profiles/BookOfYog/linglong-showcase-reconstruction.md](GamePack/UnityReconstruction/Profiles/BookOfYog/linglong-showcase-reconstruction.md) | 实际版本、路径、资源、实现、修复、验证结果和未验证边界。 |
+| UE 解包与工具链参考 | [GamePack/UnityReconstruction/references/unreal-extraction-toolchain.md](GamePack/UnityReconstruction/references/unreal-extraction-toolchain.md) | 容器/映射/依赖、模型贴图动作导出、原生默认值、工具选择、错误定位与可重复提取。 |
+| UE 动画与次级运动参考 | [GamePack/UnityReconstruction/references/unreal-animation-and-secondary-motion.md](GamePack/UnityReconstruction/references/unreal-animation-and-secondary-motion.md) | Montage/Notify、RichCurve、单位与镜像四元数、动态 Alpha、惯量和约束、独立数值与实际播放验证。 |
+| UE 渲染管线移植参考 | [GamePack/UnityReconstruction/references/unreal-render-pipeline-porting.md](GamePack/UnityReconstruction/references/unreal-render-pipeline-porting.md) | 顶点通道、Shader、GBuffer/阴影/反射、后处理、FSR3、Niagara、原生分辨率与分层差异定位。 |
+| 独立 Unity Worker 与交付验证 | [GamePack/UnityReconstruction/references/isolated-unity-worker-and-delivery-validation.md](GamePack/UnityReconstruction/references/isolated-unity-worker-and-delivery-validation.md) | 后台宿主、并行写入所有权、异步完成语义、全工程编译、基线保护、退出诊断与最终哈希清单。 |
+| 龙之剑觉醒六角色还原 Profile | [GamePack/UnityReconstruction/Profiles/DragonSwordAwakening/character-rendering-reconstruction.md](GamePack/UnityReconstruction/Profiles/DragonSwordAwakening/character-rendering-reconstruction.md) | 实际工具/版本/路径、实现落点、故障根因修正、资源与运行验证、证据链和迁移边界。 |
 | Shader 开发 | [ShaderDevelopment/README_Tech_URPShaderDevelopmentRules.md](ShaderDevelopment/README_Tech_URPShaderDevelopmentRules.md) | Shader 分类、URP 复用、Pass、变体、ShaderGUI、角色/场景 Profile、行为保真重构。 |
 | 2D 条带式 3D 颜色 LUT 参考 | [ShaderDevelopment/references/packed-3d-color-lut-sampling-and-debugging.md](ShaderDevelopment/references/packed-3d-color-lut-sampling-and-debugging.md) | `N³ → N²×N` 布局、颜色域、半 texel、第三轴插值、黑白圈层 Debug、Importer、生成器与暗部职责划分。 |
 | 当前工程肤色颜色 LUT Profile | [ShaderDevelopment/Profiles/ProjectACG/skin-color-lut.md](ShaderDevelopment/Profiles/ProjectACG/skin-color-lut.md) | ProjectACG Skin/Face 的 LUT 路径、暗部合成、生成器、代表性色块、历史 G 半 texel 偏移、A/B 与回退边界。 |

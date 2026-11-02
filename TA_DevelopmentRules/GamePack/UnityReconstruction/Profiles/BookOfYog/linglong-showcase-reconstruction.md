@@ -101,6 +101,34 @@ DynamicBone/CameraDriven 的实现来自原 `GameAssembly.dll` 与 metadata 的�
 | E-BOY-05 `Validation/FullSceneComparison1.json` | `C610E97E217D0E1A2226351E379DC7E250AA70858F7475219D7D3567C9764EF6` | `compare_full_scene.py`，固定原参考与本次候选截图 |
 | E-BOY-06 `Validation/main-project-health.json` | `1B1306E6AE54CF59D38B7CC618347944524AA9F5C7ED12C0A7ED9DED1ACFD226` | 主工程打开与包解析健康检查；`Evidence/LocalURP.md` 记录故障处理 |
 
+## 批量角色抓帧复刻的当前状态（2026-11-01）
+
+`Cap/依盖之书` 中除已完成的 `1` 外有 36 份 RDC。`2`–`18`、`23`–`35` 的 32 份可回放，已在复刻根 `Scenes/Batch` 生成场景；`19`–`22` 的四份 RDC 无法回放，不能用同目录 JPG 推定其 Shader 常量或动画姿态。原始输入、候选 UI prefab 和源哈希见 `Evidence/BatchCaptures/batch-plan.json`。32 组导入的 `Validation/Batch/CapturedMaterialSummary.json` 为成功 32、失败 0、抓帧材质 472、子网格绑定 489、未绑定子网格 0；32 组 `*-preview.json` 均为非空预览，仍标注效果对齐待完成。
+
+早期批量材质生成器只覆盖普通 VS/PS，漏掉 41 个绑定 Hull/Domain 的角色 draw。`Evidence/BatchCaptures/*/*-tessellation.json` 显示它们共用 HS 哈希 `77c40f1bb288...`，三控制点三角 patch、`fractional_even`，边缘与内部因子均为 5；正面与其他通道使用两种 DS 哈希。代表事件 `30/frame129132/E1645` 输入 16,770 索引、后细分 905,580 顶点；固定拓扑已有实现，Domain 位移仍为近似。`33` 号角色另有 2 个特殊 VS draw，原顶点纹理采样和位移运算也已接入。`Validation/shader-compilation.json` 最新记录 Unity 2022.3.62f3 / D3D11 的 536 个组合、0 编译错误，不能据此声称画面一致。
+
+主相机必须从角色正面 draw 的常量读取，不能拿同一 RDC 的首个阴影/反射 draw。`Tools~/Batch/audit_showcase_cameras.py` 在各组 `*-shared-materials.json` 的普通正面 draw 中选事件，再取 VS `cb1[4]` 的相机位置及投影矩阵推导 FOV；审计结果在 `Evidence/BatchCaptures/batch-camera-audit.json`。32 组 FOV 均约 25°，机位大多与玲珑模板一致，少数偏移约 0.1 米；`YogBatchSceneBuilder.ApplyCapturedCameras` 已写入各场景与 `*-scene.json`。本轮曾因 JSON 将 `Vector3` 写成数组，Unity `JsonUtility` 读为零向量，导致 32 个预览全黑；改为 `{x,y,z}` 后重写场景，32/32 组恢复非空，并加位置/FOV 合法性检查。场景背景、地面和后处理仍使用玲珑模板配置，逐组差异未核验。
+
+32 份可回放 RDC 已从 Uber 后、UI 前的全分辨率 RT 导出线性 EXR，并按玲珑相同翻转和 IEC sRGB 流程生成显示 PNG；资料在 `Validation/Batch/References`。最新完整回归 `Validation/Batch/BatchSceneComparison19.json` 对 1024×576 预览做无配准、无曝光拟合的同帧显示 sRGB 比较：整图 MAE 范围 0.02310–0.06104，均值 0.03176，32 组预览均非空。目标 Unity 2022.3.62f3 / D3D11 的最新 `Validation/shader-compilation.json` 检查 536 个 Pass/变体、错误 0；`BatchSceneComparison2`–`18.json` 保留为阶段快照，其中 `12` 包含被独立复拍否定的 5 号 0.4 秒相位试验，不能用作当前结果。`Evidence/BatchCaptures/batch-environment-post-reuse.json` 证明 32 份抓帧均执行与玲珑相同字节码的 8 组主环境 VS/PS，以及 TAA、LUT、Uber 程序；常量、纹理、几何和最终像素仍需逐帧核验。主光方向、点光位置和强度在 32 份角色正面 draw 中相同，见 `batch-lighting-audit.json`。
+
+本轮明确修复三组可见偏差：`5/frame50787` 九条尾部多余的 URP Lit 材质覆盖移除后整图 MAE 0.09897 → 0.06103，原 E1561 特效 draw 尚未复刻；`7/frame52335` 武器按 E1372 世界矩阵换算到 Prefab 本地空间后 0.07333 → 0.04760；`26/frame133463` 帽饰源 Mesh 实际顶点范围异常，改用 E1593 GPU 输入网格并接到 `Bone_Hat01` 后 0.12122 → 0.02448。修复入口为 `Editor/YogBatchAttachmentRepair.cs`、`YogBatchGpuMeshRepair.cs`、`YogBatchCapturedMaterials.cs`；逐角色报告、参考图和预览在复刻根 `Validation/Batch`。`31` 号额外 Lit 槽的移除试验使误差升高，已恢复原槽位，不能推广 `5` 号的特例。
+
+`5/frame50787` 九个尾部 Flow draw 已按 E1541–E1581 的同一 VS/PS 编译并恢复第二材质槽，`Evidence/BatchCaptures/5/*-captured-materials.json` 报告 24 材质、9 Flow Pass、0 未绑定；Flow 影响约 3,116 像素，但整图 MAE 0.061026 → 0.061035，未改善主要差异。`26/frame133463` 已补 E1652/E1697 两个气球主体 GPU 网格和 E1895 透明层，数据在 `balloon-draw-inputs.json` 与 `*-gpu-mesh-event*-uv1.bin`；整图 MAE 0.024483 → 0.024018，Domain 位移仍是近似。
+
+`7/frame52335` 缺失链条定位到 E2513/E2516，原 VS/PS 哈希分别为 `676b4b2e...`/`578ea2b2...`。原 GPU `COLOR` 输入来自独立的零步长 `R8G8B8A8_UNORM` 顶点流，字节为 `FFFFFFFF`；旧通用网格导出器把它按 float32 误读为 NaN。`chain-vertex-layout.json` 保留格式和资源，`generate_case7_chains.py` 写入带双 UV 的 IA 网格与 URP Shader，`YogBatchCapturedMaterials.BuildCase7Chains` 绑定抓帧常量、透明状态和源 PNG。目标编译通过，预览可见链条且整图 MAE 0.047596 → 0.046079。当前 Shader 直接使用该帧捕获的对象与 VP 常量，因此链条只对这一静态姿态定位，切换动作时不会动态跟随；源 PNG 尚未做原 GPU BC3/mip 字节回归，不能宣称该效果逐像素一致。
+
+`16/frame61565` 的像素历史定位六个粒子 draw：E2244、E2261、E2399、E2409、E2414、E2472；它们共用 VS `af528120...`，像素程序分三种。`effects-draw-inputs.json`、`effect-vertex-layout.json` 和 `effect-mesh-summary.json` 分别保存常量/贴图/透明状态、实际 IA 格式和六份当帧网格。E2244/E2472 顶点步长 36，其他四条为 52，颜色均按 `R8G8B8A8_UNORM` 解码。`YogBatchCapturedMaterials.BuildCase16Effects` 将网格和三种 URP Shader 接到场景，整图 MAE 0.050050 → 0.04557；源 PNG 尚未做 GPU 字节回归。头后环形的主要像素贡献由 `halo-pixel-values.json` 指向武器 E1459，源 Mesh 与抓帧 IA 有相同 1,788 顶点/5,040 索引，索引不匹配数 0；刚体拟合 RMS 约 0.0000008 米，表明差异主要是坐标朝向。`BuildCase16CapturedWeaponPreview` 用 E1459 网格和对象矩阵建立静态对照对象，最终 MAE 0.044983。原可动画武器仍在 Prefab，当前场景禁用其渲染；静态对照不随动作更新。
+
+`6/frame51525` 将棺体按 E1267 实际对象矩阵修正到角色挂点，并用共享链条 Shader 接入 E2156/E2159 的独立常量、GPU 网格和源纹理；整图 MAE 0.043465 → 0.034057。`27/frame131865` 按 E1351/E1370/E1449/E2240 的对象矩阵和 GPU 网格复原机械臂、刀和火翼等四个静态附件，MAE 0.043088 → 0.033450。两者的截图和逐组证据在 `Validation/Batch`、`Evidence/BatchCaptures/6`、`Evidence/BatchCaptures/27`；`27` 的当帧静态对象尚未证明随原动作骨骼更新。
+
+`3/frame49277` 的像素历史定位剑光 E2267、剑身 E1351 和叠层 E1489；导出实际网格、常量和 GPU 纹理后，整图 MAE 0.04049 → 0.03413。`11/frame56826` 以 E1439/E1534 的 GPU 网格和对象矩阵修正双剑，MAE 0.04103 → 0.03731。两组当前显示当帧静态对照对象，原可动画网格保留但禁用渲染；动态挂点仍未验证。`13/frame57795` 的镰刀 E1834、`14/frame60290` 的锤子 E879 使用 VS `cb3_v0..3` 对象矩阵修正 Prefab 武器模块，分别使 MAE 0.03692 → 0.03607、0.04018 → 0.03652；入口为 `Editor/YogBatchAttachmentRepair.cs` 中的 `AlignIridaWeaponToCapture` 与 `AlignChloeWeaponToCapture`。这两组保留原武器渲染器及骨骼父级，但尚未验证动态播放时与原效果一致。
+
+`5/frame50787` 的动作相位诊断显示连续采样不具备单次场景重开的再现性：粗扫 0.4 秒得到整图 MAE 0.058833，细扫同一时间得到 0.067486，重新打开场景并单次渲染得到 0.07082，差于原 0 秒的 0.061035。连续扫描混入先前采样的姿态/历史状态，不能据此确认原抓帧动作相位；已将场景恢复到 0 秒并重拍。`Validation/Batch/BatchSceneComparison19.json` 保留恢复后的 0 秒基准，试验图仅供排查，不代表有效候选。
+
+`19/frame65745` 的 423,895,797 字节 RDC 存在 framecapture 段压缩长度字段与文件末尾不符。独立副本修补该字段后，RenderDoc `OpenFile` 成功，但 `OpenCapture` 仍因读取数据流末尾失败，不能提升为可回放证据；原件未修改。偏移、修补值和状态见 `Evidence/BatchCaptures/19/frame65745-repair-attempt.md`。`20`–`22` 的 RDC 仅 413,637、336,130、299,022 字节，均在 framecapture 段内截断；四组需要新抓帧。
+
+当前未验证项：`5` 号尾部主要可见偏差、`26` 号气球 Domain 位移、`3`/`11`/`16`/`27` 号静态对象与特效在动态播放下的挂点、`13`/`14` 号可动画武器模块的动态对齐、原 GPU 纹理字节，以及其他角色附属件挂点和独立骨架动作相位、阴影与描边变体、逐角色 HDR 和环境/后处理常量。上述区域 MAE 是诊断，不等于逐像素一致。损坏 RDC 的四组只能标为候选，获得可回放抓帧后再提升验证级别。复刻根 `README.md` 给出场景和阶段入口；这些批量数字不可回填到玲珑 `1` 号场景的既有逐像素结论。
+
 ## 复现入口与维护
 
 在目标工程根可执行以下已存在的入口；命令会更新项目内产物，先核对输入清单与当前编辑器状态。后台 Worker 使用隐藏窗口，不依赖鼠标；异步检查需等待最终 JSON。

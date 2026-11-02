@@ -1,28 +1,40 @@
 ---
 name: ta-development-rules-unity-capture-reconstruction
-description: 标准 UnityFS 客户端与 RenderDoc 抓帧的资源、动画和渲染效果复刻规则；区分通用规则、操作参考和项目证据。
+description: Unity 与 Unreal 客户端资源、动画和 RenderDoc 渲染链到目标 Unity 工程的还原规则；区分通用规则、操作参考和项目证据。
 ---
 
-# TA 通用开发规则｜Unity 抓帧复刻模块（CORE + PROFILE）
+# TA 通用开发规则｜客户端到 Unity 渲染还原模块（CORE + REFERENCE + PROFILE）
 
 ## 概览
 
-> **文档模式**：ta-development-rules/unity-capture-reconstruction/v1
+> **文档模式**：ta-development-rules/unity-capture-reconstruction/v2
 > **语言与编码**：中文，UTF-8
 > **总入口**：[TA 通用开发规则](../../README_Tech_TADevelopmentRules.md)
 
-本模块适用于已获授权的本地 Unity 客户端资源与 GPU 抓帧分析，以及在目标 Unity 工程中恢复可编辑的模型、动画、材质、光照、背景和后处理。它不替代具体资产旁的功能 README，也不把单帧结果扩展成所有镜头和动画时刻的结论。
+本模块适用于已获授权的本地 Unity 或 Unreal 客户端资源与 GPU 抓帧分析，以及在目标 Unity 工程中恢复可编辑的模型、动画、材质、光照、背景、次级运动和后处理。它不替代具体资产旁的功能 README，也不把单帧结果扩展成所有镜头和动画时刻的结论。目录与文件名沿用原入口，保持已有链接和规则 ID 稳定。
 
 按任务读取 [资源与渲染复刻工作流](references/unity-asset-and-render-reconstruction-workflow.md)、[验证与故障排查](references/renderdoc-validation-and-troubleshooting.md)，再读取 [依盖之书 Profile](Profiles/BookOfYog/linglong-showcase-reconstruction.md)。加密容器的专项流程见既有[终末地规则](../TA_终末地Unity资源解包逆向与渲染复刻开发规则.md)；标准 UnityFS 不默认套用其 VFS/BLC/CHK 解密步骤。Shader、RendererFeature 的一般职责仍以 [Shader 开发模块](../../ShaderDevelopment/README_Tech_URPShaderDevelopmentRules.md) 为准。
 
+Unreal 到 Unity 的完整经验按以下顺序阅读。前四项是迁移时重新验证的方法，最后一项保留龙之剑的具体参数和证据，不把个案参数升级为通用默认值。
+
+| 阅读入口 | 解决的问题 |
+| --- | --- |
+| [UE 解包与工具链](references/unreal-extraction-toolchain.md) | 容器、映射、依赖闭包、模型/动画/贴图导出、原生默认值、工具选择与失败定位 |
+| [动画与次级运动](references/unreal-animation-and-secondary-motion.md) | Montage、通知、面部曲线、单位和负缩放、动态权重、物理坐标与独立基准 |
+| [渲染管线移植](references/unreal-render-pipeline-porting.md) | Shader、顶点通道、光照/阴影、反射、Niagara、后处理、时域精度与画面指标 |
+| [独立 Worker 与交付验证](references/isolated-unity-worker-and-delivery-validation.md) | 不干扰主编辑器、并行所有权、编译与真实播放、原内容保护、退出诊断与最终清单 |
+| [龙之剑完整项目 Profile](Profiles/DragonSwordAwakening/character-rendering-reconstruction.md) | 工具版本、路径、真实故障及修正、数值结果、Evidence→Finding→Path 和未验证边界 |
+
 ## 工作流程
 
-1. **加载上下文**：确认授权输入、游戏/目标 Unity 版本、渲染管线、图形 API、参考图和抓帧是否同一时刻。
+1. **加载上下文**：确认授权输入、源引擎与目标 Unity 版本、渲染管线、图形 API、参考图和抓帧是否同一时刻。
 2. **分类并冻结目标**：界定角色、环境、UI 和动态历史的范围；为原始文件、目标画面和工程状态建立哈希与版本清单。
-3. **建立依赖闭包**：索引 bundle 和对象引用，恢复模型、骨架、贴图、动作及材质映射，记录不能解析的依赖。
+3. **建立依赖闭包**：按源引擎索引容器、对象和运行配置引用，恢复模型、骨架、贴图、动作及材质映射，记录不能解析的依赖。
 4. **恢复 GPU 数据流**：按实际 draw/dispatch、资源版本、常量缓冲和 Pass 顺序重建 Shader、光照、阴影、反射、AO 与后处理。
 5. **最小集成**：把资源、证据、脚本和可修改管线集中在工程内；只修改有证据要求的管线入口并保存回退配置。
 6. **分层验证与交付**：先核对字节、曲线和几何，再做同输入 GPU 对比、实时场景区域对比及动态播放，分别声明结论范围。
+
+制作顺序以一个代表角色贯通上述流程，再推广到其他角色。共享实现通过不表示每个角色的材质、独立武器、物理分支与绘制集合已经齐全；批量角色保留各自输入清单及验收。遇到差异时回到首次偏离的层级，不同时修改贴图、光照、后处理和物理参数来追最终截图。
 
 ## 通用规则（CORE）
 
@@ -60,6 +72,28 @@ description: 标准 UnityFS 客户端与 RenderDoc 抓帧的资源、动画和�
 - **验证**：统计 clip 数、曲线/key 数、缺失路径、实际骨骼位移；检查纹理全部 mip/face 字节或记录有损转换边界。
 - **例外与回退**：原引擎/平台格式目标不支持时，保留原字节和转换日志，用量化误差说明替代资产。
 
+#### UCR-AST-02｜恢复参数的实际求值来源
+
+序列化字段、类默认值、实例覆盖和运行时状态是不同来源；还原行为时要确认实际执行的输入及求值顺序。
+
+- **必须（MUST）**：追踪影响当前效果的默认值、覆盖、动态绑定、分支与执行顺序；记录缺失字段的语义和未解析输入。
+- **应当（SHOULD）**：用独立源数据与实际宿主采样交叉验证，分别检查静态资产和运行时有效状态。
+- **禁止（MUST NOT）**：把未序列化字段自动视为零，把同一对象的互斥状态同时启用，或用目标引擎默认行为填充未经证实的语义。
+- **验证**：选择边界值、分支切换及典型时间点，对照原输入来源、目标求值结果和实际可见行为。
+- **例外与回退**：无法证明来源时保留原数据与未知状态；必要替代明确标为近似，不改写证据。
+
+### ISO｜并行写入与共享状态
+
+#### UCR-ISO-01｜声明写入所有权与宿主状态边界
+
+后台验证、多角色批处理和并行协作中的共享资源需要显式所有权。既有内容保护遵循总入口的共同交付门槛。
+
+- **必须（MUST）**：界定任务可写集合、共享输入、独立工作副本及状态恢复责任；同一宿主的场景、编译、渲染和报告依赖按顺序执行。
+- **应当（SHOULD）**：并行处理相互独立的读取和产物；对实际共享写入采用单一控制者和可追溯请求。
+- **禁止（MUST NOT）**：将共享目录链接当作只读隔离，或在没有修改来源证据时回退其他任务的变化。
+- **验证**：核对写入路径、前后哈希、进程身份、依赖完成状态和恢复结果；分别记录字面基线变化与变化的已知来源。
+- **例外与回退**：确需全局状态或包改动时，记录作用范围、回退配置及相关回归；只恢复本任务拥有的改动。
+
 ### VAL｜复刻质量与交付
 
 #### UCR-VAL-01｜分离模块一致性和整场景一致性
@@ -82,9 +116,21 @@ description: 标准 UnityFS 客户端与 RenderDoc 抓帧的资源、动画和�
 - **验证**：保存编辑器日志与最终 JSON/图像报告；核对 `.meta`/GUID、包 source 与场景依赖。
 - **例外与回退**：目标 GPU 暂不可用时只报告静态/离线检查，待真实宿主验证后再提升结论等级。
 
+#### UCR-VAL-03｜验证正式场景的实时输入独立性
+
+捕获的输出、固定姿势和历史快照可以服务诊断，正式实时场景是否具备自己的输入生产链需另行证明。
+
+- **必须（MUST）**：区分诊断与正式配置；对需求及原语义要求实时更新的动画、模拟、几何、光影和历史输入，确认其生产链由当前场景驱动，报告真实运行帧及变化；原语义为静态的输入核对来源与绑定。
+- **应当（SHOULD）**：同时核对序列化配置、资源生产者和实际输出；抽样检查可见完整性、运动停止后的历史及状态切换。
+- **禁止（MUST NOT）**：用截图贴片、捕获目标、静态后变换几何或固定姿态替代实时功能，却把结果声明为已恢复该功能。
+- **验证**：更改时间、姿态或相机时，关联输出按契约变化；同输入模块验证与正式场景播放分别保留结论。
+- **例外与回退**：用户只要求固定展示时可采用明确命名的静态方案；不将其验证范围扩展为实时行为。
+
 ## 项目定制规则（PROFILE）
 
 《依盖之书》玲珑展示场景的路径、版本、资源集合、算法数值、已解决故障及当前验证状态全部在 [BookOfYog Profile](Profiles/BookOfYog/linglong-showcase-reconstruction.md)。不得把该 Profile 的事件号、矩阵、包安装方式或指标直接用于其他角色或游戏。
+
+《龙之剑觉醒》六角色 UE 到 Unity 还原的工具链、坐标映射、动态状态、修复表、最终验证及精度边界在 [DragonSwordAwakening Profile](Profiles/DragonSwordAwakening/character-rendering-reconstruction.md)。源项目的功能 README、脚本和完整证据仍由该工程维护；规则库只保留可复用总结及来源索引，不搬入资源或复制整套实现。
 
 ## 资源加载与规则维护
 
@@ -94,5 +140,9 @@ description: 标准 UnityFS 客户端与 RenderDoc 抓帧的资源、动画和�
 | Shader/环境/后处理复刻 | `UCR-EVD-02`、`UCR-VAL-01`、工作流的 GPU 数据流段、对应 Shader 模块规则、实际 RDC |
 | URP 管线改动 | `UCR-VAL-02`、目标 `ProjectVersion.txt`、manifest/lock、当前 Renderer 与回退配置 |
 | 排错与复测 | [验证与故障排查](references/renderdoc-validation-and-troubleshooting.md)、最新带时点的报告与编辑器日志 |
+| UE 容器与导出工具 | [UE 解包与工具链](references/unreal-extraction-toolchain.md)、当前源引擎/包版本、映射与容器索引 |
+| UE 展示动作与物理 | `UCR-AST-02`、[动画与次级运动](references/unreal-animation-and-secondary-motion.md)、原生曲线/图状态/坐标基准 |
+| UE Shader、时域与粒子 | [渲染管线移植](references/unreal-render-pipeline-porting.md)、当前事件清单、运行参数与历史资源 |
+| 后台与批量交付 | `UCR-ISO-01`、`UCR-VAL-03`、[独立 Worker 与交付验证](references/isolated-unity-worker-and-delivery-validation.md) |
 
 新问题先写入项目 Profile 的事实与证据；复现、根因和跨项目适用范围确认后，再提炼至 reference 或 CORE。项目源码和资产的单功能说明继续放在其附近。
