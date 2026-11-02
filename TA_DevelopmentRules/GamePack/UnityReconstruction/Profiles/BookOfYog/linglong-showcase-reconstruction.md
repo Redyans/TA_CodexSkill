@@ -109,7 +109,7 @@ DynamicBone/CameraDriven 的实现来自原 `GameAssembly.dll` 与 metadata 的�
 
 主相机必须从角色正面 draw 的常量读取，不能拿同一 RDC 的首个阴影/反射 draw。`Tools~/Batch/audit_showcase_cameras.py` 在各组 `*-shared-materials.json` 的普通正面 draw 中选事件，再取 VS `cb1[4]` 的相机位置及投影矩阵推导 FOV；审计结果在 `Evidence/BatchCaptures/batch-camera-audit.json`。32 组 FOV 均约 25°，机位大多与玲珑模板一致，少数偏移约 0.1 米；`YogBatchSceneBuilder.ApplyCapturedCameras` 已写入各场景与 `*-scene.json`。本轮曾因 JSON 将 `Vector3` 写成数组，Unity `JsonUtility` 读为零向量，导致 32 个预览全黑；改为 `{x,y,z}` 后重写场景，32/32 组恢复非空，并加位置/FOV 合法性检查。场景背景、地面和后处理仍使用玲珑模板配置，逐组差异未核验。
 
-32 份可回放 RDC 已从 Uber 后、UI 前的全分辨率 RT 导出线性 EXR，并按玲珑相同翻转和 IEC sRGB 流程生成显示 PNG；资料在 `Validation/Batch/References`。最新完整回归 `Validation/Batch/BatchSceneComparison19.json` 对 1024×576 预览做无配准、无曝光拟合的同帧显示 sRGB 比较：整图 MAE 范围 0.02310–0.06104，均值 0.03176，32 组预览均非空。目标 Unity 2022.3.62f3 / D3D11 的最新 `Validation/shader-compilation.json` 检查 536 个 Pass/变体、错误 0；`BatchSceneComparison2`–`18.json` 保留为阶段快照，其中 `12` 包含被独立复拍否定的 5 号 0.4 秒相位试验，不能用作当前结果。`Evidence/BatchCaptures/batch-environment-post-reuse.json` 证明 32 份抓帧均执行与玲珑相同字节码的 8 组主环境 VS/PS，以及 TAA、LUT、Uber 程序；常量、纹理、几何和最终像素仍需逐帧核验。主光方向、点光位置和强度在 32 份角色正面 draw 中相同，见 `batch-lighting-audit.json`。
+32 份可回放 RDC 已从 Uber 后、UI 前的全分辨率 RT 导出线性 EXR，并按玲珑相同翻转和 IEC sRGB 流程生成显示 PNG；资料在 `Validation/Batch/References`。最新完整回归 `Validation/Batch/BatchSceneComparison21.json` 对 1024×576 预览做无配准、无曝光拟合的同帧显示 sRGB 比较：整图 MAE 范围 0.02310–0.06104，均值 0.03177，32 组预览均非空。目标 Unity 2022.3.62f3 / D3D11 的最新 `Validation/shader-compilation.json` 检查 542 个 Pass/变体、错误 0；`BatchSceneComparison2`–`20.json` 保留为阶段快照，其中 `12` 包含被独立复拍否定的 5 号 0.4 秒相位试验，不能用作当前结果。`Evidence/BatchCaptures/batch-environment-post-reuse.json` 证明 32 份抓帧均执行与玲珑相同字节码的 8 组主环境 VS/PS，以及 TAA、LUT、Uber 程序；常量、纹理、几何和最终像素仍需逐帧核验。主光方向、点光位置和强度在 32 份角色正面 draw 中相同，见 `batch-lighting-audit.json`。
 
 本轮明确修复三组可见偏差：`5/frame50787` 九条尾部多余的 URP Lit 材质覆盖移除后整图 MAE 0.09897 → 0.06103，原 E1561 特效 draw 尚未复刻；`7/frame52335` 武器按 E1372 世界矩阵换算到 Prefab 本地空间后 0.07333 → 0.04760；`26/frame133463` 帽饰源 Mesh 实际顶点范围异常，改用 E1593 GPU 输入网格并接到 `Bone_Hat01` 后 0.12122 → 0.02448。修复入口为 `Editor/YogBatchAttachmentRepair.cs`、`YogBatchGpuMeshRepair.cs`、`YogBatchCapturedMaterials.cs`；逐角色报告、参考图和预览在复刻根 `Validation/Batch`。`31` 号额外 Lit 槽的移除试验使误差升高，已恢复原槽位，不能推广 `5` 号的特例。
 
@@ -123,11 +123,13 @@ DynamicBone/CameraDriven 的实现来自原 `GameAssembly.dll` 与 metadata 的�
 
 `3/frame49277` 的像素历史定位剑光 E2267、剑身 E1351 和叠层 E1489；导出实际网格、常量和 GPU 纹理后，整图 MAE 0.04049 → 0.03413。`11/frame56826` 以 E1439/E1534 的 GPU 网格和对象矩阵修正双剑，MAE 0.04103 → 0.03731。两组当前显示当帧静态对照对象，原可动画网格保留但禁用渲染；动态挂点仍未验证。`13/frame57795` 的镰刀 E1834、`14/frame60290` 的锤子 E879 使用 VS `cb3_v0..3` 对象矩阵修正 Prefab 武器模块，分别使 MAE 0.03692 → 0.03607、0.04018 → 0.03652；入口为 `Editor/YogBatchAttachmentRepair.cs` 中的 `AlignIridaWeaponToCapture` 与 `AlignChloeWeaponToCapture`。这两组保留原武器渲染器及骨骼父级，但尚未验证动态播放时与原效果一致。
 
+`32/frame9114` 的 Pixel History 将大剑轮廓定位到 E1983 `SM_ZXY_Wep01`、E2113 `SM_ZXY_Jian01`，不是已有蒙皮网格 `SM_ZXY_SW01`。原资源在 `pre_zxy_wep01.prefab` 与 `pre_zxy_jian01.prefab`，8 个 bundle 的依赖闭包和副本哈希记录在 `Evidence/BatchCaptures/32/frame9114-weapon-source.json`。两条 draw 的实际 IA 网格、常量、去重 GPU 贴图与原 VS/PS 字节码已接入 `Characters/ZXY01/Cases/32_frame9114`，新增前向 Shader 在 `Shaders/BatchVariants/Variant_ffab4e1fe653.shader`。E1983 剑刃已挂到角色右手 `Bone_Wep01`，不改变当帧世界矩阵；`Validation/Batch/32_frame9114_blade-playback.json` 的 0–1.5 秒展示动作采样记录手部位移 0.0120 米、剑刃位移 0.0168 米、局部位置漂移 0。E2113 后侧剑体仍为静态对照对象。当帧截图中左下剑刃轮廓出现，但新增部分明显偏暗，整图 MAE 0.03590 → 0.03624；这是几何与来源恢复，不是着色验收，跨帧原游戏运动仍未对照。
+
 `5/frame50787` 的动作相位诊断显示连续采样不具备单次场景重开的再现性：粗扫 0.4 秒得到整图 MAE 0.058833，细扫同一时间得到 0.067486，重新打开场景并单次渲染得到 0.07082，差于原 0 秒的 0.061035。连续扫描混入先前采样的姿态/历史状态，不能据此确认原抓帧动作相位；已将场景恢复到 0 秒并重拍。`Validation/Batch/BatchSceneComparison19.json` 保留恢复后的 0 秒基准，试验图仅供排查，不代表有效候选。
 
 `19/frame65745` 的 423,895,797 字节 RDC 存在 framecapture 段压缩长度字段与文件末尾不符。独立副本修补该字段后，RenderDoc `OpenFile` 成功，但 `OpenCapture` 仍因读取数据流末尾失败，不能提升为可回放证据；原件未修改。偏移、修补值和状态见 `Evidence/BatchCaptures/19/frame65745-repair-attempt.md`。`20`–`22` 的 RDC 仅 413,637、336,130、299,022 字节，均在 framecapture 段内截断；四组需要新抓帧。
 
-当前未验证项：`5` 号尾部主要可见偏差、`26` 号气球 Domain 位移、`3`/`11`/`16`/`27` 号静态对象与特效在动态播放下的挂点、`13`/`14` 号可动画武器模块的动态对齐、原 GPU 纹理字节，以及其他角色附属件挂点和独立骨架动作相位、阴影与描边变体、逐角色 HDR 和环境/后处理常量。上述区域 MAE 是诊断，不等于逐像素一致。损坏 RDC 的四组只能标为候选，获得可回放抓帧后再提升验证级别。复刻根 `README.md` 给出场景和阶段入口；这些批量数字不可回填到玲珑 `1` 号场景的既有逐像素结论。
+当前未验证项：`5` 号尾部主要可见偏差、`26` 号气球 Domain 位移、`3`/`11`/`16`/`27` 号静态对象与特效及 `32` 号 E2113 后侧剑体在动态播放下的挂点、`13`/`14` 号可动画武器模块的动态对齐、`32` 号剑体当前偏暗的 Shader/光照差异、其他组原 GPU 纹理字节，以及附属件挂点和独立骨架动作相位、阴影与描边变体、逐角色 HDR 和环境/后处理常量。上述区域 MAE 是诊断，不等于逐像素一致。损坏 RDC 的四组只能标为候选，获得可回放抓帧后再提升验证级别。复刻根 `README.md` 给出场景和阶段入口；这些批量数字不可回填到玲珑 `1` 号场景的既有逐像素结论。
 
 ## 复现入口与维护
 

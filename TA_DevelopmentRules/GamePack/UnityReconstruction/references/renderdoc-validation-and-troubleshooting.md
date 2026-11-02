@@ -28,6 +28,11 @@
 | 现象 | 排查方法与修复 | 验证/回退 |
 | --- | --- | --- |
 | `.anim` 有文件但只剩 1 秒、零曲线 | 检查源 clip 是否只有 runtime StreamedClip；解析原系数、Avatar/TOS 并显式写编辑器曲线。 | 比对原时长、binding/key、真实骨骼采样；无映射 hash 保留原数据。 |
+| 首次初始化失败后每帧空材质异常或黑屏 | 分别检查 Shader、材质和 RT；单个 RT 已分配不代表整组资源 ready。失败时回收部分状态并允许恢复。见[编辑态预览参考](editor-preview-and-camera-adaptation.md)。 | 对照资源缺失、恢复、重载和真实 draw；仅跳过空材质不能证明效果恢复。 |
+| Play 正常、刚开场景的 Game 黑屏 | 核查管线是否只在运行时安装，以及当前质量档是否覆盖全局配置；建立可恢复的编辑预览所有权。见[编辑态预览参考](editor-preview-and-camera-adaptation.md)。 | 验证打开/关闭场景、保存、Play 切换和域重载，确认配置恢复。 |
+| Scene 粉绿异色而 Game 正常 | 核查 Scene 相机是否进入完整延迟/后处理链，是否仍读捕获 View 或直接输出 GBuffer。见[自由相机适配参考](editor-preview-and-camera-adaptation.md)。 | 覆盖自由相机、正交、正式相机交替渲染；分别记录实际 GPU 与 GUI 交互验证。 |
+| 横屏反射正常、竖屏与接触面脱节 | 分开检查反射纹理生产者、卡片消费者及两者投影；固定源 NDC 可能抵消真实 aspect 变化。见[反射适配参考](editor-preview-and-camera-adaptation.md)。 | 用独立投影预期和横/竖屏实际图核对接触点，非黑或有限值不能替代几何正确性。 |
+| 最终颜色正常但提示临时渲染目标不存在 | 全局采样名称未必是可写 RT 标识；在正确生命周期获取实际 handle，并保留原资源所有者。见[深度回写参考](editor-preview-and-camera-adaptation.md)。 | 将已确认会使写入失败的 Warning 纳入验收，核查深度及工具遮挡；不能宣称所有警告为零。 |
 | 动作显示几乎不动 | 先比较源曲线的标量范围与实际骨骼位移，确认是否原始近静止片段。 | 不用“视觉不明显”直接判坏；检查源字节与 Unity 持久化曲线。 |
 | 原 mesh 某些效果缺失 | 将 RenderDoc 顶点输入/输出与 AssetBundle Mesh 通道逐点比较，定位运行期新增 UV/顶点流。 | 只补已取证通道，重验 submesh 和描边/粒子 draw。 |
 | 导出的顶点色含 NaN 或极大浮点数 | 读取 `GetVertexInputs()` 的 `format`、`vertexBuffer`、`byteStride` 和偏移；零步长顶点流代表每顶点复用相同字节。按实际 UNorm/UInt/Float 类型解码，不能仅根据组件字节宽度选择 float 解包。 | 保留原四字节样本与通道布局，重建后核对顶点色、UV 和特效 draw；旧误读 JSON 只作故障证据。 |
@@ -69,4 +74,4 @@ P-01 source -> extraction -> import/render -> GPU/PlayMode result
 
 ## 验证与回退
 
-故障修复后先重跑最窄的原输入测试，再重跑受影响的场景分区、播放和目标工程健康检查。每次保存新前缀与日志；修复无效时恢复修改前 Package/Renderer/材质配置，保留失败报告便于比对。项目实例与已验证指标见 [BookOfYog Profile](../Profiles/BookOfYog/linglong-showcase-reconstruction.md)。
+故障修复后先重跑最窄的原输入测试，再重跑受影响的场景分区、播放和目标工程健康检查。每次保存新前缀与日志；修复无效时恢复本任务拥有的 Package/Renderer/材质配置，保留失败报告便于比对。项目实例与已验证指标见 [BookOfYog Profile](../Profiles/BookOfYog/linglong-showcase-reconstruction.md) 和 [DragonSwordAwakening Profile](../Profiles/DragonSwordAwakening/character-rendering-reconstruction.md)。

@@ -1,6 +1,6 @@
 # 《龙之剑觉醒》六角色展示还原 Profile
 
-> 类型：PROFILE；证据快照：2026-11-01；语言与编码：中文，UTF-8。
+> 类型：PROFILE；基础交付快照：2026-11-01；预览修复与 Scene 调试补充：2026-11-02；语言与编码：中文，UTF-8。
 
 ## 概览与证据边界
 
@@ -8,7 +8,7 @@
 
 六个可实时播放的角色展示场景已经形成，覆盖模型、身体/面部/武器动作、角色 Shader、原生光照与后处理链，并保留源码、工具和验证数据。不重建原游戏 UI。原生连续动态历史和全部动画时刻的同帧等价未得到证明，最终状态是“实现已交付并有分层证据”，不是“每一帧逐像素相同”。
 
-配套方法按需阅读：[UE 解包工具链](../../references/unreal-extraction-toolchain.md)、[UE 动画与次级运动](../../references/unreal-animation-and-secondary-motion.md)、[UE 渲染链移植](../../references/unreal-render-pipeline-porting.md)、[隔离 Unity Worker 与交付验证](../../references/isolated-unity-worker-and-delivery-validation.md)。单功能说明仍以项目资产旁的 README 和 `Documentation/` 为准。
+配套方法按需阅读：[UE 解包工具链](../../references/unreal-extraction-toolchain.md)、[UE 动画与次级运动](../../references/unreal-animation-and-secondary-motion.md)、[UE 渲染链移植](../../references/unreal-render-pipeline-porting.md)、[隔离 Unity Worker 与交付验证](../../references/isolated-unity-worker-and-delivery-validation.md)、[编辑器预览与自由相机适配](../../references/editor-preview-and-camera-adaptation.md)。单功能说明仍以项目资产旁的 README 和 `Documentation/` 为准。
 
 ### 路径别名
 
@@ -23,7 +23,8 @@
 | 源解析 | UE 5.3 分支，CUE4Parse `EGame.GAME_DragonSwordAwakening` |
 | 源 GPU | D3D12、SM 6.2；本批抓帧内部渲染尺寸 `2128 × 1184`，最终显示窗口可缩放 |
 | 目标宿主 | Unity `2022.3.62f3`、URP `14.0.12`、Windows D3D11 |
-| 交付清单 | `Validation/final-delivery-manifest.json`，UTC `2026-11-01T01:15:09.483197+00:00` |
+| 基础交付时点 | `Validation/final-delivery-manifest.json` 的历史快照，UTC `2026-11-01T01:15:09.483197+00:00`；旧身份保留在下方历史 SHA 表 |
+| 补充交付清单 | 同名清单的当前快照，UTC `2026-11-02T06:15:00.748278+00:00`；整合预览与 Scene 验收，并保留原资源/动画/物理证据 |
 | 资源快照 | `Validation/final-resource-audit.json`，UTC `2026-11-01T01:14:45.228322+00:00` |
 
 ## DSA-01｜保存任务目录、角色归属和既有工程边界
@@ -144,6 +145,8 @@ Shader 转译入口为 `Tools~/Shader/translate_dxil.py`；DXIL 与 temporal 源
 
 ## DSA-07｜按证据层级解读最终验证
 
+本节保留 2026-11-01 基础交付的计数与结果；同名报告后续已更新。2026-11-02 的 Scene/预览修复、健康与编译结果见 DSA-08、DSA-09 及后面的当前文件身份表，不用本节旧计数描述最新源码。
+
 | 验证层 | 结果 | 边界/证据 |
 | --- | --- | --- |
 | 离线编译 | 120 sources，0 errors、0 warnings；551 个只读输入未变化 | `Validation/full-project-csharp-compatibility.json`；只证明本次离线编译 |
@@ -156,6 +159,86 @@ Shader 转译入口为 `Tools~/Shader/translate_dxil.py`；DXIL 与 temporal 源
 02/03/06 的最后一张图在切到原生 summon 动作后部分或全部离开固定展示相机；可见完整性依据其首/中间图检查，不能声称每张图都可完整检查。QA 不承担原生同帧相机或每一时刻的视觉等价验收。
 
 退出遥测还记录 Unity UTP `type=MemoryLeaks`、`phase=Immediate` 的内存标签汇总 `32,652,686 B`，与 JobTempAlloc 不是同一项。后续未复现不能消除历史记录，也不能写成“所有历史日志零 warning”。Extra Emotion/Vehicle、HeadGaze/HandLock 等展示 Montage 之外的玩法辅助保留源证据，未全部重建为游戏逻辑。
+
+## DSA-08｜让 Scene 自由视角使用原渲染链并限定验收范围
+
+本节为 2026-11-02 的新增快照，不改写 DSA-01 至 DSA-07 的历史计数或报告身份。固定捕获 View 常量与源相机镜像投影不能直接充当自由 Scene 视角；需要同时更新光照、阴影、反射、透明和后处理的视图输入，并归还编辑器相机与工具绘制状态。通用实现方法见 [编辑态预览与自由相机适配](../../references/editor-preview-and-camera-adaptation.md)。
+
+当前新增结果：此前竖屏反射脱节与深度目标 Warning 已修正。最终代码的 full_04 24 帧、six_02 六角色 18 帧、portrait_03 3 帧及 15 图独立 QA 通过；本轮 Game 六角色 720 帧播放报告和最终健康检查也已通过。完整反射轮廓、GUI 交互等边界仍保留。
+
+- **必须（MUST）**：仅对六个正式活动场景、唯一有效源 Game 相机及专用管线建立桥接；临时组件、MPB、相机投影和逐相机资源由桥接持有并清理。源 Game 相机、场景和 profile 不因预览操作而被保存改写。
+- **应当（SHOULD）**：使用 `Tools/DragonSword/Scene 效果预览` 开关，以及 `Tools/DragonSword/Scene 对齐 Game 视角` 进入对照。普通 Scene 保持未镜像导航，原 Game 保留横向镜像投影；相同机位不能直接认定同像素。
+- **禁止（MUST NOT）**：把 CPU 矩阵检查、3 帧 GPU 冒烟测试或非黑图像扩大为六角色全部导航/交互通过；不能把 `globalsRestored` 解释为全部 shader globals 已经逐项验证。
+
+项目实现与证据位置如下，完整说明留在 `ROOT/Documentation/2026-11-02_Scene自由视角调试.md`，规则库不维护第二份实现：
+
+| 项目事实/修正 | 实现或来源 | 当前验证边界 |
+| --- | --- | --- |
+| Scene 相机临时组件与完整投影快照；每次渲染结束及异常兜底恢复 | `Editor/DragonSwordSceneViewPreview.cs`、`Runtime/DragonSwordNativeCamera.cs` | Lute 完整检查与六角色快检的真实 Scene 相机接管、projection/culling 恢复、组件清理通过；GUI 操作尚未覆盖 |
+| View 固定世界为 `UnityWorld.xzy*100`；按真实 raster/no-jitter 投影重建 View 与阴影 receiver | `Runtime/DragonSwordViewConstants.cs`、`Tools~/SceneView/view-constants-math-validation.json` | 285 个 View 元数据块、8×200 个数值样本通过；CPU 检查不替代 GPU |
+| 反射相机与显示卡片分别适配，镜像光源/阴影按源 translated origin 重基准 | `Runtime/DragonSwordReflectionView.cs`、`Runtime/DragonSwordSupplementalState.cs`、六组 `CaptureData/Character*/Supplemental/ImportPlan.json` | 288 CPU、full_04、six_02、portrait_03 通过；QA确认竖屏脚底接合，完整反射轮廓覆盖未被证明 |
+| 每 Camera 独立 deferred/motion/temporal 资源；Renderer 完整 MPB 在 `finally` 恢复 | `Runtime/DragonSwordDeferredFeature.cs`、`Runtime/DragonSwordCaptureMaterial.cs` | 源 Game 相机状态不变通过；Lute 固定输入 Game 前后输出 MAE 为 0，多 Scene 窗口交互未覆盖 |
+| 原生深度按尺寸/Y/jitter 回写 URP 实际 RTHandle，工具绘制前恢复相机/逆矩阵 | Feature 的 `SetupRenderPasses()` 读取 URP14 `m_DepthTexture`，以及 `SceneViewDepth` pass | full_04 无关键临时 RT Warning；未验证鼠标拾取、Handles/Gizmo 遮挡 |
+
+**验证**：`Editor/DragonSwordSceneViewValidation.cs` 的实际 Worker 入口为 `DragonSwordReconstruction.Editor.DragonSwordSceneViewValidation.ValidateReport` 与 `ValidateSixScenes`；命令协议见工程专题文档。修正 aspect 和深度 handle 后的 full_04 `Validation/scene-view-validation.json` UTC 为 `2026-11-02T05:38:27.9270491Z`，`passed/fullValidation/navigationMatricesRespond` 均为 true。Unity 2022.3.62f3 / RTX 3060 上共执行 24 次渲染（18 次真实 SceneView、6 次 Game），覆盖 Lute 自由透视、侧面、背面、缩放、正交、同机位与 Game 前后输出；16 阶段快照和所有最终输出均 `nonfinite=0`，`editorErrors=[]`。源 Game 相机、Scene projection/culling、Graphics/Quality 管线与 skinWeights、临时组件清理断言通过。
+
+Lute 同机位比较临时关闭 jitter，统一 1064×592 输出并将 Scene 横向翻转，线性 RGB 逐通道 MAE 全图为 `0.0010848438832908869`，固定中心矩形 `x=35%–65% / y=5%–90%` 为 `0.0039083631709218029`。后者字段虽含 `Character`，实际不是角色分割 mask；两项只记录误差，没有数值等价阈值，不构成逐像素相同或原 UE 同帧一致结论。固定输入 Game before/after MAE 为 `0`。
+
+最终 six_02 的 `Validation/scene-view-batch-validation.json` UTC 为 `2026-11-02T05:41:32.9357089Z`，六个正式角色各 3 帧透视快检，共 18 帧；每角色保存 16 阶段、共 96 个阶段快照，全部有限，桥接及上述恢复断言通过。批量 `passed=true`，各子报告 `editorErrors=[]`。主集成任务已检查 Lute 多视角图；侧视可见原背景面片边缘，背视可能出现原布景未覆盖的黑背景，角色仍正常，不扩建为没有源证据的全景布景。
+
+`Validation/scene-view-visual-qa.json` 时间为 `2026-11-02T14:02:57.256282+08:00`，最终 full_04 Lute 8 图、six_02 六角色 6 图和 portrait_03 1 图独立复核通过，`passed/visibleIntegrityReviewPassed=true`、`blockingVisibleIntegrityFindings=[]`。15 个 PNG 文件共有 13 种字节内容；Game before/after PNG 字节相同。受检可见区域没有剩余阻断性网格缺失、材质失效或明显反射方向错误，竖屏脚底接合明确接受。竖屏反射在约 y=826 处截止、未显示完整反射头部，不能声明完整反射轮廓覆盖；Lute 放大图、Onette 杖尖与 Johnny 头发/下摆的裁切限制也保留。该项不证明离屏内容、全部反射遮挡、连续动画、GUI 交互或原 UE 逐像素等价。
+
+**竖屏失败与修正**：`Evidence~/SceneView-20261102/portrait-before-reflection-aspect-fix/validation.json`（UTC `2026-11-02T05:16:30.3027979Z`）及同目录 `portrait-free-perspective.png` 保留失败现场。592×1064 图像中人物脚底约 y=674、反射脚端约 y=930，约 250 像素脱节，反射还延伸出下边界；图片 SHA-256 为 `f3237cbf43f13812d7f314308cd66eb2cbe01bec3f09120605af44c02e45e195`。该 smoke 的 `passed=true` 仅证明 finite/非空与桥接恢复，图像本身视觉失败，且不在此前 14 图 QA 内。
+
+根因为卡片使用 `capturedMainPy/currentMainPy`，错误地抵消当前主视口宽高比并固定源 NDC 高度；正方形反射 RT 却仍按当前水平 FOV 生成图像。此前“保持源 NDC”的代数目标因此无效，低误差不能支持适配正确。修正为 `sx=capturedProjectionX/currentProjectionX`、`sy=abs(sx)`，保留源卡片约 0.9954 作者尺度及 X 镜像符号；正交两轴仍除源中心深度，reflection jitter 根据透视/正交清除第 2/3 列。目标改为当前主投影与方形反射投影之间的比例关系，而非锁定源 NDC。
+
+`Tools~/SceneView/validate_reflection_card_aspect.py` 与 `reflection-card-aspect-validation.json` 从六组原 PostVS 卡片建立独立预期，覆盖 6 角色 × 4 aspect × 2 投影类型 × 3 水平尺度 × 2 X 符号，共 288 组合。透视最大 NDC 误差 `8.881784197001252e-16`、正交 `3.520106106691401e-5`；后者来自源微非平面及中心深度换算。旧 portrait 纵向放大 `3.23027757487217` 倍，最小 NDC 错误 `1.2352371431006053`；原横屏透视新旧映射差小于 `1e-6`。报告绑定修后代码 SHA `7df53b46d3f9601793a3a951ca603d3806108d0272f12537784d7571a7a03a99`。Worker `sceneview_refresh_08` 和离线编译通过。
+
+`Validation/scene-view-portrait/validation.json` 的最终 portrait_03 报告 UTC 为 `2026-11-02T05:50:49.7124899Z`，3 帧、16 阶段及最终输出全部有限，`passed=true`、`editorErrors=[]`，桥接与恢复通过。主集成任务和独立 QA 查看同目录 `portrait-free-perspective.png`，确认脚底反射已接上，旧约 250 像素空隙消失；新图 SHA-256 为 `ea91f16a748aa2199a6fc742ac0dd9b0efd3788ee273d5f55c69b56a179f9125`，与修后 portrait_02 图片一致。CPU、编译和实际图片各自构成一层证据；full_04 和 six_02 也已通过，仍不扩大为全部角色全部视角验收。
+
+**深度目标与 Warning 验收修正**：full_03 日志检查证明把字符串 `_CameraDepthTexture` 直接用于 `SetRenderTarget` 会触发 `CommandBuffer: temporary render texture` Warning，历史摘录 `Evidence~/SceneView-20261102/depth-target-warning.txt` 保留 12 次消息，不是 12 个不同错误场景。它是 shader 全局采样名称，不是本次已分配的临时 RT 身份；颜色 finite 不能证明深度命令有效。Feature 现在只在 `UNITY_EDITOR` 的 Scene 分支，通过 `SetupRenderPasses()` 读取 URP 14 `UniversalRenderer` 的非公开 `m_DepthTexture` RTHandle，并将该 handle 和公开的 `cameraDepthTargetHandle` 传给 Pass，使用真实 `nameID` 写入。资源由 URP 所有与释放，没有修改 URP 包源码。此字段依赖版本；当前 null 路径会跳过该目标，换版本需核对实际分配和最终深度复制，不以无异常代替有效写入。
+
+旧验证器只收集 Error/Exception/Assert，漏掉上述 Warning。现将日志中包含 `CommandBuffer: temporary render texture` 的消息也计入 `editorErrors` 并判失败，不论其 Unity LogType；这不是把所有 Warning 一律升级。full_04 24 帧的 `editorErrors=[]`，主集成任务检查最新域日志未见该 Warning 或 `ArgumentNullException`，仍不据此声明 GUI Handles/Gizmo 的实际遮挡已经操作验证。
+
+`Validation/preview-fix-playmode-validation.json` UTC 为 `2026-11-02T05:14:48.1353927Z`，本轮六角色各 120 帧、合计 720 帧真实 PlayMode 复测已通过，`errors=[]`；骨变换、颜色、反射均有限，reflection/temporal/motion 各累计 720 帧。该报告覆盖 Game 路径的实际 Update/LateUpdate 与正常播放域重载，早于最后 Scene aspect/depth 修正；后续 Scene 专项由 full_04/six_02/portrait_03 验证，不将时间较早的报告说成最终代码再次播放 720 帧。
+
+首轮 3 帧报告仍保存在 `Evidence~/SceneView-20261102/scene-view-smoke-01.json`，SHA-256 为 `3558a2c902029a9a9e1d5fb664ce9cb353c0779efa8fa4824c38973ff117778a`，不与最新 24 帧报告混用。真实 GUI repaint/picking、Handles/Gizmo 和多 Scene 窗口交互未由这些结果证明；六角色透视快检也不等于六角色全角度遍历。
+
+本轮 `Validation/final-project-health.json` UTC 为 `2026-11-02T05:55:33.9373978Z`，`passed=true`。匹配 Unity 版本的 Worker 核对了任务范围内 81 个脚本、461 个 Shader、25 个 Compute Shader 和 1011 个材质；两个程序集均 `sourceCurrent=true`，`shaderErrors=0`，六场景均 `missingScripts=0`，`issues/editorErrors` 为空。该检查覆盖程序集、编译诊断与场景引用完整性，不扩大为所有 Shader Warning 为零，也不替代各层渲染、播放和视觉证据。
+
+**例外与回退**：菜单关闭 Scene 效果预览，或调用 `DragonSwordSceneViewPreview.RestoreAll()` 释放本桥接的临时组件与相机资源。Prefab Stage、非正式活动场景或源配置歧义时不接管。该回退不要求保存、重导角色资源，也不修改原 Game 渲染配置。
+
+## DSA-09｜恢复默认 Game 预览并验证资源与配置归还
+
+打开正式场景后编辑态 Game 黑屏，调用链为 `DragonSwordSupplementalState.UpdateReflection` → `CommandBuffer.DrawProcedural`，空参数是运行时 `channelsMaterial`。六份反射 resolve 材质及 Shader 均存在，通道 Shader 文件也存在且原日志记录过成功导入。原日志先出现 `Missing native reflection lighting-channel shader`，再连续抛出空材质异常；最初 `Shader.Find` 未解析成功的原因尚不明确，不能写成已确认文件丢失或 Shader stripping。
+
+已确认的持续故障根因是旧 `Allocate()` 先创建 depth 等 RT，再创建通道材质；首次失败留下非空 depth，后续 `depth != null` 提前返回，把部分分配误判为全部就绪。默认预览还有独立缺口：原 `DragonSwordScenePipeline` 只在 Play 接管管线。此前 Play 通过并不能覆盖“直接打开场景看 Game”这条用户入口。故障原文与旧实现证据见 `Evidence~/PreviewFix-20261101/original-reflection-error.txt` 和 `Documentation/2026-11-01_Game预览黑屏修复.md`；后者保留了当时尚待复测的历史描述，当前完成状态以本节列出的报告为准。
+
+- **必须（MUST）**：六个正式 `DragonSwordSupplementalProfile` 和生成器显式引用 `lightingChannelsShader`；运行时分别检查 Material 有效性及所有 RT 的 `IsCreated()`，失败释放部分结果，恢复目标组时重置 history。
+- **应当（SHOULD）**：仅由活动正式场景的唯一有效组件接管编辑预览；保留 Graphics、各受影响 Quality 档位及 skin weights 的原值。切场景、禁用、质量切换、保存、Play 过渡、域重载和退出分别归还；Prefab Stage 不取得所有权。
+- **禁止（MUST NOT）**：用跳过反射 Draw、吞掉异常或固定截图替代修复；不能用强制赋管线后生成的图片证明自动入口正确，也不能把临时预览配置保存为工程基线。
+
+| 项目修正 | 实现入口 | 解决的失败模式 |
+| --- | --- | --- |
+| 必需 Shader 用序列化引用，材质和纹理各自验证；部分失败可清理、可重试 | `Runtime/DragonSwordSupplementalProfile.cs`、`Runtime/DragonSwordSupplementalState.cs`，六角色 profile 与对应构建器 | 首次创建失败后永久残留半就绪资源；Unity 对象存在但 GPU RT 已被释放 |
+| 活动场景所有者与质量档位基线独立管理 | `Editor/DragonSwordScenePipelinePreview.cs`、`Runtime/DragonSwordScenePipeline.cs` | 编辑态不应用管线、关闭非活动 additive 场景误撤当前所有者、切质量后原档位留脏 |
+| `DragonSwordPreviewSaveGuard.OnWillSaveAssets` 在保存前挂起临时设置，延迟恢复预览 | 同上 Editor 文件 | `AssetDatabase.SaveAssets()` 将临时专用管线写进 Graphics/Quality 配置 |
+| 明确 Play 过渡锁，`EnteredEditMode` 后延迟重新取得所有权 | 同上 Editor/Runtime 文件 | 首轮自动回归发现退出 Play 后未重建预览；正常状态恢复被误判为外部覆盖 |
+| 等待至少 3 次 update 且经过 0.5 秒，再一次断言预期状态 | `Editor/DragonSwordPreviewLifecycleValidation.cs` | 仅数 update 会早于管理器 0.2 秒检查间隔；不断轮询直到相等又可能掩盖自动入口时序错误 |
+
+**验证**：以下三个报告分别回答资源恢复、异步真实生命周期和同步所有权问题，不能互相替代。
+
+| 报告及 UTC | 通过内容 | 结论边界 |
+| --- | --- | --- |
+| `Validation/preview-lifecycle-validation.json`；`2026-11-01T03:04:28.1560325Z` | 六场景各渲染 3 帧，最终颜色与反射非黑且有限；未保存 profile 副本注入缺 Shader、销毁材质、释放 RT，恢复后均成功；材质/纹理恢复 RGB 平均误差均为 0，`sourceProfileUnchanged=true` | 测试显式 flush 预览管理器，不直接赋管线；证明渲染/恢复，不单独证明自动 update 时序或所有附件完整入镜 |
+| `Validation/play-preview-lifecycle-validation.json`；`2026-11-01T03:20:13.8461033Z` | 自动打开 Edit、不手动 Apply → 实际 Play 域/场景重载并至少 8 个 Game 帧 → 退出 Edit → 真正脚本域重载 → 空场景；`passed=true`、`stage=complete`、`globalsRestored=true` | 自动阶段均满足 update 与时间双等待；没有采集所有内部回调的唯一排列，也不替代六角色长播放 |
+| `Validation/preview-ownership-validation.json`；`2026-11-02T04:31:08.6580962Z` | 组件禁用/启用、additive 活动所有者、质量档切换、保存防护四项通过；`pending=false`，`globalsRestored/settingsBytesRestored/saveSettingsBytesUnchanged=true` | A/B 各加载一次并同步 Apply flush，不证明异步事件顺序或 additive Play；保存验证仅针对独立 Worker 设置文件 |
+
+三个报告的 `failures/editorErrors` 均为空。首轮 Play 退出失败保留在 `Evidence~/PreviewFix-20261101/first-play-lifecycle-failure.json`。所有权测试曾在 AnimationClip 原生分配中崩溃，同期主编辑器工作集约 102 GiB、私有内存约 168 GiB；这支持内存压力存在，不能证明其为唯一崩溃原因。后续将测试改为 A/B 各加载一次并复用，每阶段落盘 `pending` 检查点，完整复测现已通过；不能继续把旧中断状态写成当前阻塞。日志与内存快照保留在 `ownership-worker-crash.log`、`memory-pressure-interruption.json` 所属的同一证据目录。
+
+Worker 的任务 Assets 是 junction，因此“独立工程”不意味着 SaveAssets 不会触及源资产。保存验证先拒绝已有 dirty persistent Assets，且只在 `finally` 修复 Worker 的 Graphics/Quality 文件原字节与内存基线。最终汇总中的 `mainProjectSettingsUnchanged=true` 是对主工程基线文件的另一项哈希断言，不与 Worker 文件恢复混为一谈。
+
+**例外与回退**：禁用场景管线组件或切换到非正式/空场景时归还预览配置；Editor 入口 `DragonSwordScenePipelinePreview.RestorePreview()` 负责归还其所有权范围。保留原始故障、首轮失败与成功报告；重跑前保存旧报告身份。本文总结不要求刷新、关闭或重启用户主编辑器，也不修改任何生产资源。
 
 ## Evidence → Finding → Path
 
@@ -170,8 +253,10 @@ Shader 转译入口为 `Tools~/Shader/translate_dxil.py`；DXIL 与 temporal 源
 | `E-DSA-05` | `Validation/physics-animated-dynamics-pose-validation.json`、`physics-world-native-coordinate-audit.json` | `F-DSA-05`：局部/World/镜像纯 q 的错误已由 fixture 发现和修正 | `P-DSA-05`：原始 TRS/原生代码 → 静态/动画 fixture → runtime → 隔离观察 |
 | `E-DSA-06` | `Validation/rendering-module-evidence-summary.json`、`temporal-production-evidence.json` | `F-DSA-06`：主要渲染链恢复且精度范围量化 | `P-DSA-06`：RDC 实际链 → HLSL/Feature → 同输入 GPU → 固定姿态诊断 |
 | `E-DSA-07` | `Validation/final-project-health.json`、`playmode-visual-qa.json` | `F-DSA-07`：实际宿主可加载播放，可见样本通过，完整原生轨迹仍未验证 | `P-DSA-07`：匹配 Worker → 六场景/53动作 → 图像 QA → 最终清单 |
+| `E-DSA-08` | View/Scene GPU 与 15 图 QA；竖屏失败快照；288 CPU 报告；full_04/six_02/portrait_03；本轮 720 帧 Play 报告 | `F-DSA-08`：aspect 与 depth handle 修正后受测 Scene 路径通过，Game 720 帧报告通过，GUI/完整反射轮廓边界保留 | `P-DSA-08`：源证据 → 桥接 → 竖屏/日志反例 → 更正数学目标与资源身份 → 新 GPU 图像及回归 |
+| `E-DSA-09` | `preview-lifecycle-validation.json`、`play-preview-lifecycle-validation.json`、`preview-ownership-validation.json`；原错误与首轮失败快照 | `F-DSA-09`：默认预览、半就绪资源恢复与受测配置归还通过；初始 Shader.Find 失败原因未定 | `P-DSA-09`：首个错误 → 独立资源状态 → 显式依赖/失败清理 → 默认入口及故障注入 → 生命周期/保存验证 |
 
-下表为本页引用的重要报告字节快照；重跑报告会改变 SHA，不能继续沿用旧值。大型资源审计对 64 个已改 clip 重算 SHA，对 446 个文件只在 size/mtime 一致后沿用旧 SHA，并未重新哈希全部大文件。
+下表保留此前交付阶段的重要报告字节快照，不是本轮 Scene 专项的最新报告哈希。重跑报告会改变 SHA，核对当前文件时须重新计算，不能沿用旧值。大型资源审计对 64 个已改 clip 重算 SHA，对 446 个文件只在 size/mtime 一致后沿用旧 SHA，并未重新哈希全部大文件。
 
 | ROOT 相对文件 | SHA-256 |
 | --- | --- |
@@ -184,6 +269,18 @@ Shader 转译入口为 `Tools~/Shader/translate_dxil.py`；DXIL 与 temporal 源
 | `Validation/physics-animated-dynamics-pose-validation.json` | `c75a44fb4c0d65303b3abd092132681d85dc93e4496b7fd2ac2a24d9d82345f0` |
 | `Validation/face-curves-all-existing-validation.json` | `5e31584c4324456c7a4f211068f7bcf0965745d1073cb9f9bed50aebd7da3e70` |
 | `Evidence~/RenderDoc/Character01/status.json` | `2b21a4a3306860b4bd5f0bbc064b8a017c18259955823b839958d0e4182a6db8` |
+
+以下是 2026-11-02 补充交付时只读核实的当前文件身份，独立于上表历史快照。三个生命周期报告保留各自原始执行时间；三个交付脚本仅组合已有证据并计算哈希，不等于在该汇总时刻重新执行 GPU/Play 测试。最终清单仍引用此前资源、动画、物理等报告，不能宣称所有测试均针对最后一版源码重跑。Scene 最后修正与 Game 720 帧报告的先后边界见 DSA-08。
+
+| ROOT 相对文件 | UTC / 完成状态 | SHA-256 |
+| --- | --- | --- |
+| `Validation/preview-lifecycle-validation.json` | `2026-11-01T03:04:28.1560325Z`；`passed=true` | `904abc9b023c6e20562e16d6859e7bf93b2bff335308af09ccd544a208295e36` |
+| `Validation/play-preview-lifecycle-validation.json` | `2026-11-01T03:20:13.8461033Z`；`passed=true`、`stage=complete` | `9e0e7cfcba2d22a8d4c6964fae47e982186fd43ecc74db1c7e603beb0ac8a23e` |
+| `Validation/preview-ownership-validation.json` | `2026-11-02T04:31:08.6580962Z`；`passed=true`、`pending=false` | `cef8d2b9bc43c5ec91d4a4ac20446cf2189c61896b9c8bc11397d8430f0ba271` |
+| `Validation/preview-fix-delivery.json` | `2026-11-02T06:14:58.739454+00:00`；`passed/mainProjectSettingsUnchanged=true` | `465d93b592e3e2365365a0c0991e77b98537a9a4b703caceac72421bdfec67ce` |
+| `Validation/scene-view-delivery.json` | `2026-11-02T06:14:59.863504+00:00`；`passed/mainProjectSettingsUnchanged=true` | `3f715903cd24ad0440d2acf6d986a430931939bd0732034190deff4a21bbdf58` |
+| `Validation/full-project-csharp-compatibility.json` | `2026-11-02T06:14:50.465705+00:00`；Runtime 43 + Editor 85，共 128 sources；两程序集 exitCode/errorCount/warningCount 均为 0 | `31b4b59c441f8d11cf3d4eb243be64571e353c5b01ddf65bed5523cfdc34a8b4` |
+| `Validation/final-delivery-manifest.json` | `2026-11-02T06:15:00.748278+00:00`；`validatedChecks` 均为 true，含 `freeSceneViewPreview` | `578ccbf9901f6f6f16c7463814842e71e86cb49c9ab8c0111c87e08b1828f35e` |
 
 ## 复现入口、维护与回退
 
@@ -203,6 +300,32 @@ Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $dsaRoot 'Validation/fina
 已只读核实 `Program.cs` 的映射解析为 `Path.Combine(Root,"Tools~","Unreal",mappingArgument)`。默认 `UE53-reference.usmap` 实际位于 `F:\UnityProject\HYYYYY\Assets\DragonSwordReconstruction\Tools~\Unreal\UE53-reference.usmap`，不是从命令行当前目录寻找。`Root`、源 Paks 和输出目录同样由源码中的绝对根解析。执行前仍需核对当前源码、本地补丁和环境开关；普通调用会写 `Source~/Unreal/file-index.txt` 与 `container-status.json`，其他模式还会写对应属性/依赖报告，因此它们不是只读查看命令。
 
 GUID 审计脚本实际位于 `Tools~/Unreal/audit_unity_asset_references.py`。它只读取资产，但会覆盖 `Validation/asset-guid-dependency-audit.json`，因此不能将执行描述为整个文件系统零写入。新一轮审计需先保留旧证据快照；其他验证入口按对应功能 README 与 Worker 参考执行，不盲目重导正式 FBX。
+
+### 预览复现工具、输入输出与完成条件
+
+以下入口均位于 `ROOT`。命令执行前核对路径、依赖、Worker 身份及旧报告备份；没有运行中的专用 Worker 时，不把请求投向用户主编辑器。
+
+| 工具/入口 | 输入、输出与用途 | 写入和完成边界 |
+| --- | --- | --- |
+| `Tools~/StartUnityWorker.ps1` | 固定匹配 Unity 2022.3.62f3，建立 `Tools~/UnityWorker`，验证任务 Assets junction，使用物理包副本；后台 D3D11 Worker | `-SetupOnly` 仍写工程目录/配置；正常启动带 `-batchmode -force-d3d11 -dragonSwordWorker`，不带 `-nographics`。PID/ready 只表示宿主身份/准备状态 |
+| `Tools~/InvokeWorker.ps1` | 必需 `-Method`，可选 `-Manifest/-Scene/-Output/-Pipeline/-Width/-Height/-Frames`；默认唯一 ID；先写临时文件再移为 `Tools~/Control/request.json` | 拒绝 pending 请求及重复 ID；默认等待对应 `result-<id>.json`，`-NoWait` 仅提交。方法成功响应不保证跨 Play/域重载的任务结束 |
+| `DragonSwordPreviewLifecycleValidation.ValidateReport` / `.ValidatePlayLifecycleReport` | 完整类型前缀 `DragonSwordReconstruction.Editor.`；输出 DSA-09 前两个报告 | 前者同步完成，后者异步；后者以新执行的 `stage=complete`、`passed` 及 errors 判定，不接受旧报告代替 |
+| `DragonSwordPreviewOwnershipValidation.ValidateReport` | 同一完整类型前缀；输出 `Validation/preview-ownership-validation.json` | 同步；`pending=false` 与最终 cleanup 结果齐全后才算完成，保留 junction/save 防护 |
+| `DragonSwordSceneViewValidation.ValidateReport` / `.ValidateSixScenes` / `.ValidatePortraitView` | 同一完整类型前缀；分别输出完整自由视角、六角色快检、竖屏报告及图片 | GPU 与数值结果之后仍检查实际图片及关键 Warning；用途、镜像和 GUI 边界见 DSA-08 |
+| `DragonSwordPlayModeValidation.ValidateBatch` | 同一完整类型前缀；输入 `Tools~/Control/preview-fix-playmode-batch.json`，六场景 × 120 帧；输出 `Validation/preview-fix-playmode-validation.json` | 异步；请求响应只说明启动，需等待对应本轮最终报告，不能在播放中生成最终清单 |
+| `Tools~/SceneView/validate_view_constants_math.py`、`validate_reflection_card_aspect.py` | 原 View 元数据、六组 PostVS 卡片与当前实现；输出同目录数学检查 JSON | Python 数值层，aspect 脚本依赖 NumPy；本项目可用 DSA-02 的 Blender Python，不能替代 Unity GPU 验证 |
+| `Tools~/Validation/offline_full_project_compile.py` → `main_project_integration_audit.py` | 源文件/程序集只读输入 → 独立编译产物和兼容性报告 → 集成审计 | 顺序依赖：集成审计读取已完成编译；会写验证产物，不能把离线成功等同 Unity 已导入 |
+| `DragonSwordFinalHealthValidation.ValidateReport` | 同一完整类型前缀；检查实际宿主程序集、Shader、六场景引用；输出 `Validation/final-project-health.json` | 同步 Worker 验证；编译/引用健康不能代替播放和画面 QA |
+| `Tools~/Validation/build_preview_fix_delivery.py` → `build_scene_view_delivery.py` → `build_delivery_manifest.py` | 已完成报告及当前文件身份 → 对应 preview/Scene/final 三份清单 | 仅组合和哈希；前者读取 7 份报告。输入旧/缺失/失败时不能借清单生成“补齐”验收 |
+
+下面仅示范向已经确认就绪且空闲的专用 Worker 提交同步资源恢复验证；它会覆盖对应验证报告与图片，执行前应保留旧结果。其余入口按上表区分同步/异步，不批量并行发送写入请求。
+
+```powershell
+$dsaRoot = 'F:\UnityProject\HYYYYY\Assets\DragonSwordReconstruction'
+& (Join-Path $dsaRoot 'Tools~/InvokeWorker.ps1') -Method 'DragonSwordReconstruction.Editor.DragonSwordPreviewLifecycleValidation.ValidateReport'
+$dsaPreview = Get-Content -LiteralPath (Join-Path $dsaRoot 'Validation/preview-lifecycle-validation.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$dsaPreview | Select-Object utc, passed, failures, editorErrors
+```
 
 维护优先级为源配置/原始通道 → 导出物身份和索引 → 动画/物理 fixture → 同输入 GPU → 正式场景/PlayMode → 可见 QA。修改映射、绑定、颜色、primitive 或 Shader 生成器后，重跑受影响层以及下游层；只修改文档则验证链接、编码和元数据，不启动资源转换。
 

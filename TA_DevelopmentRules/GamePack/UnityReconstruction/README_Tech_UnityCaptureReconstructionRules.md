@@ -13,15 +13,16 @@ description: Unity 与 Unreal 客户端资源、动画和 RenderDoc 渲染链到
 
 本模块适用于已获授权的本地 Unity 或 Unreal 客户端资源与 GPU 抓帧分析，以及在目标 Unity 工程中恢复可编辑的模型、动画、材质、光照、背景、次级运动和后处理。它不替代具体资产旁的功能 README，也不把单帧结果扩展成所有镜头和动画时刻的结论。目录与文件名沿用原入口，保持已有链接和规则 ID 稳定。
 
-按任务读取 [资源与渲染复刻工作流](references/unity-asset-and-render-reconstruction-workflow.md)、[验证与故障排查](references/renderdoc-validation-and-troubleshooting.md)，再读取 [依盖之书 Profile](Profiles/BookOfYog/linglong-showcase-reconstruction.md)。加密容器的专项流程见既有[终末地规则](../TA_终末地Unity资源解包逆向与渲染复刻开发规则.md)；标准 UnityFS 不默认套用其 VFS/BLC/CHK 解密步骤。Shader、RendererFeature 的一般职责仍以 [Shader 开发模块](../../ShaderDevelopment/README_Tech_URPShaderDevelopmentRules.md) 为准。
+按任务读取 [资源与渲染复刻工作流](references/unity-asset-and-render-reconstruction-workflow.md)、[验证与故障排查](references/renderdoc-validation-and-troubleshooting.md)，再按来源选择 [依盖之书 Profile](Profiles/BookOfYog/linglong-showcase-reconstruction.md) 或 [龙之剑 Profile](Profiles/DragonSwordAwakening/character-rendering-reconstruction.md)。加密容器的专项流程见既有[终末地规则](../TA_终末地Unity资源解包逆向与渲染复刻开发规则.md)；标准 UnityFS 不默认套用其 VFS/BLC/CHK 解密步骤。Shader、RendererFeature 的一般职责仍以 [Shader 开发模块](../../ShaderDevelopment/README_Tech_URPShaderDevelopmentRules.md) 为准。
 
-Unreal 到 Unity 的完整经验按以下顺序阅读。前四项是迁移时重新验证的方法，最后一项保留龙之剑的具体参数和证据，不把个案参数升级为通用默认值。
+Unreal 到 Unity 的完整经验按以下入口读取。参考文档提供迁移时重新验证的方法；项目 Profile 保留龙之剑的具体参数和证据，不把个案参数升级为通用默认值。
 
 | 阅读入口 | 解决的问题 |
 | --- | --- |
 | [UE 解包与工具链](references/unreal-extraction-toolchain.md) | 容器、映射、依赖闭包、模型/动画/贴图导出、原生默认值、工具选择与失败定位 |
 | [动画与次级运动](references/unreal-animation-and-secondary-motion.md) | Montage、通知、面部曲线、单位和负缩放、动态权重、物理坐标与独立基准 |
 | [渲染管线移植](references/unreal-render-pipeline-porting.md) | Shader、顶点通道、光照/阴影、反射、Niagara、后处理、时域精度与画面指标 |
+| [编辑态预览与自由相机适配](references/editor-preview-and-camera-adaptation.md) | 空材质黑屏、默认 Game 入口、Scene/Game 渲染链、View 常量、多相机历史、反射比例与工具深度 |
 | [独立 Worker 与交付验证](references/isolated-unity-worker-and-delivery-validation.md) | 不干扰主编辑器、并行所有权、编译与真实播放、原内容保护、退出诊断与最终清单 |
 | [龙之剑完整项目 Profile](Profiles/DragonSwordAwakening/character-rendering-reconstruction.md) | 工具版本、路径、真实故障及修正、数值结果、Evidence→Finding→Path 和未验证边界 |
 
@@ -143,6 +144,8 @@ Unreal 到 Unity 的完整经验按以下顺序阅读。前四项是迁移时重
 | UE 容器与导出工具 | [UE 解包与工具链](references/unreal-extraction-toolchain.md)、当前源引擎/包版本、映射与容器索引 |
 | UE 展示动作与物理 | `UCR-AST-02`、[动画与次级运动](references/unreal-animation-and-secondary-motion.md)、原生曲线/图状态/坐标基准 |
 | UE Shader、时域与粒子 | [渲染管线移植](references/unreal-render-pipeline-porting.md)、当前事件清单、运行参数与历史资源 |
+| 编辑态 Game 黑屏或空材质异常 | [编辑态预览与自由相机适配](references/editor-preview-and-camera-adaptation.md)、当前 Shader 引用、资源初始化状态、管线选择与编辑器生命周期 |
+| Scene/Game 差异与自由旋转缩放 | [编辑态预览与自由相机适配](references/editor-preview-and-camera-adaptation.md)、当前相机/View 契约、反射生产与消费链、尺寸与深度目标 |
 | 后台与批量交付 | `UCR-ISO-01`、`UCR-VAL-03`、[独立 Worker 与交付验证](references/isolated-unity-worker-and-delivery-validation.md) |
 
 新问题先写入项目 Profile 的事实与证据；复现、根因和跨项目适用范围确认后，再提炼至 reference 或 CORE。项目源码和资产的单功能说明继续放在其附近。
