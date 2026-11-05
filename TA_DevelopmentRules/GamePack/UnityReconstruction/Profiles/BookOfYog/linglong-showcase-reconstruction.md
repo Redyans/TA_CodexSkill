@@ -149,6 +149,20 @@ DynamicBone/CameraDriven 的实现来自原 `GameAssembly.dll` 与 metadata 的�
 
 ## 复现入口与维护
 
+### 批量角色复用与本轮修正（2026-11-02）
+
+本项目的 32 份可回放角色抓帧均复用玲珑展示场景的背景、地面、共享光照和后处理。`Evidence/BatchCaptures/batch-environment-post-reuse.json` 只证明主环境及 TAA/LUT/Uber 程序字节码相同，不能代替逐角色材质、sampler、对象变换、动作相位与动态叠加层验证。角色独有资源继续放 `Characters/<Character>/Cases/<CaseId>`，可替换动作继续放 `Characters/<Character>/Animations`。
+
+`10_frame56195` 的 E1100 法杖是右手 `Bip001 R Hand` 的子模块，源 Prefab 的局部变换为单位矩阵，和抓帧对象矩阵相差 0.14089 米、126.60°。`YogBatchAttachmentRepair.AlignHeliinaStaffToCapture` 在场景 `previewTime=0` 采样后，用 `hand.worldToLocalMatrix * capturedObjectMatrix` 求局部变换并保存原 Prefab；复测为约 0.00011 米、0°，整图 MAE 0.02797 → 0.02625。不能靠连续扫动作相位代替这个矩阵核对；原游戏跨帧挂点运动仍未对照。
+
+`32_frame9114` 的 E1983 剑刃原 DXBC 中 `t0/t1/t2/t4/t6/t7/t10` 分别使用 Wrap sampler，`t5` ramp 与反射 cube 使用 Clamp；原 GPU 取证在 `Evidence/BatchCaptures/32/blade-samplers.json`，原剑尖像素 E1983 输出约 `(0.261,0.228,0.196)` 线性 HDR，见 `sword-pixel-values.json`。导入器原先将所有捕获贴图设为 Clamp，导致 UV 越界区域的剑刃偏暗；仅对该剑材质绑定的对应纹理修正包装模式后，整图 MAE 0.03605 → 0.03476。`YogBatchCapturedMaterials.BuildCase32CapturedBlade` 是复现入口；更精确的同输入像素比较尚未完成。
+
+最新完整回归 `Validation/Batch/BatchSceneComparison32.json`：32/32 场景非空，1024×576 显示 sRGB 无配准/曝光拟合整图 MAE 均值 0.02833、范围 0.01811–0.05257；`Validation/shader-compilation.json` 为 548 个 Pass/变体、0 错误。5 号角色尾部展开、身体姿态仍明显不同；`19`–`22` 的 RDC 仍不可回放，不能列入同帧验收。前文 `BatchSceneComparison26` 数值为历史阶段基准。
+
+批量角色可以复用玲珑场景的公共背景、地面、光照和后处理程序，但屏幕阴影是每帧生成的输入。原批量场景沿用玲珑的阴影矩阵重绘，5 号衣料明显偏暗；从 `5/frame50787/E1447`、`E1457` 的原 GPU 顶点和对象矩阵核对到 Unity 蒙皮网格后，64 点世界空间 RMS 分别约 0.039/0.047 米，不能把本地坐标差异误判为同等姿态差异。临时改用该帧导出的屏幕阴影纹理后，5 号整图 MAE 0.06103 → 0.05262，身体区域 MAE 约 0.198 → 0.160。`Tools~/Batch/build_screen_shadow_plan.py` 将 32 份可回放抓帧的 `Screenspace ShadowMap` 资源 ID 映射到各角色 `Textures/Captured`，清单在 `Evidence/BatchCaptures/batch-screen-shadows.json`；`YogBatchSceneValidator.InstallBatchCapturedScreenShadows` 绑定到各场景的 `YogCaptureCamera`。重拍 `BatchSceneComparison32` 后 32/32 误差均下降，均值 0.03157 → 0.02833，单组下降范围约 0.00057–0.01803。编辑模式 0 秒静态对照读取本帧阴影，拖动预览时间或进入 Play 模式则使用实时阴影；这不构成动作期间自阴影复刻。重建批量场景后必须重新生成映射并运行安装方法，否则模板复制会丢失逐场景阴影绑定。5 号的 `body-geometry.json`、`5_frame50787_body-geometry.json` 与 `body-pixel-values.json` 保留顶点及像素证据，尾部形状和局部材质仍需继续核验。
+
+5 号展示动作在每次独立重开场景、固定该帧阴影的 0–1.9 秒扫描中，1.8 秒整图 MAE 约 0.05023，0 秒约 0.05262；身体区域只从约 0.1604 降至 0.1593，尾部形状仍不符。正式预览在非零相位使用实时阴影，1.8 秒约 0.05867，因而场景继续保留 0 秒。诊断图在 `Tools~/Batch/Phase5`，不能把固定阴影相位试验当成可播放的最终姿态。
+
 在目标工程根可执行以下已存在的入口；命令会更新项目内产物，先核对输入清单与当前编辑器状态。后台 Worker 使用隐藏窗口，不依赖鼠标；异步检查需等待最终 JSON。
 
 ```powershell
