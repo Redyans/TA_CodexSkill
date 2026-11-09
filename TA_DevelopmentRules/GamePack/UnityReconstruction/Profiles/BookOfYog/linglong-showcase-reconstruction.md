@@ -2,7 +2,9 @@
 
 ## 概览与证据边界
 
-本页只记录《依盖之书》`UIPre_LingLon` 与展示环境在 2026-10-31 抓帧/Unity 工程中的事实。通用边界见 [Unity 抓帧复刻模块](../../README_Tech_UnityCaptureReconstructionRules.md)，操作顺序见[工作流](../../references/unity-asset-and-render-reconstruction-workflow.md)。项目源码、完整取证和最新 JSON 均在 `F:\UnityProject\HYYYYY\Assets\YogCharacterReconstruction`（下文称“复刻根”）。本页的数值和路径不能直接套用于其他角色。
+本页记录《依盖之书》`UIPre_LingLon` 与展示环境在 2026-10-31 抓帧/Unity 工程中的基线，以及后续早期批次的阶段证据。通用边界见 [Unity 抓帧复刻模块](../../README_Tech_UnityCaptureReconstructionRules.md)，操作顺序见[工作流](../../references/unity-asset-and-render-reconstruction-workflow.md)。项目源码、完整取证和最新 JSON 均在 `F:\UnityProject\HYYYYY\Assets\YogCharacterReconstruction`（下文称“复刻根”）。本页的数值和路径不能直接套用于其他角色。
+
+**后续经验入口（2026-11-06）**：[批量制作与光照验收参考](../../references/batch-character-reconstruction-playbook.md) 汇总可迁移方法；[批量经验与状态](batch-reconstruction-lessons-and-status.md) 记录最新制作阶段的事实和限制，包括 25 号程序网纹、30 号调暗近似、28 号未解决透明问题及旧编译报告的有效范围。本页各历史段落中的“最新”仅指当时保存的阶段，不代表这些后续修改已经重新验收。
 
 **当前范围**：人物、动作、光照、背景、地面、水面、特效、反射及后处理；不重建原游戏 UI。最早的人物技术报告和 README 写于背景/地面扩围之前，文中的“背景未恢复”属于当时阶段。当前环境实现与完整场景比较以复刻根的 `Shaders/EnvironmentReconstruction.md`、`Environments/CharacterShowcase` 和 `Validation/FullSceneComparison1.json` 为准。整图仍有误差，未宣称完全一致。
 

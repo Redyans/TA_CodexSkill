@@ -4,6 +4,8 @@
 
 已获授权的本地 Unity 客户端可以读取资源包，且有目标效果截图、RenderDoc 抓帧或二者之一；目标是在另一 Unity 版本/管线中形成可编辑、可播放的场景。规范边界见 [UCR-EVD-01、UCR-EVD-02、UCR-AST-01](../README_Tech_UnityCaptureReconstructionRules.md)。本页是操作参考；每项参数仍须由当前项目证据确定。
 
+首个角色贯通后，按[批量角色制作与光照验收参考](batch-character-reconstruction-playbook.md) 复用公共实现并逐角色处理差异；该页集中说明目录边界、实际材质槽、采样/细分插值、独立复拍和近似方案。实际案例及后续状态见[依盖之书批量 Profile](../Profiles/BookOfYog/batch-reconstruction-lessons-and-status.md)。
+
 ## 前提与依赖
 
 | 工具/入口 | 用途 | 选择和核对点 |

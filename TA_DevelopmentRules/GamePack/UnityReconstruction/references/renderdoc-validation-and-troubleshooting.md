@@ -37,6 +37,8 @@
 | 原 mesh 某些效果缺失 | 将 RenderDoc 顶点输入/输出与 AssetBundle Mesh 通道逐点比较，定位运行期新增 UV/顶点流。 | 只补已取证通道，重验 submesh 和描边/粒子 draw。 |
 | 导出的顶点色含 NaN 或极大浮点数 | 读取 `GetVertexInputs()` 的 `format`、`vertexBuffer`、`byteStride` 和偏移；零步长顶点流代表每顶点复用相同字节。按实际 UNorm/UInt/Float 类型解码，不能仅根据组件字节宽度选择 float 解包。 | 保留原四字节样本与通道布局，重建后核对顶点色、UV 和特效 draw；旧误读 JSON 只作故障证据。 |
 | PNG 看起来对、材质仍有偏差 | 核查 BC 块、mip、cube face、sRGB view、sampler 和 AG 法线解码；对原 GPU raw 做 native 字节比较。 | 保留 PNG 预览，最终材质切回校验通过的 native texture。 |
+| 修了材质却影响另一部位或毫无变化 | 先导出 Renderer 层级、Mesh/Submesh、实际槽索引、材质 GUID、Shader 与纹理映射；事件号顺序不是槽位顺序。 | 单槽隔离并独立重开复拍；排查步骤见[批量制作参考](batch-character-reconstruction-playbook.md)。 |
+| 仅局部剑刃/腿部偏暗、出现横条 | 检查真实 sampler、越界/负 UV、视图格式与 DS 输出；同纹理在不同 draw 中可能使用不同 sampler。 | 比较局部 Albedo 与照明输出；修共享纹理设置后检查其他消费者，不用全局曝光代偿。 |
 | Shader 反编译后编译失败或输出异常 | 对照 DXBC 原指令的 swizzle、组件数、整数重解释、saturate 与运算顺序，局部修正生成器。 | 保留原 ASM 和修改 diff；用真实输入做 GPU 回归。 |
 | 相机画面整体错位 | 查 VS 实际读取的 VP 槽；同一 cb 中可能有反射相机的旧 oblique 矩阵。 | 导出 clip-space 投影点，对原 draw 逐顶点比较。 |
 | 阴影只剩极暗窄范围 | 检查 RTHandle 实际是否按 shadow map 分配、比较采样器是否启用、深度方向及 compare func。 | 分别回读 shadowmap、比较结果和 screen-shadow；修复后释放旧 RT。 |
@@ -47,6 +49,7 @@
 | URP 类型 CS0246 / 包不加载 | 检查 `Packages` 入口与 UPM 实际 source；项目 `Assets` 内包不能直接作为本项目的 `file:` 包。 | 用目标 Editor 日志、lock 和脚本加载报告验证；按备份恢复包/manifest。 |
 | 后台命令成功但报告未更新 | PlayMode/导出可能异步；核对最终报告时间、退出码和控制队列状态。 | 等待任务完成，不重用未完成请求或旧报告。 |
 | 抓帧 draw 的普通 VS/PS 适配后少一整块布料或身体 | 查输入拓扑和 Hull/Domain 是否实际绑定，读取 `GetPostVSData(..., GSOut)` 的顶点数量与布局；不能把 PatchList 当普通三角形列表。 | 保存 HS/DS 原字节、常量与后细分样本；先核对细分因子和拓扑，再单独验证 Domain 位移分支和实时动画。 |
+| 纯色标记能见几何，原材质却大面积透明 | 沿 DS 输出到 PS 检查各插值分量、alpha/clip、Blend/Depth/Cull；`TEXCOORD.zw` 不一定是 UV。 | 保留原/目标同输入对照；纯色可见只能缩小问题，不证明原材质已修复。 |
 | 批量场景改相机后全黑 | 检查导出 JSON 的向量形状；Unity `JsonUtility` 的 `Vector3` 字段需要 `{x,y,z}`，数组会读为默认零值。 | 写入前校验位置范围与 FOV；重开场景并重渲染全批量，不能只检查脚本返回成功。 |
 | 连续扫描动作相位时分数改善，独立复拍却变差 | 在同一时间点重复渲染、倒序扫描，再从重新打开的场景单独采样；检查骨骼未绑定通道、次级运动与 TAA/反射历史是否继承上一步。 | 只用独立复拍确认相位；连续扫描结果作为诊断，失败时恢复原场景值并保存新报告。 |
 | RDC 容器头可解析但回放读取越界 | 对照正常文件核查 section 偏移、长度与文件末尾；先复制原件再试验修补，分别记录 `OpenFile` 与 `OpenCapture` 的状态。 | 容器头修补不能证明压缩帧完整；回放失败时保留原 SHA-256，要求新抓帧，不由截图推造 GPU 常量。 |
@@ -71,6 +74,8 @@ P-01 source -> extraction -> import/render -> GPU/PlayMode result
 ## 风险与不适用边界
 
 单帧中的反射、粒子、DynamicBone 和 TAA history 只是当时状态；捕获前运动过程无法从当前输出唯一反推。独立模块的逐 bit 校验只能证明该模块在给定输入下的实现，不能替代实时场景的多帧验收。旧阶段报告带时间和条件，后续代码变动后必须重测。
+
+当用户只要求光照和整体观感时，用[批量制作参考](batch-character-reconstruction-playbook.md) 的逐角色检查收口；数值统计用于诊断，不追加逐像素目标。程序网纹、最终 RGB 调暗等近似分别记录作用范围和动态限制，不能作为原算法根因已解决的证据。实际案例见[依盖之书批量 Profile](../Profiles/BookOfYog/batch-reconstruction-lessons-and-status.md)。
 
 ## 验证与回退
 

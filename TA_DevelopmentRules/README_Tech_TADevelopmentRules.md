@@ -102,7 +102,13 @@ description: 面向 Unity 与 DCC 技术美术的可迁移开发规则入口。�
 | 模块 | 入口 | 适用内容 |
 | --- | --- | --- |
 | 客户端到 Unity 渲染还原 | [GamePack/UnityReconstruction/README_Tech_UnityCaptureReconstructionRules.md](GamePack/UnityReconstruction/README_Tech_UnityCaptureReconstructionRules.md) | Unity/UE 资源与动作依赖闭包、实际状态求值、GPU draw/Pass、渲染还原、并行隔离和分层验证。 |
+| 旧 Unity 工程与依赖恢复 | [工程与依赖恢复参考](GamePack/UnityReconstruction/references/legacy-unity-project-and-dependency-recovery.md) | 工程根、定制包、能力降级、DLL 契约、配置/GUID/动态依赖、幂等恢复与包读取诊断。 |
+| 独立武器检视与定制渲染恢复 | [展示与渲染参考](GamePack/UnityReconstruction/references/weapon-showcase-and-custom-rendering-recovery.md) | 全紫/发白、灯组、反射、后处理、姿态/皮肤、运行网格读取与临时状态。 |
+| Unity 还原工具与证据管理 | [工具与验证参考](GamePack/UnityReconstruction/references/unity-recovery-tooling-and-evidence.md) | 工具选型、Windows 后台验证、真实运行覆盖、批次证据、指标与任务模板。 |
+| AlphaAce 工程恢复与大厅武器检视 | [AlphaAce Profile](GamePack/UnityReconstruction/Profiles/AlphaAce/project-and-weapon-showcase-recovery.md) | 具体版本/路径/参数、编译与资源恢复、背景缺口、运行换枪修正及验证边界。 |
 | Unity 资源和渲染复刻工作流 | [GamePack/UnityReconstruction/references/unity-asset-and-render-reconstruction-workflow.md](GamePack/UnityReconstruction/references/unity-asset-and-render-reconstruction-workflow.md) | 工具选择、解包/动画、DXBC 到 URP、环境、反射、AO、TAA 和交付顺序。 |
+| 批量角色制作与光照验收 | [GamePack/UnityReconstruction/references/batch-character-reconstruction-playbook.md](GamePack/UnityReconstruction/references/batch-character-reconstruction-playbook.md) | 首角色复用边界、目录组织、实际槽位、sampler/Domain 排错、独立复拍、逐角色验收和近似限制。 |
+| 依盖之书批量制作经验与状态 | [GamePack/UnityReconstruction/Profiles/BookOfYog/batch-reconstruction-lessons-and-status.md](GamePack/UnityReconstruction/Profiles/BookOfYog/batch-reconstruction-lessons-and-status.md) | 工具/源码入口、真实修正、25/30 号近似、28 号遗留问题、阶段证据与后续复现。 |
 | RenderDoc 验证与故障排查 | [GamePack/UnityReconstruction/references/renderdoc-validation-and-troubleshooting.md](GamePack/UnityReconstruction/references/renderdoc-validation-and-troubleshooting.md) | 同输入 GPU、实时场景和整图指标分层；动作、贴图、管线、阴影及后处理问题定位。 |
 | 依盖之书玲珑展示场景 Profile | [GamePack/UnityReconstruction/Profiles/BookOfYog/linglong-showcase-reconstruction.md](GamePack/UnityReconstruction/Profiles/BookOfYog/linglong-showcase-reconstruction.md) | 实际版本、路径、资源、实现、修复、验证结果和未验证边界。 |
 | UE 解包与工具链参考 | [GamePack/UnityReconstruction/references/unreal-extraction-toolchain.md](GamePack/UnityReconstruction/references/unreal-extraction-toolchain.md) | 容器/映射/依赖、模型贴图动作导出、原生默认值、工具选择、错误定位与可重复提取。 |

@@ -15,10 +15,16 @@ description: Unity 与 Unreal 客户端资源、动画和 RenderDoc 渲染链到
 
 按任务读取 [资源与渲染复刻工作流](references/unity-asset-and-render-reconstruction-workflow.md)、[验证与故障排查](references/renderdoc-validation-and-troubleshooting.md)，再按来源选择 [依盖之书 Profile](Profiles/BookOfYog/linglong-showcase-reconstruction.md) 或 [龙之剑 Profile](Profiles/DragonSwordAwakening/character-rendering-reconstruction.md)。加密容器的专项流程见既有[终末地规则](../TA_终末地Unity资源解包逆向与渲染复刻开发规则.md)；标准 UnityFS 不默认套用其 VFS/BLC/CHK 解密步骤。Shader、RendererFeature 的一般职责仍以 [Shader 开发模块](../../ShaderDevelopment/README_Tech_URPShaderDevelopmentRules.md) 为准。
 
-Unreal 到 Unity 的完整经验按以下入口读取。参考文档提供迁移时重新验证的方法；项目 Profile 保留龙之剑的具体参数和证据，不把个案参数升级为通用默认值。
+批量角色制作及 Unreal 到 Unity 的专项经验按以下入口读取。参考文档提供迁移时重新验证的方法；项目 Profile 保留各游戏的具体参数和证据，不把个案参数升级为通用默认值。
 
 | 阅读入口 | 解决的问题 |
 | --- | --- |
+| [旧 Unity 工程与依赖恢复](references/legacy-unity-project-and-dependency-recovery.md) | 真正工程根、定制包、能力降级、DLL 契约、多种依赖图、幂等修复与解包失败分层 |
+| [独立武器展示与定制渲染](references/weapon-showcase-and-custom-rendering-recovery.md) | 展示入口、全紫/发白、灯组与层、反射、后处理、姿态/皮肤、目录和临时状态 |
+| [Unity 还原工具与证据](references/unity-recovery-tooling-and-evidence.md) | 工具选择、后台进程、实际运行权限、验证矩阵、批次身份、指标边界与任务模板 |
+| [AlphaAce 工程与大厅检视 Profile](Profiles/AlphaAce/project-and-weapon-showcase-recovery.md) | 旧工程恢复实录、具体参数、能力缺口、背景解包失败、验证证据及运行换枪修正 |
+| [批量角色制作与光照验收](references/batch-character-reconstruction-playbook.md) | 从首角色推广、共享边界、材质槽/sampler/Domain 排错、逐角色闭环与近似方案的使用范围 |
+| [依盖之书批量经验与状态](Profiles/BookOfYog/batch-reconstruction-lessons-and-status.md) | 后续批次的工具入口、真实修正、25/30 号近似、28 号未解决透明问题及证据时点 |
 | [UE 解包与工具链](references/unreal-extraction-toolchain.md) | 容器、映射、依赖闭包、模型/动画/贴图导出、原生默认值、工具选择与失败定位 |
 | [动画与次级运动](references/unreal-animation-and-secondary-motion.md) | Montage、通知、面部曲线、单位和负缩放、动态权重、物理坐标与独立基准 |
 | [渲染管线移植](references/unreal-render-pipeline-porting.md) | Shader、顶点通道、光照/阴影、反射、Niagara、后处理、时域精度与画面指标 |
@@ -129,7 +135,11 @@ Unreal 到 Unity 的完整经验按以下入口读取。参考文档提供迁移
 
 ## 项目定制规则（PROFILE）
 
+AlphaAce 的 Unity 2019 定制工程恢复、原生能力隔离、资源配置、独立武器检视、程序皮肤、背景缺口和证据时点见 [AlphaAce Profile](Profiles/AlphaAce/project-and-weapon-showcase-recovery.md)。运行换枪的非可读网格修复另见 [回归记录](Profiles/AlphaAce/runtime-mesh-switching-regression.md)。当前离线展示不等于完整客户端或原游戏画面已还原。
+
 《依盖之书》玲珑展示场景的路径、版本、资源集合、算法数值、已解决故障及当前验证状态全部在 [BookOfYog Profile](Profiles/BookOfYog/linglong-showcase-reconstruction.md)。不得把该 Profile 的事件号、矩阵、包安装方式或指标直接用于其他角色或游戏。
+
+后续逐角色光照检查、工具与目录复用、近似处理及未闭环问题见 [BookOfYog 批量经验与状态](Profiles/BookOfYog/batch-reconstruction-lessons-and-status.md)。该页区分历史主观检查、当前源码核对与尚未执行的重新验证，旧阶段编译和整图统计不自动覆盖后续修改。
 
 《龙之剑觉醒》六角色 UE 到 Unity 还原的工具链、坐标映射、动态状态、修复表、最终验证及精度边界在 [DragonSwordAwakening Profile](Profiles/DragonSwordAwakening/character-rendering-reconstruction.md)。源项目的功能 README、脚本和完整证据仍由该工程维护；规则库只保留可复用总结及来源索引，不搬入资源或复制整套实现。
 
@@ -137,7 +147,11 @@ Unreal 到 Unity 的完整经验按以下入口读取。参考文档提供迁移
 
 | 任务 | 最小加载资料 |
 | --- | --- |
+| 旧工程缺包、缺脚本或定制原生类型 | [工程与依赖恢复](references/legacy-unity-project-and-dependency-recovery.md)、实际版本/包来源、完整编译批次、项目能力清单 |
+| 武器全紫、发白、检视姿态或换枪失败 | [独立展示与渲染](references/weapon-showcase-and-custom-rendering-recovery.md)、[AlphaAce Profile](Profiles/AlphaAce/project-and-weapon-showcase-recovery.md)、当前运行输入与日志 |
+| 还原工具选择、批处理与经验总结 | [工具与证据参考](references/unity-recovery-tooling-and-evidence.md)、当前 run 清单、目标项目 Profile |
 | 新角色资源解包 | `UCR-EVD-01`、`UCR-AST-01`、工作流的索引/动画段、目标项目 Profile、当前角色依赖清单 |
+| 复用已有角色并逐个检查光照 | [批量角色制作与光照验收](references/batch-character-reconstruction-playbook.md)、当前角色绑定清单与参考、[依盖之书批量 Profile](Profiles/BookOfYog/batch-reconstruction-lessons-and-status.md) |
 | Shader/环境/后处理复刻 | `UCR-EVD-02`、`UCR-VAL-01`、工作流的 GPU 数据流段、对应 Shader 模块规则、实际 RDC |
 | URP 管线改动 | `UCR-VAL-02`、目标 `ProjectVersion.txt`、manifest/lock、当前 Renderer 与回退配置 |
 | 排错与复测 | [验证与故障排查](references/renderdoc-validation-and-troubleshooting.md)、最新带时点的报告与编辑器日志 |

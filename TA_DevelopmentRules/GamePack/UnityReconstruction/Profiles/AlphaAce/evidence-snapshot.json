@@ -1,0 +1,655 @@
+{
+  "schema": "alphaace-documentation-evidence-audit/v1",
+  "created_utc": "2026-11-07T13:01:05.487129+00:00",
+  "scope": "Read-only file audit. This does not rerun Unity or establish original-game parity.",
+  "roots": {
+    "BASE": "G:\\valkyria\\AlphaAce",
+    "PROJECT": "G:\\valkyria\\AlphaAce\\unlimited\\project",
+    "EVIDENCE": "G:\\valkyria\\AlphaAce\\unlimited\\showcase-recovery-20261105",
+    "MESH_FIX": "G:\\valkyria\\AlphaAce\\unlimited\\showcase-mesh-recovery-20261107"
+  },
+  "latest_mesh_regression_run": "run-20261107-205922",
+  "records": [
+    {
+      "root": "PROJECT",
+      "path": "ProjectSettings/ProjectVersion.txt",
+      "exists": true,
+      "bytes": 85,
+      "sha256": "60e7d58a27a6de1d393b1e7e85a2d82a5e2f6963696432f4bc2752a1c2cc0358",
+      "modified_utc": "2026-11-04T03:08:58.393656+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Packages/manifest.json",
+      "exists": true,
+      "bytes": 3632,
+      "sha256": "3dc5690f8a8dfcaebaf1d181ea8d1c99e28638333d83a307dd9ecee22aa3bd70",
+      "modified_utc": "2026-11-04T03:19:13.759765+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Packages/com.unity.render-pipelines.universal/package.json",
+      "exists": true,
+      "bytes": 714,
+      "sha256": "fab662e453ec43c0166bc7624220cedcc07c8a2661cddc400944d3c59d8906c0",
+      "modified_utc": "2022-05-16T05:19:01.370340+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Packages/com.unity.render-pipelines.universal/Runtime/Data/UniversalRenderPipelineAsset.cs",
+      "exists": true,
+      "bytes": 37123,
+      "sha256": "bee42ba5ef2e6ad2789e3052abf7e517aa3c389de1276de7a4ddf88a742a1bb2",
+      "modified_utc": "2022-05-16T05:19:00.773017+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Packages/com.unity.render-pipelines.universal/Runtime/RendererFeatures/RenderBloomHall.cs",
+      "exists": true,
+      "bytes": 7892,
+      "sha256": "37968ea1277d6920f889226a327741c02c5d286fb4316b7a3a36b08494284c68",
+      "modified_utc": "2022-05-16T05:19:00.966017+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/RenderLoop/Pipeline_Lobby_High.asset",
+      "exists": true,
+      "bytes": 1881,
+      "sha256": "02fca1f1aedc8a7e0a3685a6ae9fcefb00d593cd9a594e70ab34605a66435acc",
+      "modified_utc": "2022-12-20T03:54:40.111689+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/RenderLoop/Renderer_Lobby_High.asset",
+      "exists": true,
+      "bytes": 8238,
+      "sha256": "4668597258fd3a143395df5a9fba4b632622be212177b7eb3f5fd4ea383c3879",
+      "modified_utc": "2022-12-20T03:54:40.124701+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/Recovery/Scenes/WeaponShowcase.unity",
+      "exists": true,
+      "bytes": 495078,
+      "sha256": "6d8626a22936c701bcd3919dc350239e8445634832c233552c1d3c63ab82a74b",
+      "modified_utc": "2026-11-07T11:48:45.924653+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/UI/Images/Background/bg_itemshow.tga",
+      "exists": true,
+      "bytes": 3145772,
+      "sha256": "e0131e8c9a55f29700f45016065318e03f9992d9d6c59cb09e6ee6ed12746e43",
+      "modified_utc": "2022-05-16T05:18:47.241585+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/LuaScripts/logic/manager/inspectormanager.lua",
+      "exists": true,
+      "bytes": 60769,
+      "sha256": "4c815d7a3fb014a2f2623e720d7ad98bc38cfe74adaf71c1e26a9086e69b73c1",
+      "modified_utc": "2022-12-20T03:53:22.651140+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/LuaScripts/config/data/tbl_weapon_inspector_view_config.lua",
+      "exists": true,
+      "bytes": 21742,
+      "sha256": "f2900ff4a34621509ffeafb11050e75e0ff94b5ed37878b6e3aa4e5f79b74a63",
+      "modified_utc": "2022-12-20T02:13:00.664302+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/Scripts/Recovery/AlphaAceShowcaseWeaponUtility.cs",
+      "exists": true,
+      "bytes": 9575,
+      "sha256": "d0e50afa509e13f0e8656cadd0b6b404f1d1e3b345f07e5369361530323a7282",
+      "modified_utc": "2026-11-07T12:22:45.778829+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/Scripts/Recovery/AlphaAceWeaponShowcase.cs",
+      "exists": true,
+      "bytes": 20268,
+      "sha256": "7b22f4e648edf72d5db2cd1c8f871a47d20e0e9ad230b74867b425e09b01fe4c",
+      "modified_utc": "2026-11-07T12:50:37.778640+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/Scripts/Recovery/AlphaAceOfflineSkin.cs",
+      "exists": true,
+      "bytes": 4882,
+      "sha256": "e2d782b8cb4bbc141e848a7a0ed1f9864c5e694778e7dc2e0d3d7d0915c8d192",
+      "modified_utc": "2026-11-07T12:56:17.909910+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/Scripts/SkinSystem/SkinResourceEditorProvider.cs",
+      "exists": true,
+      "bytes": 4050,
+      "sha256": "382ab2e4ff469fb0e45024bd2a65ca5a7b0dad334bc3419ddc5737a9e1c577dc",
+      "modified_utc": "2026-11-05T09:28:17.739192+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/Editor/AlphaAceShowcaseBuilder.cs",
+      "exists": true,
+      "bytes": 20333,
+      "sha256": "099a7c2f6567d6785b6a9a32b96b286505c5633e6e2af07e4ce04a851c2afcb1",
+      "modified_utc": "2026-11-07T12:10:19.619981+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/Editor/AlphaAceShowcaseValidation.cs",
+      "exists": true,
+      "bytes": 19068,
+      "sha256": "b0773a773c310e3f1fd6bbb92b7a5885271a66515f97210c36c06711898e5e27",
+      "modified_utc": "2026-11-07T08:08:04.097617+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "Assets/Editor/AlphaAceShowcaseMeshValidation.cs",
+      "exists": true,
+      "bytes": 17655,
+      "sha256": "b1547badecfc7b09ab3e7637c391f59b2d76153de60f02ca12cb6bf9c185434b",
+      "modified_utc": "2026-11-07T12:56:17.910911+00:00"
+    },
+    {
+      "root": "PROJECT",
+      "path": "LOCAL_DEBUG_RECOVERY.md",
+      "exists": true,
+      "bytes": 7514,
+      "sha256": "5bf732c8ea426a714e6bb9c49abe520690887b40ddd92643f4b0ba28fcadc7a6",
+      "modified_utc": "2026-10-30T14:47:21.708253+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "runtime-validation.txt",
+      "exists": true,
+      "bytes": 1688,
+      "sha256": "637d38efae1517061b225c9fd29437a566d1936c8ca47eafc750c665a6a40ac4",
+      "modified_utc": "2026-11-07T09:22:54.791650+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "unity-validation-bg-itemshow.log",
+      "exists": true,
+      "bytes": 78077,
+      "sha256": "f548949f5f98f26f0563bca666bdb5bca5872ca6b93edb22e16d3da9d92b7cfe",
+      "modified_utc": "2026-11-07T09:22:56.369744+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "showcase-diagnostics.txt",
+      "exists": true,
+      "bytes": 1794,
+      "sha256": "0f3fc32230ad824bef532d68fcdce735450819e8156584c8a974dcac24d562db",
+      "modified_utc": "2026-11-07T08:54:38.655134+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "catalog-asset-validation.txt",
+      "exists": true,
+      "bytes": 514,
+      "sha256": "b46ac76948de30d3b3c5d4a63697830086ff93a8bc60fa84bcc2b5c8d0346358",
+      "modified_utc": "2026-11-07T04:21:01.239754+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "lifecycle-validation.txt",
+      "exists": true,
+      "bytes": 221,
+      "sha256": "a0a9ce45f5ecf581f0aa4c0a2f63f6c65704fe01754ad8589bc522974ea9e596",
+      "modified_utc": "2026-11-06T18:06:57.736612+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "build-result.txt",
+      "exists": true,
+      "bytes": 51,
+      "sha256": "a4bbf6c1ae6245e7e6606db1a13c4148eeaf481a11cc16636a7e4ea0a226dfe5",
+      "modified_utc": "2026-11-07T08:54:38.659813+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "before-render-settings.json",
+      "exists": true,
+      "bytes": 758,
+      "sha256": "ad01109220aba595b9e843eebe5b05c52e20dfa4c535b867b56565f6c748ebb8",
+      "modified_utc": "2026-11-05T08:56:05.693166+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "restored-inputs.json",
+      "exists": true,
+      "bytes": 174289,
+      "sha256": "6da2b3ae4adfdbd364f894dec818cdf7d4b955b4df0d06f6e68c4cc09be9be7e",
+      "modified_utc": "2026-11-05T08:51:21.614500+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "restore_inputs.py",
+      "exists": true,
+      "bytes": 2477,
+      "sha256": "b5a7762a6010084c2a8fe4454b9cd05dfbba6bb74ac94939fd885a848f335894",
+      "modified_utc": "2026-11-05T08:51:19.211166+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "final-verification.json",
+      "exists": true,
+      "bytes": 2016,
+      "sha256": "72b29512bcaeca574ae903395199f88e5e4fe2671f8cf69f79fa2fdc42929e27",
+      "modified_utc": "2026-11-06T18:09:41.894696+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "verify_final.py",
+      "exists": true,
+      "bytes": 2721,
+      "sha256": "2f4194261f6450485f60481febd77fa8a38233b1618cf843068d9a465f32f40b",
+      "modified_utc": "2026-11-06T18:07:47.618439+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "assetbundle-itemshow-a.txt",
+      "exists": true,
+      "bytes": 243,
+      "sha256": "de8db6e90e6d7466edced20e79338c941a653bff212bb7bd04c3c6f618c61b99",
+      "modified_utc": "2026-11-07T09:30:42.313015+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "unity-extract-itemshow-a.log",
+      "exists": true,
+      "bytes": 69058,
+      "sha256": "8b76d327b5a1e76ecbedf5badcb1acbeb6275aa17c082abfa8d801dae801e5d3",
+      "modified_utc": "2026-11-07T09:31:03.730653+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "AK47-original.png",
+      "exists": true,
+      "bytes": 411037,
+      "sha256": "886dc9577715d1d16866a38dc535fddab69fe904d6e1e11f750d528990be19c3",
+      "modified_utc": "2026-11-07T09:22:54.186561+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "M4RAS-original.png",
+      "exists": true,
+      "bytes": 402824,
+      "sha256": "85a7068de7e6f9e75ad1dafa11f74cd1607202df5a5e1e2d9891f544d077b73c",
+      "modified_utc": "2026-11-07T09:22:54.299879+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "M4RAS-SeCai.png",
+      "exists": true,
+      "bytes": 361120,
+      "sha256": "29e41237a913743caff36f1d218a32f2495e9fa69e20c2491810db69914654a2",
+      "modified_utc": "2026-11-07T09:22:54.614061+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "M4RAS-return.png",
+      "exists": true,
+      "bytes": 402824,
+      "sha256": "85a7068de7e6f9e75ad1dafa11f74cd1607202df5a5e1e2d9891f544d077b73c",
+      "modified_utc": "2026-11-07T09:22:54.697211+00:00"
+    },
+    {
+      "root": "EVIDENCE",
+      "path": "M4RAS-SeCai-repeat.png",
+      "exists": true,
+      "bytes": 361120,
+      "sha256": "29e41237a913743caff36f1d218a32f2495e9fa69e20c2491810db69914654a2",
+      "modified_utc": "2026-11-07T09:22:54.781388+00:00"
+    },
+    {
+      "root": "BASE",
+      "path": "unlimited/render-analysis-20261105/dependency-audit.json",
+      "exists": true,
+      "bytes": 368877,
+      "sha256": "f72e09cc9718fe67315b580daa40789b225927329adb28ad6be4b670a12c9083",
+      "modified_utc": "2026-11-05T07:34:17.207511+00:00"
+    },
+    {
+      "root": "BASE",
+      "path": "platforms/AssetBundles/Development/iOSpvrtc/ui_bg_itemshow_a.ab",
+      "exists": true,
+      "bytes": 232540,
+      "sha256": "79044d59f00af2c8302fbc21e74ff9494cb84b96ace33635b9c7096927040157",
+      "modified_utc": "2022-12-20T02:06:49.178822+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "mesh-worker/result.txt",
+      "exists": true,
+      "bytes": 442,
+      "sha256": "4144b16d63b174fe28562332670a1f138b5c97dee3400c57f65afc34a76a2c7e",
+      "modified_utc": "2026-11-07T12:11:07.511760+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "mesh-worker/result-before-scale-fix.txt",
+      "exists": true,
+      "bytes": 398,
+      "sha256": "97cc69fc2a16ea2c3a411e25d689525cba027ab91d4049066516cffea9b49b21",
+      "modified_utc": "2026-11-07T12:08:49.368429+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "mesh-worker/smoke-scale-fixed.log",
+      "exists": true,
+      "bytes": 20880,
+      "sha256": "6fc66f6737f4b10b224cce85602bb4b550e9837d925b225724e0224a09aa0250",
+      "modified_utc": "2026-11-07T12:11:08.102624+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "effect-reference-reimport.txt",
+      "exists": true,
+      "bytes": 4501,
+      "sha256": "f696007390bc9ee7e2ff73556fd592cef0eb4f85d9034668ed6ff94ee7875dad",
+      "modified_utc": "2026-11-07T12:59:10.071513+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-201514/result.txt",
+      "exists": true,
+      "bytes": 7838,
+      "sha256": "0b33c6aa85f5ce9643bc5196fe9159e04a83be371072a578bd6687e4d5688253",
+      "modified_utc": "2026-11-07T12:15:16.817384+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-202045/result.txt",
+      "exists": true,
+      "bytes": 25028,
+      "sha256": "ed51e825715a77636ee355998ef35a21d7ba99efe38f6b3c221ea62c7fac984e",
+      "modified_utc": "2026-11-07T12:21:40.103512+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-202510/result.txt",
+      "exists": true,
+      "bytes": 31936,
+      "sha256": "e8df5d37a66bac625fd4e29e5c1dea07560183ef82c6148de1e09dcb76e55690",
+      "modified_utc": "2026-11-07T12:25:40.622557+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-203045/result.txt",
+      "exists": true,
+      "bytes": 32546,
+      "sha256": "6ea7d8243922a5aa20d84336798e4ee381ab7c98abf5f2d0c1e0deeea37a4d0b",
+      "modified_utc": "2026-11-07T12:31:13.795088+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-203524/result.txt",
+      "exists": true,
+      "bytes": 31991,
+      "sha256": "28804e0b93cad8158f5d6277f0f1515d68226fadf025661d6568b66dd4fde0e1",
+      "modified_utc": "2026-11-07T12:35:54.219507+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-204404/result.txt",
+      "exists": true,
+      "bytes": 31991,
+      "sha256": "48166662e41e9b287feae7885d137e106d8c1e5eee0f735dbd31341bbc3f48e6",
+      "modified_utc": "2026-11-07T12:44:33.085723+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-204907/result.txt",
+      "exists": true,
+      "bytes": 32031,
+      "sha256": "5b626b7f4fc29926c5ddfbea81d874a90742a3c015aec0cbbb8c2372b23df403",
+      "modified_utc": "2026-11-07T12:49:35.617377+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205341/result.txt",
+      "exists": true,
+      "bytes": 32544,
+      "sha256": "eb68f7d2121a25066751a29d5cd1fc185622c96d14ef863f4d6e3031de4059e7",
+      "modified_utc": "2026-11-07T12:54:13.950997+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/result.txt",
+      "exists": true,
+      "bytes": 32663,
+      "sha256": "2e5bd83a964c2d5d233f1322f4c84e832ffb82d2096180b50f2c7ba8206cf56c",
+      "modified_utc": "2026-11-07T12:59:52.412211+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/0-111010001.png",
+      "exists": true,
+      "bytes": 443002,
+      "sha256": "7c73570edcd85869aa828afcc9163f3064d5cf37edfd1141d620bf24ca04afbd",
+      "modified_utc": "2026-11-07T12:59:50.127779+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/1-111010002.png",
+      "exists": true,
+      "bytes": 271906,
+      "sha256": "62d6867f2ff4a08529f8996be40548d1614c1cc4547e3c320919b2461f8f665f",
+      "modified_utc": "2026-11-07T12:59:50.379874+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/10-111010001.png",
+      "exists": true,
+      "bytes": 443096,
+      "sha256": "d067ca9bdc7d71b12a6a13e1984231cd7550017b808de0a1622fe59984c0908e",
+      "modified_utc": "2026-11-07T12:59:52.325598+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/2-111010003.png",
+      "exists": true,
+      "bytes": 427727,
+      "sha256": "832e3160ad4833f2c67a5ceae5095fbd7f0e6804871988106a049f5345c6a06a",
+      "modified_utc": "2026-11-07T12:59:50.726150+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/3-111010006.png",
+      "exists": true,
+      "bytes": 490340,
+      "sha256": "0dfee2151d479517e6386e0f8722b1c7700130c4235e420e88682afb06eeb31e",
+      "modified_utc": "2026-11-07T12:59:50.887551+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/4-111010008.png",
+      "exists": true,
+      "bytes": 438598,
+      "sha256": "8e26c1673221b3077d608d23c6e3dc99fc3902d98b7474e2b0e1d6c5a0d28318",
+      "modified_utc": "2026-11-07T12:59:51.032050+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/5-111050001.png",
+      "exists": true,
+      "bytes": 411037,
+      "sha256": "886dc9577715d1d16866a38dc535fddab69fe904d6e1e11f750d528990be19c3",
+      "modified_utc": "2026-11-07T12:59:51.152611+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/6-111030005.png",
+      "exists": true,
+      "bytes": 361120,
+      "sha256": "29e41237a913743caff36f1d218a32f2495e9fa69e20c2491810db69914654a2",
+      "modified_utc": "2026-11-07T12:59:51.315321+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/7-111100001.png",
+      "exists": true,
+      "bytes": 295085,
+      "sha256": "1703184e912f68201bbe0e0beda25981504222500e6707867c917540a4e39d9c",
+      "modified_utc": "2026-11-07T12:59:51.485988+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/8-111130001.png",
+      "exists": true,
+      "bytes": 571826,
+      "sha256": "cdc9d2917f2b1031326465f8c005a1ad4aba6c2768f8501f8af5089513833a74",
+      "modified_utc": "2026-11-07T12:59:52.034076+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/geometry-progress.txt",
+      "exists": true,
+      "bytes": 30982,
+      "sha256": "26e9213d534fa6f08e37b4ade535d8152a06c71ce551242a711eeadcdb0510e1",
+      "modified_utc": "2026-11-07T12:59:40.981656+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/progress.txt",
+      "exists": true,
+      "bytes": 32558,
+      "sha256": "7f2f10a6e8a1640cc85a5a7e7cf61b0d836a2964a3fade4303ef2cb001c1f9d1",
+      "modified_utc": "2026-11-07T12:59:52.326599+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "run-20261107-205922/result.txt",
+      "exists": true,
+      "bytes": 32663,
+      "sha256": "2e5bd83a964c2d5d233f1322f4c84e832ffb82d2096180b50f2c7ba8206cf56c",
+      "modified_utc": "2026-11-07T12:59:52.412211+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "unity-mesh-regression-v2.log",
+      "exists": true,
+      "bytes": 145938,
+      "sha256": "28d73f00879513e6e0a2c6e1c64e6a3b1cbdfbe9a294032df1f4dfb095dc2f77",
+      "modified_utc": "2026-11-07T12:21:41.495249+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "unity-mesh-regression-v3.log",
+      "exists": true,
+      "bytes": 169473,
+      "sha256": "b0b9b55f10fa274d9ac605b93ca9cbe42c974bad3763ebbacc6cea87f9ff64e8",
+      "modified_utc": "2026-11-07T12:25:42.176006+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "unity-mesh-regression-v4.log",
+      "exists": true,
+      "bytes": 181190,
+      "sha256": "2b92cee76d9ee5a07e600664198cf9dab6b88053f9ea1ebec1d3754ba801435e",
+      "modified_utc": "2026-11-07T12:31:15.024054+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "unity-mesh-regression-v5.log",
+      "exists": true,
+      "bytes": 95666,
+      "sha256": "f70f3982028dd95727e59ad09dc0ec410705e5e677d2c4af8b6a0629f49c9c79",
+      "modified_utc": "2026-11-07T12:35:55.533481+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "unity-mesh-regression-v6.log",
+      "exists": true,
+      "bytes": 104777,
+      "sha256": "35f6ef21d069030bde4ccf37d0a8a46dba094377cf898d7d41722f44c48281e0",
+      "modified_utc": "2026-11-07T12:44:34.487140+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "unity-mesh-regression-v7.log",
+      "exists": true,
+      "bytes": 178307,
+      "sha256": "c57f11fe40f220405f2ceebb13077d5d5996d9db03c50483f3d785d3c305d62f",
+      "modified_utc": "2026-11-07T12:49:37.051340+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "unity-mesh-regression-v8.log",
+      "exists": true,
+      "bytes": 228206,
+      "sha256": "2825bc918b53ff6552f76045c1edf50b08ee13902a147167853119a69d577ccf",
+      "modified_utc": "2026-11-07T12:54:15.239283+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "unity-mesh-regression-v9.log",
+      "exists": true,
+      "bytes": 215279,
+      "sha256": "2906952805897024bf7e31e9c70bca34fc028b8bedb3dabc80aa05daeeaad8fb",
+      "modified_utc": "2026-11-07T12:59:54.039299+00:00"
+    },
+    {
+      "root": "MESH_FIX",
+      "path": "unity-mesh-regression.log",
+      "exists": true,
+      "bytes": 148452,
+      "sha256": "7f94d2bf55ccabf2488f88ef7e847872e88e06b58972ae67f2e28d7181e93e75",
+      "modified_utc": "2026-11-07T12:15:18.077736+00:00"
+    }
+  ],
+  "historical_capture_repeatability": [
+    {
+      "first": "M4RAS-original.png",
+      "second": "M4RAS-return.png",
+      "same_file_bytes": true
+    },
+    {
+      "first": "M4RAS-SeCai.png",
+      "second": "M4RAS-SeCai-repeat.png",
+      "same_file_bytes": true
+    }
+  ],
+  "render_settings_baseline_comparison": [
+    {
+      "path": "ProjectSettings/GraphicsSettings.asset",
+      "baseline_sha256": "e962618449a738440e78c3b83308803b1dce262f2a9cb828a8a6d20329305575",
+      "current_sha256": "8b92fed4ea472d9b5bf32f63dd772b319e302de41b0feb63507ea25247c38164",
+      "unchanged": false
+    },
+    {
+      "path": "ProjectSettings/QualitySettings.asset",
+      "baseline_sha256": "4ad35628438cee99d744d81194b47cff7e01c4246e272d758c031900b74c844c",
+      "current_sha256": "dc3afd2459c8d92b18f268f301df4e1eb9d41cc08c88dac7486449e48f23b983",
+      "unchanged": false
+    },
+    {
+      "path": "Assets/RenderLoop/Pipeline_Battle_High.asset",
+      "baseline_sha256": "168b2d9e34399972d3c1e5f56305c4e5a9fdb2a70ca4a7189ef733b0a5e0596b",
+      "current_sha256": "168b2d9e34399972d3c1e5f56305c4e5a9fdb2a70ca4a7189ef733b0a5e0596b",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/RenderLoop/Pipeline_Lobby_High.asset",
+      "baseline_sha256": "02fca1f1aedc8a7e0a3685a6ae9fcefb00d593cd9a594e70ab34605a66435acc",
+      "current_sha256": "02fca1f1aedc8a7e0a3685a6ae9fcefb00d593cd9a594e70ab34605a66435acc",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/RenderLoop/Renderer_Lobby_High.asset",
+      "baseline_sha256": "4668597258fd3a143395df5a9fba4b632622be212177b7eb3f5fd4ea383c3879",
+      "current_sha256": "4668597258fd3a143395df5a9fba4b632622be212177b7eb3f5fd4ea383c3879",
+      "unchanged": true
+    }
+  ],
+  "caveats": [
+    "Historical final-verification.json predates the current background captures.",
+    "PNG names containing original mean recovered base variants, not original-game references.",
+    "Use result.txt and matching source/log versions for regression coverage; a file hash audit is not a GPU test."
+  ]
+}
